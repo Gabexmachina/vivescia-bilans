@@ -2660,7 +2660,1606 @@
      PARTIE 3 — Arterre (futur)
      Injection automatique : HTML généré par WKF Arterre (à créer)
 ═══════════════════════════════════════════════════════════════════════════ -->
-<!-- Partie 3 (Arterre) à venir -->
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<!-- ARTERRE — BILAN MENSUEL TEMPLATE FINAL (Partie 3 du bilan VIVESCIA)         -->
+<!--                                                                              -->
+<!-- 5 pages concaténées dans l'ordre du bilan :                                 -->
+<!--   Page 1 : Synthèse Mensuelle (couverture Partie 3)                          -->
+<!--   Page 2 : Synthèse Performances Globales (3 sites + graphs évolution 13M)  -->
+<!--   Page 3 : Performances Éditoriales (Top 30 pages vues)                      -->
+<!--   Page 4 : Consultation des contenus (12 rubriques + DoW/HoD + Top 10 actus)-->
+<!--   Page 5 : Consultation des Applications iOS & Android (Top 15 ×2 + DoW/HoD)-->
+<!--                                                                              -->
+<!-- Typographie : Raleway (héritée du bilan global) · Charte olive/taupe Arterre -->
+<!-- CSS scopé .arterre-page-N (pas de collision avec MyVIVESCIA / Corporate)    -->
+<!--                                                                              -->
+<!-- Ce template est injecté avec data par le Code node 'Arterre Inject Data'    -->
+<!-- puis wrappé par l'orchestrateur dans le bilan HTML final multi-pages.        -->
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+
+
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<!-- PAGE 1 ARTERRE : Synthèse Mensuelle                                 -->
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<!-- ARTERRE PAGE 1 v2 — Synthèse Mensuelle                                      -->
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+
+<style>
+/* ════════════ PAGE ARTERRE 1 v2 ════════════ */
+
+.page.arterre-page-1{
+  width:210mm;min-height:297mm;margin:0 auto 32px;
+  background:#fff;position:relative;overflow:hidden;
+  box-shadow:0 8px 40px rgba(0,0,0,.22);box-sizing:border-box
+}
+
+/* Header (identique) */
+.arterre-page-1 .ph-arterre{background:#DBD5C5;padding:18px 32px;display:flex;align-items:center;justify-content:space-between;border-bottom:1.5px solid #E5E7EB;position:relative;overflow:hidden;min-height:100px;box-sizing:border-box}
+.arterre-page-1 .mot-arterre{position:absolute;top:0;right:0;width:30%;height:100%;pointer-events:none;opacity:.55;z-index:1}
+.arterre-page-1 .lf-arterre{position:absolute;border-radius:50% 10% 50% 10%}
+.arterre-page-1 .lf-arterre.lf1{width:14px;height:7px;top:18px;right:14px;background:#6B8E23;transform:rotate(30deg)}
+.arterre-page-1 .lf-arterre.lf2{width:12px;height:6px;top:28px;right:36px;background:#8FA845;transform:rotate(-15deg)}
+.arterre-page-1 .lf-arterre.lf3{width:16px;height:8px;top:10px;right:60px;background:#4A6718;transform:rotate(45deg)}
+.arterre-page-1 .lf-arterre.lf4{width:10px;height:5px;top:45px;right:24px;background:#A89678;transform:rotate(-30deg)}
+.arterre-page-1 .lf-arterre.lf5{width:13px;height:6px;top:55px;right:55px;background:#6B8E23;transform:rotate(60deg)}
+.arterre-page-1 .lf-arterre.lf6{width:11px;height:6px;top:38px;right:88px;background:#9B8860;transform:rotate(-45deg)}
+.arterre-page-1 .lf-arterre.lf7{width:15px;height:7px;top:62px;right:92px;background:#4A6718;transform:rotate(20deg)}
+.arterre-page-1 .lf-arterre.lf8{width:9px;height:4px;top:20px;right:120px;background:#F4C842;transform:rotate(-60deg)}
+.arterre-page-1 .lf-arterre.lf9{width:12px;height:6px;top:50px;right:140px;background:#6B8E23;transform:rotate(35deg)}
+.arterre-page-1 .lf-arterre.lf10{width:10px;height:5px;top:72px;right:30px;background:#8FA845;transform:rotate(-20deg)}
+.arterre-page-1 .lf-arterre.lf11{width:14px;height:7px;top:15px;right:165px;background:#4A6718;transform:rotate(50deg)}
+.arterre-page-1 .lf-arterre.lf12{width:11px;height:5px;top:40px;right:195px;background:#A89678;transform:rotate(-40deg)}
+.arterre-page-1 .lf-arterre.lf13{width:13px;height:6px;top:68px;right:175px;background:#6B8E23;transform:rotate(25deg)}
+
+.arterre-page-1 .lb-arterre{position:relative;z-index:2;background:#fff;padding:8px 14px;border-radius:6px;box-shadow:0 1px 3px rgba(0,0,0,.08);display:flex;align-items:center}
+.arterre-page-1 .lb-arterre img{height:40px;width:auto;display:block}
+.arterre-page-1 .ct-arterre{text-align:center;flex:1;position:relative;z-index:2}
+.arterre-page-1 .tt-arterre{font-size:14px;font-weight:800;color:#4A6718;letter-spacing:.3px}
+.arterre-page-1 .sb-arterre{font-size:10.5px;color:#6B7280;font-weight:600;margin-top:3px}
+.arterre-page-1 .tg-arterre{position:relative;z-index:2;font-size:10px;color:#fff;font-weight:700;background:#4A6718;padding:6px 14px;border-radius:4px;letter-spacing:1.5px}
+
+/* Body */
+.arterre-page-1 .pb-arterre{padding:16px 32px 46px;box-sizing:border-box}
+
+/* Section label */
+.arterre-page-1 .sl-arterre{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:#6B7280;margin-bottom:8px;margin-top:10px;display:flex;justify-content:space-between;align-items:center}
+.arterre-page-1 .sl-arterre:first-child{margin-top:0}
+.arterre-page-1 .pt-arterre{font-size:9.5px;color:#4B5563;background:#F5F8EC;padding:4px 10px;border-radius:4px;font-weight:600;text-transform:none;letter-spacing:0;border:1px solid #D4E0B0}
+.arterre-page-1 .pt-arterre strong{color:#4A6718;font-weight:700}
+
+/* ═══ BLOC 1 : FAITS MARQUANTS (v2 : min-height agrandi 360px) ═══ */
+.arterre-page-1 .fm-card{
+  background:#F5F8EC;
+  border:1.5px solid #D4E0B0;
+  border-left:4px solid #4A6718;
+  border-radius:10px;
+  padding:18px 24px;
+  min-height:360px;
+  box-sizing:border-box
+}
+.arterre-page-1 .fm-body{
+  font-size:11px;
+  line-height:1.6;
+  color:#1A2530
+}
+.arterre-page-1 .fm-body p{margin:0 0 10px}
+.arterre-page-1 .fm-body p:last-child{margin:0}
+.arterre-page-1 .fm-body strong{color:#4A6718;font-weight:700}
+.arterre-page-1 .fm-body em{color:#6B8E23;font-style:italic;font-weight:600}
+.arterre-page-1 .fm-body:empty{min-height:320px}
+
+/* ═══ BLOC 2 : PERFORMANCES GLOBALES (3 cards × 2 KPIs empilés) ═══ */
+.arterre-page-1 .recap-row{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+  margin-bottom:10px
+}
+.arterre-page-1 .recap-card{
+  border-radius:12px;
+  overflow:hidden;
+  box-shadow:0 1px 3px rgba(0,0,0,.08);
+  background:#fff;
+  border:1.5px solid #E5E7EB;
+  display:flex;
+  flex-direction:column
+}
+
+.arterre-page-1 .recap-head{
+  padding:8px 14px;
+  color:#fff;
+  font-size:11px;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.4px;
+  display:flex;
+  align-items:center;
+  gap:8px
+}
+.arterre-page-1 .recap-head::before{
+  content:'';
+  width:6px;height:6px;
+  border-radius:50%;
+  background:rgba(255,255,255,.85)
+}
+.arterre-page-1 .recap-head.olive{background:linear-gradient(135deg,#6B8E23 0%,#4A6718 100%)}
+.arterre-page-1 .recap-head.taupe{background:linear-gradient(135deg,#B8A888 0%,#8B7355 100%)}
+.arterre-page-1 .recap-head.taupe-dark{background:linear-gradient(135deg,#8B7355 0%,#6B5A43 100%)}
+
+/* Body : 2 KPIs empilés avec séparateur */
+.arterre-page-1 .recap-body{
+  flex:1;
+  display:flex;
+  flex-direction:column
+}
+.arterre-page-1 .recap-kpi{
+  padding:12px 14px;
+  text-align:center;
+  display:flex;
+  flex-direction:column;
+  gap:3px
+}
+.arterre-page-1 .recap-kpi + .recap-kpi{
+  border-top:1px solid #EEF1E5
+}
+.arterre-page-1 .recap-lbl{
+  font-size:8.5px;
+  color:#9CA3AF;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:.5px
+}
+.arterre-page-1 .recap-val{
+  font-size:22px;
+  font-weight:800;
+  color:#1A2530;
+  line-height:1.1;
+  font-variant-numeric:tabular-nums
+}
+.arterre-page-1 .recap-var{
+  font-size:10px;
+  font-weight:800;
+  display:inline-flex;
+  align-items:center;
+  gap:3px;
+  justify-content:center
+}
+.arterre-page-1 .recap-var.up{color:#0F6E56}
+.arterre-page-1 .recap-var.down{color:#993C1D}
+.arterre-page-1 .recap-var.neutral{color:#64748B}
+
+/* ═══ BLOC 3 : TOP 5 ACTUALITÉS (identique v1) ═══ */
+.arterre-page-1 .tbl-section{margin-bottom:10px}
+.arterre-page-1 .tbl-hdr{display:flex;align-items:center;justify-content:space-between;padding:8px 18px;border-radius:10px 10px 0 0;background:#C9A23A}
+.arterre-page-1 .tbl-title{font-size:12.5px;font-weight:800;color:#fff;text-transform:uppercase;letter-spacing:.7px;display:flex;align-items:center;gap:10px}
+.arterre-page-1 .tbl-title-dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.9)}
+.arterre-page-1 .tbl-badge{font-size:10.5px;color:rgba(255,255,255,.95);background:rgba(0,0,0,.22);padding:4px 12px;border-radius:20px;font-weight:700;letter-spacing:.3px}
+.arterre-page-1 .top-grid{border:1.5px solid #E5E7EB;border-top:none;border-radius:0 0 10px 10px;overflow:hidden;background:#fff}
+.arterre-page-1 .top-subhead{display:grid;grid-template-columns:42px 1fr 110px 95px;gap:8px;align-items:center;padding:6px 18px;background:#F7F7F5;border-bottom:1.5px solid #E5E7EB;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#6B7280}
+.arterre-page-1 .top-subhead .sh-rank{text-align:center}
+.arterre-page-1 .top-subhead .sh-val{text-align:right}
+.arterre-page-1 .top-row{display:grid;grid-template-columns:42px 1fr 110px 95px;gap:8px;align-items:center;padding:5px 18px;border-bottom:1px solid rgba(0,0,0,.04)}
+.arterre-page-1 .top-row:nth-child(odd){background:#fff}
+.arterre-page-1 .top-row:nth-child(even){background:#FAFBF5}
+.arterre-page-1 .top-row:last-child{border-bottom:none}
+.arterre-page-1 .t-rank-a{text-align:center;font-weight:800;color:#9CA3AF;font-size:10.5px;letter-spacing:.2px}
+.arterre-page-1 .top-row.top3 .t-rank-a{color:#C9A23A;font-weight:900}
+.arterre-page-1 .t-titre-a{color:#1A2530;font-weight:500;font-size:11px;line-height:1.3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.arterre-page-1 .t-pv-a{text-align:right;color:#4A6718;font-size:12px;font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap}
+.arterre-page-1 .t-time-a{text-align:right;color:#6B8E23;font-size:10.5px;font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
+
+/* Footer */
+.arterre-page-1 .pf-arterre{position:absolute;bottom:12px;left:28px;right:28px;display:flex;justify-content:space-between;align-items:center;font-size:9px;color:#CBD5E1;border-top:1px solid #E5E7EB;padding-top:8px}
+.arterre-page-1 .pf-arterre strong{color:#9CA3AF;font-weight:600}
+.arterre-page-1 .pf-arterre > *{flex:1}
+.arterre-page-1 .pf-arterre > *:nth-child(2){text-align:center}
+.arterre-page-1 .pf-arterre > *:nth-child(3){text-align:right}
+</style>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<!-- ARTERRE PAGE 1 v2                                                            -->
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<div class="page arterre-page-1">
+
+  <!-- HEADER -->
+  <div class="ph-arterre">
+    <div class="mot-arterre">
+      <div class="lf-arterre lf1"></div><div class="lf-arterre lf2"></div><div class="lf-arterre lf3"></div>
+      <div class="lf-arterre lf4"></div><div class="lf-arterre lf5"></div><div class="lf-arterre lf6"></div>
+      <div class="lf-arterre lf7"></div><div class="lf-arterre lf8"></div><div class="lf-arterre lf9"></div>
+      <div class="lf-arterre lf10"></div><div class="lf-arterre lf11"></div><div class="lf-arterre lf12"></div>
+      <div class="lf-arterre lf13"></div>
+    </div>
+    <div class="lb-arterre"><img src="data:image/jpeg;base64,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" alt="Arterre" /></div>
+    <div class="ct-arterre">
+      <div class="tt-arterre">Synthèse Mensuelle Arterre</div>
+      <div class="sb-arterre">Applications & Site Web · <span data-ph="mois_label">Mars 2026</span></div>
+    </div>
+    <div class="tg-arterre">PARTIE 3</div>
+  </div>
+
+  <!-- BODY -->
+  <div class="pb-arterre">
+
+    <!-- ═══ BLOC 1 : FAITS MARQUANTS (vide par défaut) ═══ -->
+    <div class="sl-arterre">
+      <span>Faits marquants du mois</span>
+      <span class="pt-arterre"><strong data-ph="mois_label">Mars 2026</strong></span>
+    </div>
+    <div class="fm-card">
+      <div class="fm-body" data-ph="faits_marquants_arterre"></div>
+    </div>
+
+    <!-- ═══ BLOC 2 : PERFORMANCES GLOBALES (Visites + Utilisateurs) ═══ -->
+    <div class="sl-arterre">
+      <span>Performances Globales</span>
+      <span class="pt-arterre">
+        <strong data-ph="mois_label">Mars 2026</strong>
+        vs
+        <strong data-ph="mois_prev_label">Février 2026</strong>
+      </span>
+    </div>
+    <div class="recap-row">
+      <!-- Card 1 : arterre.net -->
+      <div class="recap-card">
+        <div class="recap-head olive">arterre.net</div>
+        <div class="recap-body">
+          <div class="recap-kpi">
+            <div class="recap-lbl">Visites</div>
+            <div class="recap-val" data-ph="recap_web_visits_val">132 016</div>
+            <div class="recap-var neutral" data-ph="recap_web_visits_var">— vs M-1</div>
+          </div>
+          <div class="recap-kpi">
+            <div class="recap-lbl">Utilisateurs</div>
+            <div class="recap-val" data-ph="recap_web_users_val">4 292</div>
+            <div class="recap-var up" data-ph="recap_web_users_var">↑ +5,2% vs M-1</div>
+          </div>
+        </div>
+      </div>
+      <!-- Card 2 : iOS -->
+      <div class="recap-card">
+        <div class="recap-head taupe">Arterre iOS</div>
+        <div class="recap-body">
+          <div class="recap-kpi">
+            <div class="recap-lbl">Visites</div>
+            <div class="recap-val" data-ph="recap_ios_visits_val">8 610</div>
+            <div class="recap-var neutral" data-ph="recap_ios_visits_var">— vs M-1</div>
+          </div>
+          <div class="recap-kpi">
+            <div class="recap-lbl">Utilisateurs</div>
+            <div class="recap-val" data-ph="recap_ios_users_val">434</div>
+            <div class="recap-var up" data-ph="recap_ios_users_var">↑ +102,8% vs M-1</div>
+          </div>
+        </div>
+      </div>
+      <!-- Card 3 : Android -->
+      <div class="recap-card">
+        <div class="recap-head taupe-dark">Arterre Android</div>
+        <div class="recap-body">
+          <div class="recap-kpi">
+            <div class="recap-lbl">Visites</div>
+            <div class="recap-val" data-ph="recap_android_visits_val">5 388</div>
+            <div class="recap-var neutral" data-ph="recap_android_visits_var">— vs M-1</div>
+          </div>
+          <div class="recap-kpi">
+            <div class="recap-lbl">Utilisateurs</div>
+            <div class="recap-val" data-ph="recap_android_users_val">324</div>
+            <div class="recap-var up" data-ph="recap_android_users_var">↑ +170,0% vs M-1</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ BLOC 3 : TOP 5 ACTUALITÉS ═══ -->
+    <div class="sl-arterre">
+      <span>Top 5 Actualités du mois</span>
+      <span class="pt-arterre"><strong data-ph="mois_label">Mars 2026</strong></span>
+    </div>
+    <div class="tbl-section">
+      <div class="tbl-hdr">
+        <span class="tbl-title">
+          <span class="tbl-title-dot"></span>
+          Top 5 Actualités
+        </span>
+        <span class="tbl-badge">Pages vues · Temps moyen / page</span>
+      </div>
+      <div class="top-grid" data-block="top5_actus_block"><div class="top-subhead"><span class="sh-rank">#</span><span>Titre de la page</span><span class="sh-val">Pages vues</span><span class="sh-val">Tps moyen / page</span></div><div class="top-row top3"><span class="t-rank-a">#1</span><span class="t-titre-a" title="VIVESCIA INFOS N211 Nouveaux complements de prix en Gestion Deleguee agriculture conventionnelle et biologique au 31 mars 2026">VIVESCIA INFOS N211 Nouveaux complements de prix en Gestion Deleguee agriculture conventionnelle et biologique au 31 mars 2026</span><span class="t-pv-a">8 072</span><span class="t-time-a">0min35</span></div><div class="top-row top3"><span class="t-rank-a">#2</span><span class="t-titre-a" title="Commerce des grains l actualite des marches mars 2026">Commerce des grains l actualite des marches mars 2026</span><span class="t-pv-a">3 774</span><span class="t-time-a">0min29</span></div><div class="top-row top3"><span class="t-rank-a">#3</span><span class="t-titre-a" title="Engrais l actualite des marches mars 2026">Engrais l actualite des marches mars 2026</span><span class="t-pv-a">3 503</span><span class="t-time-a">0min33</span></div><div class="top-row"><span class="t-rank-a">#4</span><span class="t-titre-a" title="Commerce des grains l actualite des marches fin mars 2026">Commerce des grains l actualite des marches fin mars 2026</span><span class="t-pv-a">2 431</span><span class="t-time-a">0min28</span></div><div class="top-row"><span class="t-rank-a">#5</span><span class="t-titre-a" title="Visite d une delegation senegalaise a la station de semences de reims">Visite d une delegation senegalaise a la station de semences de reims</span><span class="t-pv-a">1 614</span><span class="t-time-a">0min25</span></div></div>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <div class="pf-arterre">
+    <span><strong>Powered by Growth Ex Machina</strong></span>
+    <span>Bilan Mensuel VIVESCIA — <span data-ph="mois_label">Mars 2026</span></span>
+    <span>Page <span data-ph="page_num">{{page_num}}</span> / <span data-ph="total_pages">{{total_pages}}</span></span>
+  </div>
+
+</div>
+
+
+
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<!-- PAGE 2 ARTERRE : Synthèse Performances Globales                                 -->
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<!-- ARTERRE BILAN TEMPLATE v3 — PARTIE 3 du Bilan VIVESCIA mensuel             -->
+<!-- Page 2 (dans la Partie 3) : Synthèse Performances Globales               -->
+<!--                                                                           -->
+<!-- v3 CHANGELOG :                                                            -->
+<!--   • Logo Arterre intégré en base64 (JPEG embarqué, pas d'URL externe)     -->
+<!--   • Bloc Arterre.net ENGLOBANT (4 KPIs + graph évolution dans 1 card)     -->
+<!--   • Bloc Apps ENGLOBANT (2 sous-zones iOS/Android + graph évolution)       -->
+<!--   • KPIs plus compacts (hauteur réduite 68px)                              -->
+<!--   • Users des apps en taupe foncé différencié                              -->
+<!--   • Footer harmonisé sur MyVIVESCIA (GEM gauche | Bilan centre | Pages)   -->
+<!--   • Bootstrap Matomo 12 mois rétrospectifs (extensible 24 mois)            -->
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+
+<style>
+/* ════════════ PAGE ARTERRE 2 (v3) ════════════ */
+
+.page.arterre-page-2{
+  width:210mm;min-height:297mm;margin:0 auto 32px;
+  background:#fff;position:relative;overflow:hidden;
+  box-shadow:0 8px 40px rgba(0,0,0,.22);box-sizing:border-box
+}
+
+/* ─── Header ─── */
+.arterre-page-2 .ph-arterre{
+  background:#DBD5C5;padding:18px 32px;
+  display:flex;align-items:center;justify-content:space-between;
+  border-bottom:1.5px solid #E5E7EB;
+  position:relative;overflow:hidden;min-height:100px;box-sizing:border-box
+}
+.arterre-page-2 .mot-arterre{position:absolute;top:0;right:0;width:30%;height:100%;pointer-events:none;opacity:.55;z-index:1}
+.arterre-page-2 .lf-arterre{position:absolute;border-radius:50% 10% 50% 10%}
+.arterre-page-2 .lf-arterre.lf1{width:14px;height:7px;top:18px;right:14px;background:#6B8E23;transform:rotate(30deg)}
+.arterre-page-2 .lf-arterre.lf2{width:12px;height:6px;top:28px;right:36px;background:#8FA845;transform:rotate(-15deg)}
+.arterre-page-2 .lf-arterre.lf3{width:16px;height:8px;top:10px;right:60px;background:#4A6718;transform:rotate(45deg)}
+.arterre-page-2 .lf-arterre.lf4{width:10px;height:5px;top:45px;right:24px;background:#A89678;transform:rotate(-30deg)}
+.arterre-page-2 .lf-arterre.lf5{width:13px;height:6px;top:55px;right:55px;background:#6B8E23;transform:rotate(60deg)}
+.arterre-page-2 .lf-arterre.lf6{width:11px;height:6px;top:38px;right:88px;background:#9B8860;transform:rotate(-45deg)}
+.arterre-page-2 .lf-arterre.lf7{width:15px;height:7px;top:62px;right:92px;background:#4A6718;transform:rotate(20deg)}
+.arterre-page-2 .lf-arterre.lf8{width:9px;height:4px;top:20px;right:120px;background:#F4C842;transform:rotate(-60deg)}
+.arterre-page-2 .lf-arterre.lf9{width:12px;height:6px;top:50px;right:140px;background:#6B8E23;transform:rotate(35deg)}
+.arterre-page-2 .lf-arterre.lf10{width:10px;height:5px;top:72px;right:30px;background:#8FA845;transform:rotate(-20deg)}
+.arterre-page-2 .lf-arterre.lf11{width:14px;height:7px;top:15px;right:165px;background:#4A6718;transform:rotate(50deg)}
+.arterre-page-2 .lf-arterre.lf12{width:11px;height:5px;top:40px;right:195px;background:#A89678;transform:rotate(-40deg)}
+.arterre-page-2 .lf-arterre.lf13{width:13px;height:6px;top:68px;right:175px;background:#6B8E23;transform:rotate(25deg)}
+
+/* ─── Bloc logo (fond blanc + logo base64) ─── */
+.arterre-page-2 .lb-arterre{
+  position:relative;z-index:2;
+  background:#fff;padding:8px 14px;
+  border-radius:6px;box-shadow:0 1px 3px rgba(0,0,0,.08);
+  display:flex;align-items:center
+}
+.arterre-page-2 .lb-arterre img{height:40px;width:auto;display:block}
+
+/* ─── Titre + pill ─── */
+.arterre-page-2 .ct-arterre{text-align:center;flex:1;position:relative;z-index:2}
+.arterre-page-2 .tt-arterre{font-size:14px;font-weight:800;color:#4A6718;letter-spacing:.3px}
+.arterre-page-2 .sb-arterre{font-size:10.5px;color:#6B7280;font-weight:600;margin-top:3px}
+.arterre-page-2 .tg-arterre{
+  position:relative;z-index:2;
+  font-size:10px;color:#fff;font-weight:700;
+  background:#4A6718;padding:6px 14px;border-radius:4px;letter-spacing:1.5px
+}
+
+/* ─── Body ─── */
+.arterre-page-2 .pb-arterre{padding:16px 28px 46px;box-sizing:border-box}
+
+/* ─── Section label ─── */
+.arterre-page-2 .sl-arterre{
+  font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:#6B7280;
+  margin-bottom:8px;margin-top:8px;
+  display:flex;justify-content:space-between;align-items:center
+}
+.arterre-page-2 .sl-arterre:first-child{margin-top:0}
+.arterre-page-2 .pt-arterre{
+  font-size:9.5px;color:#4B5563;background:#F5F8EC;
+  padding:4px 10px;border-radius:4px;font-weight:600;
+  text-transform:none;letter-spacing:0;border:1px solid #D4E0B0
+}
+.arterre-page-2 .pt-arterre strong{color:#4A6718;font-weight:700}
+.arterre-page-2 .pt-arterre .arrow{color:#9CA3AF;margin:0 5px;font-weight:400}
+
+/* ════════════════════════════════════════════════════════════════════════ */
+/*  ZONE 1 : SITE ARTERRE.NET — GRAND BLOC ENGLOBANT                          */
+/* ════════════════════════════════════════════════════════════════════════ */
+.arterre-page-2 .zone-web{
+  background:#F5F8EC;
+  border:1.5px solid #D4E0B0;
+  border-left:5px solid #6B8E23;
+  border-radius:12px;
+  padding:14px 16px;
+  margin-bottom:10px
+}
+.arterre-page-2 .zone-header{
+  display:flex;align-items:center;gap:8px;
+  margin-bottom:10px;padding-bottom:8px;
+  border-bottom:1.5px solid rgba(107,142,35,.28)
+}
+.arterre-page-2 .zone-header-apps{border-bottom-color:rgba(139,115,85,.35)}
+.arterre-page-2 .zone-title{
+  font-size:11.5px;font-weight:800;
+  color:#4A6718;letter-spacing:.4px;text-transform:uppercase
+}
+.arterre-page-2 .zone-header-apps .zone-title{color:#7D6B4F}
+.arterre-page-2 .zone-subtitle{font-size:10px;color:#6B7280;font-weight:600;margin-left:2px}
+
+/* ─── Grille KPI (4 cards, hauteur compacte) ─── */
+.arterre-page-2 .kpi-row-arterre{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:8px;
+  margin-bottom:10px
+}
+.arterre-page-2 .kpi-a{
+  border-radius:10px;padding:9px 12px;
+  position:relative;overflow:hidden;color:#fff;
+  min-height:68px;
+  box-shadow:0 1px 2px rgba(0,0,0,.08)
+}
+.arterre-page-2 .kpi-a::after{
+  content:'';position:absolute;bottom:-18px;right:-18px;
+  width:56px;height:56px;border-radius:50%;
+  background:rgba(255,255,255,.08)
+}
+
+/* KPIs Web : Users foncé, 3 autres medium */
+.arterre-page-2 .kpi-a.olive-dark{background:linear-gradient(135deg,#4A6718 0%,#3F5A0F 100%)}
+.arterre-page-2 .kpi-a.olive{background:linear-gradient(135deg,#8FA845 0%,#6B8E23 100%)}
+
+/* KPIs Apps : Users taupe foncé, 3 autres taupe medium */
+.arterre-page-2 .kpi-a.taupe-dark{background:linear-gradient(135deg,#8B7355 0%,#6B5A43 100%)}
+.arterre-page-2 .kpi-a.taupe{background:linear-gradient(135deg,#C9BDA0 0%,#B8A888 100%)}
+
+.arterre-page-2 .kpi-a-lbl{
+  font-size:8px;font-weight:700;text-transform:uppercase;
+  letter-spacing:.5px;opacity:.92;margin-bottom:3px
+}
+.arterre-page-2 .kpi-a-val{
+  font-size:18px;font-weight:800;line-height:1.1;margin-bottom:3px
+}
+.arterre-page-2 .kpi-a-ev{
+  font-size:9px;font-weight:700;
+  display:flex;align-items:center;gap:4px;color:rgba(255,255,255,.95)
+}
+.arterre-page-2 .kpi-a-ev-pill{
+  background:rgba(255,255,255,.22);
+  padding:1px 6px;border-radius:8px;
+  font-size:8.5px;color:#fff;white-space:nowrap
+}
+
+/* ════════════════════════════════════════════════════════════════════════ */
+/*  GRAPH ÉVOLUTION INTÉGRÉ (à l'intérieur du bloc englobant)                 */
+/* ════════════════════════════════════════════════════════════════════════ */
+.arterre-page-2 .evol-inside{
+  background:#fff;
+  border:1px solid #E8E2D4;
+  border-left:3px solid #6B8E23;
+  border-radius:8px;
+  padding:9px 14px 6px;
+  box-sizing:border-box
+}
+.arterre-page-2 .evol-inside.taupe-accent{border-left-color:#8B7355}
+
+.arterre-page-2 .evol-head{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:2px;padding-bottom:4px;
+  border-bottom:1px solid #F0EDE6
+}
+.arterre-page-2 .evol-head-left{display:flex;align-items:center;gap:9px}
+.arterre-page-2 .evol-title{
+  font-size:10.5px;font-weight:800;
+  color:#4A6718;letter-spacing:.3px
+}
+.arterre-page-2 .evol-inside.taupe-accent .evol-title{color:#7D6B4F}
+.arterre-page-2 .evol-sub{font-size:8.5px;color:#9CA3AF;font-weight:600}
+
+.arterre-page-2 .var-tag{
+  display:inline-flex;align-items:center;gap:3px;
+  font-size:9px;font-weight:800;
+  padding:3px 10px;border-radius:12px;letter-spacing:.2px
+}
+.arterre-page-2 .var-up{background:#E1F5EE;color:#0F6E56}
+.arterre-page-2 .var-down{background:#FAECE7;color:#993C1D}
+.arterre-page-2 .var-neutral{background:#F1F5F9;color:#64748B}
+
+.arterre-page-2 .evol-svg{
+  width:100%;height:auto;max-height:110px;display:block
+}
+
+/* ════════════════════════════════════════════════════════════════════════ */
+/*  ZONE 2 : APPLICATIONS MOBILES — GRAND BLOC ENGLOBANT                      */
+/* ════════════════════════════════════════════════════════════════════════ */
+.arterre-page-2 .zone-apps{
+  background:#F0EDE6;
+  border:1.5px solid #D4CAB6;
+  border-left:5px solid #8B7355;
+  border-radius:12px;
+  padding:14px 16px;
+  margin-bottom:10px
+}
+.arterre-page-2 .zone-app{margin-top:10px}
+.arterre-page-2 .zone-app:first-of-type{margin-top:0}
+.arterre-page-2 .zone-app-label{
+  display:flex;align-items:center;gap:7px;
+  font-size:10.5px;font-weight:800;color:#7D6B4F;
+  margin-bottom:7px;letter-spacing:.3px
+}
+.arterre-page-2 .zone-app-label::before{
+  content:'';width:5px;height:5px;border-radius:50%;background:#8B7355
+}
+
+/* ════════════════════════════════════════════════════════════════════════ */
+/*  ANALYSE STRATÉGIQUE (dimension fixe, vide par défaut)                     */
+/* ════════════════════════════════════════════════════════════════════════ */
+.arterre-page-2 .analyse-strat-arterre{
+  background:#F5F8EC;border:1px solid #D4E0B0;border-radius:8px;
+  padding:14px 18px;margin-top:10px;
+  box-sizing:border-box;min-height:90px
+}
+.arterre-page-2 .analyse-head-arterre{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+.arterre-page-2 .analyse-label-arterre{
+  font-size:10px;font-weight:800;color:#6B7280;
+  letter-spacing:1.2px;text-transform:uppercase
+}
+.arterre-page-2 .analyse-pill-arterre{
+  font-size:9.5px;font-weight:800;color:#fff;background:#4A6718;
+  padding:3px 10px;border-radius:4px;letter-spacing:.3px
+}
+.arterre-page-2 .analyse-body-arterre{
+  min-height:55px;font-size:10.5px;color:#4B5563;
+  font-weight:500;line-height:1.55
+}
+.arterre-page-2 .analyse-body-arterre p{margin:0 0 8px}
+.arterre-page-2 .analyse-body-arterre p:last-child{margin:0}
+.arterre-page-2 .analyse-body-arterre strong{color:#4A6718;font-weight:700}
+.arterre-page-2 .analyse-body-arterre:empty{min-height:55px}
+
+/* ════════════════════════════════════════════════════════════════════════ */
+/*  FOOTER (harmonisé sur MyVIVESCIA : GEM gauche | Titre centre | Pages)    */
+/* ════════════════════════════════════════════════════════════════════════ */
+.arterre-page-2 .pf-arterre{
+  position:absolute;bottom:12px;left:28px;right:28px;
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:9px;color:#CBD5E1;
+  border-top:1px solid #E5E7EB;padding-top:8px
+}
+.arterre-page-2 .pf-arterre strong{color:#9CA3AF;font-weight:600}
+.arterre-page-2 .pf-arterre > *{flex:1}
+.arterre-page-2 .pf-arterre > *:nth-child(2){text-align:center}
+.arterre-page-2 .pf-arterre > *:nth-child(3){text-align:right}
+
+/* Variations pills KPIs */
+.arterre-page-2 .var-up-a{background:rgba(255,255,255,.32)}
+.arterre-page-2 .var-down-a{background:rgba(0,0,0,.24)}
+.arterre-page-2 .var-neutral-a{background:rgba(255,255,255,.18)}
+
+</style>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<!-- ARTERRE PAGE 2 : Synthèse Performances Globales v3                         -->
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<div class="page arterre-page-2">
+
+  <!-- ═══ HEADER ═══ -->
+  <div class="ph-arterre">
+    <div class="mot-arterre">
+      <div class="lf-arterre lf1"></div>
+      <div class="lf-arterre lf2"></div>
+      <div class="lf-arterre lf3"></div>
+      <div class="lf-arterre lf4"></div>
+      <div class="lf-arterre lf5"></div>
+      <div class="lf-arterre lf6"></div>
+      <div class="lf-arterre lf7"></div>
+      <div class="lf-arterre lf8"></div>
+      <div class="lf-arterre lf9"></div>
+      <div class="lf-arterre lf10"></div>
+      <div class="lf-arterre lf11"></div>
+      <div class="lf-arterre lf12"></div>
+      <div class="lf-arterre lf13"></div>
+    </div>
+
+    <div class="lb-arterre">
+      <img src="data:image/jpeg;base64,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" alt="Arterre" />
+    </div>
+
+    <div class="ct-arterre">
+      <div class="tt-arterre">Synthèse Performances Globales</div>
+      <div class="sb-arterre">Arterre · <span data-ph="mois_label">Mars 2026</span></div>
+    </div>
+
+    <div class="tg-arterre">PARTIE 3</div>
+  </div>
+
+  <!-- ═══ BODY ═══ -->
+  <div class="pb-arterre">
+
+    <div class="sl-arterre">
+      <span>Performances Globales</span>
+      <span class="pt-arterre">
+        <strong data-ph="mois_label">Mars 2026</strong>
+        <span class="arrow">→</span>
+        vs
+        <strong data-ph="mois_prev_label">Février 2026</strong>
+      </span>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <!-- ZONE 1 : SITE ARTERRE.NET — ENGLOBANT 4 KPIs + GRAPH ÉVOLUTION       -->
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <div class="zone-web">
+      <div class="zone-header">
+        <span class="zone-title">Site Arterre.net</span>
+      </div>
+
+      <!-- 4 KPIs -->
+      <div class="kpi-row-arterre">
+        <div class="kpi-a olive-dark">
+          <div class="kpi-a-lbl">Utilisateurs</div>
+          <div class="kpi-a-val" data-ph="kpi_web_users_m0">4 292</div>
+          <div class="kpi-a-ev"><span class="kpi-a-ev-pill var-up-a" data-ph="kpi_web_users_var_tag">↑ +5,2% vs M-1</span></div>
+        </div>
+        <div class="kpi-a olive">
+          <div class="kpi-a-lbl">Visites</div>
+          <div class="kpi-a-val" data-ph="kpi_web_visits_m0">132 016</div>
+          <div class="kpi-a-ev"><span class="kpi-a-ev-pill var-neutral-a" data-ph="kpi_web_visits_var_tag">— vs M-1</span></div>
+        </div>
+        <div class="kpi-a olive">
+          <div class="kpi-a-lbl">Durée moyenne</div>
+          <div class="kpi-a-val" data-ph="kpi_web_avgtime_m0">3min47</div>
+          <div class="kpi-a-ev"><span class="kpi-a-ev-pill var-neutral-a" data-ph="kpi_web_avgtime_var_tag">— vs M-1</span></div>
+        </div>
+        <div class="kpi-a olive">
+          <div class="kpi-a-lbl">Pages vues</div>
+          <div class="kpi-a-val" data-ph="kpi_web_pages_m0">518 681</div>
+          <div class="kpi-a-ev"><span class="kpi-a-ev-pill var-neutral-a" data-ph="kpi_web_pages_var_tag">— vs M-1</span></div>
+        </div>
+      </div>
+
+      <!-- Graph évolution intégré -->
+      <div class="evol-inside">
+        <div class="evol-head">
+          <div class="evol-head-left">
+            <span class="evol-title">Évolution des visites par mois</span>
+            <span class="evol-sub">arterre.net · 13 derniers mois</span>
+          </div>
+          <span class="var-tag var-up" data-ph="evol_web_var_tag">↑ +117,0% vs Mars N-1</span>
+        </div>
+        <div data-block="evol_web_svg"><svg class="evol-svg" viewBox="0 0 700 110" preserveAspectRatio="xMidYMid meet"><defs><linearGradient id="grad-867865" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#6B8E23" stop-opacity="0.32"/><stop offset="100%" stop-color="#6B8E23" stop-opacity="0.04"/></linearGradient></defs><line x1="38" y1="90.0" x2="688" y2="90.0" stroke="#F0EDE6" stroke-width="1" stroke-dasharray="2,2"/><text x="32" y="93.0" fill="#9CA3AF" font-size="7.5" font-weight="600" text-anchor="end" font-family="Raleway">22 240</text><line x1="38" y1="51.0" x2="688" y2="51.0" stroke="#F0EDE6" stroke-width="1" stroke-dasharray="2,2"/><text x="32" y="54.0" fill="#9CA3AF" font-size="7.5" font-weight="600" text-anchor="end" font-family="Raleway">93 428</text><line x1="38" y1="12.0" x2="688" y2="12.0" stroke="#F0EDE6" stroke-width="1" stroke-dasharray="2,2"/><text x="32" y="15.0" fill="#9CA3AF" font-size="7.5" font-weight="600" text-anchor="end" font-family="Raleway">164 616</text><path d="M 38.0 90 L 38.0 68.9 L 92.2 78.3 L 146.3 81.0 L 200.5 77.1 L 254.7 21.0 L 308.8 59.8 L 363.0 46.2 L 417.2 44.7 L 471.3 53.1 L 525.5 59.5 L 579.7 48.3 L 633.8 47.2 L 688.0 29.9 L 688.0 90 Z" fill="url(#grad-867865)" stroke="none"/><path d="M 38.0 68.9 L 92.2 78.3 L 146.3 81.0 L 200.5 77.1 L 254.7 21.0 L 308.8 59.8 L 363.0 46.2 L 417.2 44.7 L 471.3 53.1 L 525.5 59.5 L 579.7 48.3 L 633.8 47.2 L 688.0 29.9 " fill="none" stroke="#6B8E23" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="38.0" cy="68.9" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="92.2" cy="78.3" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="146.3" cy="81.0" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="200.5" cy="77.1" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="254.7" cy="21.0" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="308.8" cy="59.8" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="363.0" cy="46.2" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="417.2" cy="44.7" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="471.3" cy="53.1" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="525.5" cy="59.5" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="579.7" cy="48.3" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="633.8" cy="47.2" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="688.0" cy="29.9" r="4.5" fill="#6B8E23" stroke="#fff" stroke-width="2"/><text x="688.0" y="20.9" fill="#6B8E23" font-size="9" font-weight="800" text-anchor="middle" font-family="Raleway">132 016</text><text x="38.0" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Mar 25</text><text x="146.3" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Mai 25</text><text x="254.7" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Juil 25</text><text x="363.0" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Sep 25</text><text x="471.3" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Nov 25</text><text x="579.7" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Jan 26</text><text x="688.0" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Mars 2026</text></svg></div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <!-- ZONE 2 : APPLICATIONS MOBILES — ENGLOBANT iOS + Android + GRAPH      -->
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <div class="zone-apps">
+      <div class="zone-header zone-header-apps">
+        <span class="zone-title">Applications Mobiles</span>
+      </div>
+
+      <!-- Sous-zone iOS -->
+      <div class="zone-app">
+        <div class="zone-app-label">Arterre iOS</div>
+        <div class="kpi-row-arterre">
+          <div class="kpi-a taupe-dark">
+            <div class="kpi-a-lbl">Utilisateurs</div>
+            <div class="kpi-a-val" data-ph="kpi_ios_users_m0">434</div>
+            <div class="kpi-a-ev"><span class="kpi-a-ev-pill var-up-a" data-ph="kpi_ios_users_var_tag">↑ +102,8% vs M-1</span></div>
+          </div>
+          <div class="kpi-a taupe">
+            <div class="kpi-a-lbl">Visites</div>
+            <div class="kpi-a-val" data-ph="kpi_ios_visits_m0">8 610</div>
+            <div class="kpi-a-ev"><span class="kpi-a-ev-pill var-neutral-a" data-ph="kpi_ios_visits_var_tag">— vs M-1</span></div>
+          </div>
+          <div class="kpi-a taupe">
+            <div class="kpi-a-lbl">Durée moyenne</div>
+            <div class="kpi-a-val" data-ph="kpi_ios_avgtime_m0">1min28</div>
+            <div class="kpi-a-ev"><span class="kpi-a-ev-pill var-neutral-a" data-ph="kpi_ios_avgtime_var_tag">— vs M-1</span></div>
+          </div>
+          <div class="kpi-a taupe">
+            <div class="kpi-a-lbl">Pages vues</div>
+            <div class="kpi-a-val" data-ph="kpi_ios_pages_m0">15 908</div>
+            <div class="kpi-a-ev"><span class="kpi-a-ev-pill var-neutral-a" data-ph="kpi_ios_pages_var_tag">— vs M-1</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sous-zone Android -->
+      <div class="zone-app">
+        <div class="zone-app-label">Arterre Android</div>
+        <div class="kpi-row-arterre">
+          <div class="kpi-a taupe-dark">
+            <div class="kpi-a-lbl">Utilisateurs</div>
+            <div class="kpi-a-val" data-ph="kpi_android_users_m0">324</div>
+            <div class="kpi-a-ev"><span class="kpi-a-ev-pill var-up-a" data-ph="kpi_android_users_var_tag">↑ +170,0% vs M-1</span></div>
+          </div>
+          <div class="kpi-a taupe">
+            <div class="kpi-a-lbl">Visites</div>
+            <div class="kpi-a-val" data-ph="kpi_android_visits_m0">5 388</div>
+            <div class="kpi-a-ev"><span class="kpi-a-ev-pill var-neutral-a" data-ph="kpi_android_visits_var_tag">— vs M-1</span></div>
+          </div>
+          <div class="kpi-a taupe">
+            <div class="kpi-a-lbl">Durée moyenne</div>
+            <div class="kpi-a-val" data-ph="kpi_android_avgtime_m0">1min29</div>
+            <div class="kpi-a-ev"><span class="kpi-a-ev-pill var-neutral-a" data-ph="kpi_android_avgtime_var_tag">— vs M-1</span></div>
+          </div>
+          <div class="kpi-a taupe">
+            <div class="kpi-a-lbl">Pages vues</div>
+            <div class="kpi-a-val" data-ph="kpi_android_pages_m0">14 251</div>
+            <div class="kpi-a-ev"><span class="kpi-a-ev-pill var-neutral-a" data-ph="kpi_android_pages_var_tag">— vs M-1</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Graph évolution intégré -->
+      <div class="evol-inside taupe-accent">
+        <div class="evol-head">
+          <div class="evol-head-left">
+            <span class="evol-title">Évolution des visites par mois</span>
+            <span class="evol-sub">Apps iOS + Android cumulées · 13 derniers mois</span>
+          </div>
+          <span class="var-tag var-neutral" data-ph="evol_apps_var_tag">— vs Mars N-1</span>
+        </div>
+        <div data-block="evol_apps_svg"><svg class="evol-svg" viewBox="0 0 700 110" preserveAspectRatio="xMidYMid meet"><defs><linearGradient id="grad-826694" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#8B7355" stop-opacity="0.32"/><stop offset="100%" stop-color="#8B7355" stop-opacity="0.04"/></linearGradient></defs><line x1="38" y1="90.0" x2="688" y2="90.0" stroke="#F0EDE6" stroke-width="1" stroke-dasharray="2,2"/><text x="32" y="93.0" fill="#9CA3AF" font-size="7.5" font-weight="600" text-anchor="end" font-family="Raleway">0</text><line x1="38" y1="51.0" x2="688" y2="51.0" stroke="#F0EDE6" stroke-width="1" stroke-dasharray="2,2"/><text x="32" y="54.0" fill="#9CA3AF" font-size="7.5" font-weight="600" text-anchor="end" font-family="Raleway">8 049</text><line x1="38" y1="12.0" x2="688" y2="12.0" stroke="#F0EDE6" stroke-width="1" stroke-dasharray="2,2"/><text x="32" y="15.0" fill="#9CA3AF" font-size="7.5" font-weight="600" text-anchor="end" font-family="Raleway">16 098</text><path d="M 38.0 90 L 38.0 90.0 L 92.2 90.0 L 146.3 90.0 L 200.5 89.9 L 254.7 90.0 L 308.8 90.0 L 363.0 90.0 L 417.2 90.0 L 471.3 78.7 L 525.5 78.1 L 579.7 72.9 L 633.8 64.4 L 688.0 22.2 L 688.0 90 Z" fill="url(#grad-826694)" stroke="none"/><path d="M 38.0 90.0 L 92.2 90.0 L 146.3 90.0 L 200.5 89.9 L 254.7 90.0 L 308.8 90.0 L 363.0 90.0 L 417.2 90.0 L 471.3 78.7 L 525.5 78.1 L 579.7 72.9 L 633.8 64.4 L 688.0 22.2 " fill="none" stroke="#8B7355" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="38.0" cy="90.0" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="92.2" cy="90.0" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="146.3" cy="90.0" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="200.5" cy="89.9" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="254.7" cy="90.0" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="308.8" cy="90.0" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="363.0" cy="90.0" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="417.2" cy="90.0" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="471.3" cy="78.7" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="525.5" cy="78.1" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="579.7" cy="72.9" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="633.8" cy="64.4" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="688.0" cy="22.2" r="4.5" fill="#8B7355" stroke="#fff" stroke-width="2"/><text x="688.0" y="13.2" fill="#8B7355" font-size="9" font-weight="800" text-anchor="middle" font-family="Raleway">13 998</text><text x="38.0" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Mar 25</text><text x="146.3" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Mai 25</text><text x="254.7" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Juil 25</text><text x="363.0" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Sep 25</text><text x="471.3" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Nov 25</text><text x="579.7" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Jan 26</text><text x="688.0" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Mars 2026</text></svg></div>
+      </div>
+    </div>
+
+    <!-- Analyse stratégique -->
+    <div class="analyse-strat-arterre">
+      <div class="analyse-head-arterre">
+        <span class="analyse-label-arterre">Analyse Stratégique</span>
+        <span class="analyse-pill-arterre" data-ph="mois_label">Mars 2026</span>
+      </div>
+      <div class="analyse-body-arterre" data-ph="analyse_strategique_arterre"><p style="color:#9CA3AF;font-style:italic;font-size:10.5px">Analyse stratégique à renseigner dans Airtable (champ analyse_strategique_arterre).</p></div>
+    </div>
+
+  </div>
+
+  <!-- ═══ FOOTER (harmonisé MyVIVESCIA) ═══ -->
+  <div class="pf-arterre">
+    <span><strong>Powered by Growth Ex Machina</strong></span>
+    <span>Bilan Mensuel VIVESCIA — <span data-ph="mois_label">Mars 2026</span></span>
+    <span>Page <span data-ph="page_num">{{page_num}}</span> / <span data-ph="total_pages">{{total_pages}}</span></span>
+  </div>
+
+</div>
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+
+
+
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<!-- PAGE 3 ARTERRE : Performances Éditoriales                                 -->
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<!-- ARTERRE PAGE 3 v3 — Performances Éditoriales (Top 30 en 1 colonne)           -->
+<!-- Données : Matomo Actions.getPageTitles (idSite=1)                            -->
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+
+<style>
+/* ════════════ PAGE ARTERRE 3 v3 ════════════ */
+
+.page.arterre-page-3{
+  width:210mm;min-height:297mm;margin:0 auto 32px;
+  background:#fff;position:relative;overflow:hidden;
+  box-shadow:0 8px 40px rgba(0,0,0,.22);box-sizing:border-box
+}
+
+/* Header (identique Page 2 Arterre) */
+.arterre-page-3 .ph-arterre{
+  background:#DBD5C5;padding:18px 32px;
+  display:flex;align-items:center;justify-content:space-between;
+  border-bottom:1.5px solid #E5E7EB;
+  position:relative;overflow:hidden;min-height:100px;box-sizing:border-box
+}
+.arterre-page-3 .mot-arterre{position:absolute;top:0;right:0;width:30%;height:100%;pointer-events:none;opacity:.55;z-index:1}
+.arterre-page-3 .lf-arterre{position:absolute;border-radius:50% 10% 50% 10%}
+.arterre-page-3 .lf-arterre.lf1{width:14px;height:7px;top:18px;right:14px;background:#6B8E23;transform:rotate(30deg)}
+.arterre-page-3 .lf-arterre.lf2{width:12px;height:6px;top:28px;right:36px;background:#8FA845;transform:rotate(-15deg)}
+.arterre-page-3 .lf-arterre.lf3{width:16px;height:8px;top:10px;right:60px;background:#4A6718;transform:rotate(45deg)}
+.arterre-page-3 .lf-arterre.lf4{width:10px;height:5px;top:45px;right:24px;background:#A89678;transform:rotate(-30deg)}
+.arterre-page-3 .lf-arterre.lf5{width:13px;height:6px;top:55px;right:55px;background:#6B8E23;transform:rotate(60deg)}
+.arterre-page-3 .lf-arterre.lf6{width:11px;height:6px;top:38px;right:88px;background:#9B8860;transform:rotate(-45deg)}
+.arterre-page-3 .lf-arterre.lf7{width:15px;height:7px;top:62px;right:92px;background:#4A6718;transform:rotate(20deg)}
+.arterre-page-3 .lf-arterre.lf8{width:9px;height:4px;top:20px;right:120px;background:#F4C842;transform:rotate(-60deg)}
+.arterre-page-3 .lf-arterre.lf9{width:12px;height:6px;top:50px;right:140px;background:#6B8E23;transform:rotate(35deg)}
+.arterre-page-3 .lf-arterre.lf10{width:10px;height:5px;top:72px;right:30px;background:#8FA845;transform:rotate(-20deg)}
+.arterre-page-3 .lf-arterre.lf11{width:14px;height:7px;top:15px;right:165px;background:#4A6718;transform:rotate(50deg)}
+.arterre-page-3 .lf-arterre.lf12{width:11px;height:5px;top:40px;right:195px;background:#A89678;transform:rotate(-40deg)}
+.arterre-page-3 .lf-arterre.lf13{width:13px;height:6px;top:68px;right:175px;background:#6B8E23;transform:rotate(25deg)}
+
+.arterre-page-3 .lb-arterre{
+  position:relative;z-index:2;
+  background:#fff;padding:8px 14px;
+  border-radius:6px;box-shadow:0 1px 3px rgba(0,0,0,.08);
+  display:flex;align-items:center
+}
+.arterre-page-3 .lb-arterre img{height:40px;width:auto;display:block}
+
+.arterre-page-3 .ct-arterre{text-align:center;flex:1;position:relative;z-index:2}
+.arterre-page-3 .tt-arterre{font-size:14px;font-weight:800;color:#4A6718;letter-spacing:.3px}
+.arterre-page-3 .sb-arterre{font-size:10.5px;color:#6B7280;font-weight:600;margin-top:3px}
+.arterre-page-3 .tg-arterre{
+  position:relative;z-index:2;
+  font-size:10px;color:#fff;font-weight:700;
+  background:#4A6718;padding:6px 14px;border-radius:4px;letter-spacing:1.5px
+}
+
+/* ─── Body ─── */
+.arterre-page-3 .pb-arterre{padding:14px 32px 46px;box-sizing:border-box}
+
+/* ─── Section label (typo MyVIVESCIA) ─── */
+.arterre-page-3 .sl-arterre{
+  font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:#6B7280;
+  margin-bottom:12px;
+  display:flex;justify-content:space-between;align-items:center
+}
+.arterre-page-3 .pt-arterre{
+  font-size:9.5px;color:#4B5563;background:#F5F8EC;
+  padding:4px 10px;border-radius:4px;font-weight:600;
+  text-transform:none;letter-spacing:0;border:1px solid #D4E0B0
+}
+.arterre-page-3 .pt-arterre strong{color:#4A6718;font-weight:700}
+.arterre-page-3 .pt-arterre .arrow{color:#9CA3AF;margin:0 5px;font-weight:400}
+
+/* ════════════════════════════════════════════════════════════════════════ */
+/*  TOP PAGES VUES — 1 colonne, 30 lignes                                    */
+/* ════════════════════════════════════════════════════════════════════════ */
+
+.arterre-page-3 .tbl-section{margin-bottom:10px}
+
+.arterre-page-3 .tbl-hdr{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:8px 18px;border-radius:10px 10px 0 0;
+  background:#4A6718
+}
+.arterre-page-3 .tbl-title{
+  font-size:12.5px;font-weight:800;color:#fff;
+  text-transform:uppercase;letter-spacing:.7px;
+  display:flex;align-items:center;gap:10px
+}
+.arterre-page-3 .tbl-title-dot{
+  width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.9)
+}
+.arterre-page-3 .tbl-badge{
+  font-size:10.5px;color:rgba(255,255,255,.95);
+  background:rgba(0,0,0,.22);
+  padding:4px 12px;border-radius:20px;font-weight:700;letter-spacing:.3px
+}
+
+/* ─── Container 1 colonne ─── */
+.arterre-page-3 .top-grid{
+  border:1.5px solid #E5E7EB;border-top:none;
+  border-radius:0 0 10px 10px;
+  overflow:hidden;
+  background:#fff
+}
+
+/* ─── Sous-header (typo MyVIVESCIA : 9.5px, 700, uppercase) ─── */
+.arterre-page-3 .top-subhead{
+  display:grid;
+  grid-template-columns:42px 1fr 110px 95px;
+  gap:8px;
+  align-items:center;
+  padding:8px 18px;
+  background:#F7F7F5;
+  border-bottom:1.5px solid #E5E7EB;
+  font-size:9.5px;font-weight:700;
+  text-transform:uppercase;letter-spacing:.6px;color:#6B7280
+}
+.arterre-page-3 .top-subhead .sh-rank{text-align:center}
+.arterre-page-3 .top-subhead .sh-val{text-align:right}
+
+/* ─── Ligne Top (typo MyVIVESCIA : titre 11.5px/500, rang 10.5px/800, val 12.5px/800) ─── */
+.arterre-page-3 .top-row{
+  display:grid;
+  grid-template-columns:42px 1fr 110px 95px;
+  gap:8px;
+  align-items:center;
+  padding:5px 18px;
+  border-bottom:1px solid rgba(0,0,0,.04)
+}
+.arterre-page-3 .top-row:nth-child(odd){background:#fff}
+.arterre-page-3 .top-row:nth-child(even){background:#FAFBF5}
+.arterre-page-3 .top-row:last-child{border-bottom:none}
+
+.arterre-page-3 .t-rank-a{
+  text-align:center;font-weight:800;
+  color:#9CA3AF;font-size:10.5px;letter-spacing:.2px
+}
+.arterre-page-3 .t-titre-a{
+  color:#1A2530;font-weight:500;
+  font-size:11.5px;line-height:1.3;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap
+}
+.arterre-page-3 .t-pv-a{
+  text-align:right;color:#4A6718;
+  font-size:12.5px;font-weight:800;
+  font-variant-numeric:tabular-nums;
+  white-space:nowrap
+}
+.arterre-page-3 .t-time-a{
+  text-align:right;color:#6B8E23;
+  font-size:11px;font-weight:700;
+  font-variant-numeric:tabular-nums;
+  white-space:nowrap
+}
+
+/* Top 3 mise en valeur */
+.arterre-page-3 .top-row.top3 .t-rank-a{color:#C9A23A;font-weight:900}
+
+/* ─── Footer (identique Page 2) ─── */
+.arterre-page-3 .pf-arterre{
+  position:absolute;bottom:12px;left:28px;right:28px;
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:9px;color:#CBD5E1;
+  border-top:1px solid #E5E7EB;padding-top:8px
+}
+.arterre-page-3 .pf-arterre strong{color:#9CA3AF;font-weight:600}
+.arterre-page-3 .pf-arterre > *{flex:1}
+.arterre-page-3 .pf-arterre > *:nth-child(2){text-align:center}
+.arterre-page-3 .pf-arterre > *:nth-child(3){text-align:right}
+
+</style>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<!-- ARTERRE PAGE 3 : Performances Éditoriales v3 (1 colonne · Top 30)            -->
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<div class="page arterre-page-3">
+
+  <!-- ═══ HEADER ═══ -->
+  <div class="ph-arterre">
+    <div class="mot-arterre">
+      <div class="lf-arterre lf1"></div><div class="lf-arterre lf2"></div><div class="lf-arterre lf3"></div>
+      <div class="lf-arterre lf4"></div><div class="lf-arterre lf5"></div><div class="lf-arterre lf6"></div>
+      <div class="lf-arterre lf7"></div><div class="lf-arterre lf8"></div><div class="lf-arterre lf9"></div>
+      <div class="lf-arterre lf10"></div><div class="lf-arterre lf11"></div><div class="lf-arterre lf12"></div>
+      <div class="lf-arterre lf13"></div>
+    </div>
+
+    <div class="lb-arterre">
+      <img src="data:image/jpeg;base64,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" alt="Arterre" />
+    </div>
+
+    <div class="ct-arterre">
+      <div class="tt-arterre">Performances Éditoriales</div>
+      <div class="sb-arterre">Arterre.net · <span data-ph="mois_label">Mars 2026</span></div>
+    </div>
+
+    <div class="tg-arterre">PARTIE 3</div>
+  </div>
+
+  <!-- ═══ BODY ═══ -->
+  <div class="pb-arterre">
+
+    <div class="sl-arterre">
+      <span>Top Contenus du mois</span>
+      <span class="pt-arterre">
+        <strong data-ph="mois_label">Mars 2026</strong>
+        <span class="arrow">vs</span>
+        <strong data-ph="mois_prev_label">Février 2026</strong>
+      </span>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <!-- TOP PAGES VUES (1 colonne, 30 lignes)                                -->
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <div class="tbl-section">
+      <div class="tbl-hdr">
+        <span class="tbl-title">
+          <span class="tbl-title-dot"></span>
+          Top Pages Vues
+        </span>
+        <span class="tbl-badge">Pages vues · Temps moyen / page</span>
+      </div>
+
+      <div class="top-grid" data-block="top_pages_block"><div class="top-subhead"><span class="sh-rank">#</span><span>Titre de la page</span><span class="sh-val">Pages vues</span><span class="sh-val">Tps moyen / page</span></div><div class="top-row top3"><span class="t-rank-a">#1</span><span class="t-titre-a" title=" Extranet Vivescia"> Extranet Vivescia</span><span class="t-pv-a">262 472</span><span class="t-time-a">1min01</span></div><div class="top-row top3"><span class="t-rank-a">#2</span><span class="t-titre-a" title=" Page Accueil Vivescia 10/07/2024"> Page Accueil Vivescia 10/07/2024</span><span class="t-pv-a">78 839</span><span class="t-time-a">0min55</span></div><div class="top-row top3"><span class="t-rank-a">#3</span><span class="t-titre-a" title=" Cotations"> Cotations</span><span class="t-pv-a">81 448</span><span class="t-time-a">0min50</span></div><div class="top-row"><span class="t-rank-a">#4</span><span class="t-titre-a" title=" VIVESCIA Cultures"> VIVESCIA Cultures</span><span class="t-pv-a">7 493</span><span class="t-time-a">0min09</span></div><div class="top-row"><span class="t-rank-a">#5</span><span class="t-titre-a" title=" Actualités"> Actualités</span><span class="t-pv-a">7 960</span><span class="t-time-a">0min05</span></div><div class="top-row"><span class="t-rank-a">#6</span><span class="t-titre-a" title=" Météo TerreNet"> Météo TerreNet</span><span class="t-pv-a">9 347</span><span class="t-time-a">0min33</span></div><div class="top-row"><span class="t-rank-a">#7</span><span class="t-titre-a" title=" Mes bons de livraison"> Mes bons de livraison</span><span class="t-pv-a">10 393</span><span class="t-time-a">1min17</span></div><div class="top-row"><span class="t-rank-a">#8</span><span class="t-titre-a" title=" Mes engagements"> Mes engagements</span><span class="t-pv-a">6 833</span><span class="t-time-a">1min32</span></div><div class="top-row"><span class="t-rank-a">#9</span><span class="t-titre-a" title=" VIVESCIA INFOS N°211 : Nouveaux compléments de prix en Gestion Déléguée agriculture conventionnelle et biologique au 31 mars 2026"> VIVESCIA INFOS N°211 : Nouveaux compléments de prix en Gestion Déléguée agriculture conventionnelle et biologique au 31 mars 2026</span><span class="t-pv-a">1 825</span><span class="t-time-a">1min21</span></div><div class="top-row"><span class="t-rank-a">#10</span><span class="t-titre-a" title=" Gestion Pilotée"> Gestion Pilotée</span><span class="t-pv-a">1 477</span><span class="t-time-a">1min00</span></div><div class="top-row"><span class="t-rank-a">#11</span><span class="t-titre-a" title=" COMMERCE DES GRAINS : L&#39;ACTUALITÉ DES MARCHÉS - MARS 2026"> COMMERCE DES GRAINS : L&#39;ACTUALITÉ DES MARCHÉS - MARS 2026</span><span class="t-pv-a">1 005</span><span class="t-time-a">1min20</span></div><div class="top-row"><span class="t-rank-a">#12</span><span class="t-titre-a" title=" Produits d&#39;Optimisation"> Produits d&#39;Optimisation</span><span class="t-pv-a">1 776</span><span class="t-time-a">1min13</span></div><div class="top-row"><span class="t-rank-a">#13</span><span class="t-titre-a" title=" Petites Annonces"> Petites Annonces</span><span class="t-pv-a">869</span><span class="t-time-a">0min37</span></div><div class="top-row"><span class="t-rank-a">#14</span><span class="t-titre-a" title=" ENGRAIS : L&#39;ACTUALITÉ DES MARCHÉS MARS 2026"> ENGRAIS : L&#39;ACTUALITÉ DES MARCHÉS MARS 2026</span><span class="t-pv-a">832</span><span class="t-time-a">1min06</span></div><div class="top-row"><span class="t-rank-a">#15</span><span class="t-titre-a" title=" Fiche Bilan - Documents"> Fiche Bilan - Documents</span><span class="t-pv-a">931</span><span class="t-time-a">0min34</span></div><div class="top-row"><span class="t-rank-a">#16</span><span class="t-titre-a" title=" Offres Euronext"> Offres Euronext</span><span class="t-pv-a">1 104</span><span class="t-time-a">1min57</span></div><div class="top-row"><span class="t-rank-a">#17</span><span class="t-titre-a" title=" COMMERCE DES GRAINS : L&#39;ACTUALITÉ DES MARCHÉS - FIN MARS 2026"> COMMERCE DES GRAINS : L&#39;ACTUALITÉ DES MARCHÉS - FIN MARS 2026</span><span class="t-pv-a">549</span><span class="t-time-a">1min11</span></div><div class="top-row"><span class="t-rank-a">#18</span><span class="t-titre-a" title=" Mon profil"> Mon profil</span><span class="t-pv-a">515</span><span class="t-time-a">0min49</span></div><div class="top-row"><span class="t-rank-a">#19</span><span class="t-titre-a" title=" Mes documents  - Documents"> Mes documents  - Documents</span><span class="t-pv-a">925</span><span class="t-time-a">0min48</span></div><div class="top-row"><span class="t-rank-a">#20</span><span class="t-titre-a" title=" Dossier Spécial :  reliquats sortie hiver Champagne Ardenne et Seine et Marne"> Dossier Spécial :  reliquats sortie hiver Champagne Ardenne et Seine et Marne</span><span class="t-pv-a">442</span><span class="t-time-a">1min22</span></div><div class="top-row"><span class="t-rank-a">#21</span><span class="t-titre-a" title=" Infos administratives et financières"> Infos administratives et financières</span><span class="t-pv-a">427</span><span class="t-time-a">1min33</span></div><div class="top-row"><span class="t-rank-a">#22</span><span class="t-titre-a" title=" Ordres &amp; Alertes"> Ordres &amp; Alertes</span><span class="t-pv-a">548</span><span class="t-time-a">0min39</span></div><div class="top-row"><span class="t-rank-a">#23</span><span class="t-titre-a" title=" MORTE SAISON ÉLEVAGE – jusqu’au 31 mars 2026"> MORTE SAISON ÉLEVAGE – jusqu’au 31 mars 2026</span><span class="t-pv-a">410</span><span class="t-time-a">1min20</span></div><div class="top-row"><span class="t-rank-a">#24</span><span class="t-titre-a" title=" Visite d&#39;une délégation sénégalaise à la station de semences de Reims"> Visite d&#39;une délégation sénégalaise à la station de semences de Reims</span><span class="t-pv-a">442</span><span class="t-time-a">0min48</span></div><div class="top-row"><span class="t-rank-a">#25</span><span class="t-titre-a" title=" Archives VIVESCIA Cultures - Documents"> Archives VIVESCIA Cultures - Documents</span><span class="t-pv-a">492</span><span class="t-time-a">0min21</span></div><div class="top-row"><span class="t-rank-a">#26</span><span class="t-titre-a" title=" Mes documents  - Detail"> Mes documents  - Detail</span><span class="t-pv-a">481</span><span class="t-time-a">2min02</span></div><div class="top-row"><span class="t-rank-a">#27</span><span class="t-titre-a" title=" VIVESCIA Cultures 05 - Chalons Vdm Suippes Valmy  Rev S-Y"> VIVESCIA Cultures 05 - Chalons Vdm Suippes Valmy  Rev S-Y</span><span class="t-pv-a">314</span><span class="t-time-a">1min51</span></div><div class="top-row"><span class="t-rank-a">#28</span><span class="t-titre-a" title=" Archives VIVESCIA Cultures - Detail"> Archives VIVESCIA Cultures - Detail</span><span class="t-pv-a">372</span><span class="t-time-a">1min46</span></div><div class="top-row"><span class="t-rank-a">#29</span><span class="t-titre-a" title=" Archives VIVESCIA Cultures - Categorie"> Archives VIVESCIA Cultures - Categorie</span><span class="t-pv-a">461</span><span class="t-time-a">0min23</span></div><div class="top-row"><span class="t-rank-a">#30</span><span class="t-titre-a" title=" VIVESCIA Cultures 05 - Reims Rethel Champicarde"> VIVESCIA Cultures 05 - Reims Rethel Champicarde</span><span class="t-pv-a">281</span><span class="t-time-a">1min53</span></div></div>
+    </div>
+
+  </div>
+
+  <!-- ═══ FOOTER ═══ -->
+  <div class="pf-arterre">
+    <span><strong>Powered by Growth Ex Machina</strong></span>
+    <span>Bilan Mensuel VIVESCIA — <span data-ph="mois_label">Mars 2026</span></span>
+    <span>Page <span data-ph="page_num">{{page_num}}</span> / <span data-ph="total_pages">{{total_pages}}</span></span>
+  </div>
+
+</div>
+<!-- Fin Page 3 Arterre v3 -->
+
+
+
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<!-- PAGE 4 ARTERRE : Consultation des contenus                                 -->
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<!-- ARTERRE PAGE 4 v2 — Consultation des contenus                               -->
+<!-- v2 : Palette olive/taupe/gold · 2 graphs DoW + HoD en bas de page            -->
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+
+<style>
+/* ════════════ PAGE ARTERRE 4 v2 ════════════ */
+
+.page.arterre-page-4{
+  width:210mm;min-height:297mm;margin:0 auto 32px;
+  background:#fff;position:relative;overflow:hidden;
+  box-shadow:0 8px 40px rgba(0,0,0,.22);box-sizing:border-box
+}
+
+/* Header (identique Pages 2-3) */
+.arterre-page-4 .ph-arterre{background:#DBD5C5;padding:18px 32px;display:flex;align-items:center;justify-content:space-between;border-bottom:1.5px solid #E5E7EB;position:relative;overflow:hidden;min-height:100px;box-sizing:border-box}
+.arterre-page-4 .mot-arterre{position:absolute;top:0;right:0;width:30%;height:100%;pointer-events:none;opacity:.55;z-index:1}
+.arterre-page-4 .lf-arterre{position:absolute;border-radius:50% 10% 50% 10%}
+.arterre-page-4 .lf-arterre.lf1{width:14px;height:7px;top:18px;right:14px;background:#6B8E23;transform:rotate(30deg)}
+.arterre-page-4 .lf-arterre.lf2{width:12px;height:6px;top:28px;right:36px;background:#8FA845;transform:rotate(-15deg)}
+.arterre-page-4 .lf-arterre.lf3{width:16px;height:8px;top:10px;right:60px;background:#4A6718;transform:rotate(45deg)}
+.arterre-page-4 .lf-arterre.lf4{width:10px;height:5px;top:45px;right:24px;background:#A89678;transform:rotate(-30deg)}
+.arterre-page-4 .lf-arterre.lf5{width:13px;height:6px;top:55px;right:55px;background:#6B8E23;transform:rotate(60deg)}
+.arterre-page-4 .lf-arterre.lf6{width:11px;height:6px;top:38px;right:88px;background:#9B8860;transform:rotate(-45deg)}
+.arterre-page-4 .lf-arterre.lf7{width:15px;height:7px;top:62px;right:92px;background:#4A6718;transform:rotate(20deg)}
+.arterre-page-4 .lf-arterre.lf8{width:9px;height:4px;top:20px;right:120px;background:#F4C842;transform:rotate(-60deg)}
+.arterre-page-4 .lf-arterre.lf9{width:12px;height:6px;top:50px;right:140px;background:#6B8E23;transform:rotate(35deg)}
+.arterre-page-4 .lf-arterre.lf10{width:10px;height:5px;top:72px;right:30px;background:#8FA845;transform:rotate(-20deg)}
+.arterre-page-4 .lf-arterre.lf11{width:14px;height:7px;top:15px;right:165px;background:#4A6718;transform:rotate(50deg)}
+.arterre-page-4 .lf-arterre.lf12{width:11px;height:5px;top:40px;right:195px;background:#A89678;transform:rotate(-40deg)}
+.arterre-page-4 .lf-arterre.lf13{width:13px;height:6px;top:68px;right:175px;background:#6B8E23;transform:rotate(25deg)}
+
+.arterre-page-4 .lb-arterre{position:relative;z-index:2;background:#fff;padding:8px 14px;border-radius:6px;box-shadow:0 1px 3px rgba(0,0,0,.08);display:flex;align-items:center}
+.arterre-page-4 .lb-arterre img{height:40px;width:auto;display:block}
+.arterre-page-4 .ct-arterre{text-align:center;flex:1;position:relative;z-index:2}
+.arterre-page-4 .tt-arterre{font-size:14px;font-weight:800;color:#4A6718;letter-spacing:.3px}
+.arterre-page-4 .sb-arterre{font-size:10.5px;color:#6B7280;font-weight:600;margin-top:3px}
+.arterre-page-4 .tg-arterre{position:relative;z-index:2;font-size:10px;color:#fff;font-weight:700;background:#4A6718;padding:6px 14px;border-radius:4px;letter-spacing:1.5px}
+
+/* Body */
+.arterre-page-4 .pb-arterre{padding:14px 32px 46px;box-sizing:border-box}
+
+/* Section label */
+.arterre-page-4 .sl-arterre{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:#6B7280;margin-bottom:10px;margin-top:10px;display:flex;justify-content:space-between;align-items:center}
+.arterre-page-4 .sl-arterre:first-child{margin-top:0}
+.arterre-page-4 .pt-arterre{font-size:9.5px;color:#4B5563;background:#F5F8EC;padding:4px 10px;border-radius:4px;font-weight:600;text-transform:none;letter-spacing:0;border:1px solid #D4E0B0}
+.arterre-page-4 .pt-arterre strong{color:#4A6718;font-weight:700}
+.arterre-page-4 .pt-arterre .arrow{color:#9CA3AF;margin:0 5px;font-weight:400}
+
+/* ═══ Layout rubriques (Apports + grille 3×3) ═══ */
+.arterre-page-4 .rubriques-layout{display:grid;grid-template-columns:32% 1fr;gap:10px;margin-bottom:10px}
+.arterre-page-4 .apports-box{background:#F7F5EE;border:1.5px solid #E0D7C0;border-left:5px solid #4A6718;border-radius:10px;padding:10px;display:flex;flex-direction:column;gap:7px}
+.arterre-page-4 .rubriques-grid{display:grid;grid-template-columns:repeat(3,1fr);grid-auto-rows:1fr;gap:7px}
+
+/* Card rubrique */
+.arterre-page-4 .rub-card{background:#fff;border:1.5px solid #E5E7EB;border-radius:8px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 1px 2px rgba(0,0,0,.05);min-height:84px}
+.arterre-page-4 .rub-head{padding:6px 12px;display:flex;align-items:center;gap:6px;color:#fff;font-size:10.5px;font-weight:800;letter-spacing:.3px;text-align:center;justify-content:center}
+
+/* Palette 4 couleurs */
+.arterre-page-4 .rub-head.olive-dark{background:#4A6718}
+.arterre-page-4 .rub-head.olive{background:#6B8E23}
+.arterre-page-4 .rub-head.taupe{background:#8B7355}
+.arterre-page-4 .rub-head.gold{background:#C9A23A}
+
+/* Sous-rubriques */
+.arterre-page-4 .rub-card.sub .rub-head{font-size:9.5px;padding:5px 10px}
+.arterre-page-4 .rub-card.sub .rub-head::before{content:'›';font-weight:900;opacity:.85;font-size:11px}
+
+/* Body card */
+.arterre-page-4 .rub-body{padding:8px 10px 9px;text-align:center;flex:1;display:flex;flex-direction:column;justify-content:center;gap:2px}
+.arterre-page-4 .rub-lbl{font-size:8px;color:#9CA3AF;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+.arterre-page-4 .rub-val{font-size:20px;font-weight:800;color:#1A2530;line-height:1.1;font-variant-numeric:tabular-nums}
+.arterre-page-4 .rub-card.sub .rub-val{font-size:17px}
+.arterre-page-4 .rub-var{font-size:9px;font-weight:800;display:inline-flex;align-items:center;gap:3px;justify-content:center}
+.arterre-page-4 .rub-var.up{color:#0F6E56}
+.arterre-page-4 .rub-var.down{color:#993C1D}
+.arterre-page-4 .rub-var.neutral{color:#64748B}
+
+/* ═══ Top 10 Actualités (style Page 3 compact) ═══ */
+.arterre-page-4 .tbl-section{margin-bottom:10px}
+.arterre-page-4 .tbl-hdr{display:flex;align-items:center;justify-content:space-between;padding:8px 18px;border-radius:10px 10px 0 0;background:#C9A23A}
+.arterre-page-4 .tbl-title{font-size:12.5px;font-weight:800;color:#fff;text-transform:uppercase;letter-spacing:.7px;display:flex;align-items:center;gap:10px}
+.arterre-page-4 .tbl-title-dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.9)}
+.arterre-page-4 .tbl-badge{font-size:10.5px;color:rgba(255,255,255,.95);background:rgba(0,0,0,.22);padding:4px 12px;border-radius:20px;font-weight:700;letter-spacing:.3px}
+.arterre-page-4 .top-grid{border:1.5px solid #E5E7EB;border-top:none;border-radius:0 0 10px 10px;overflow:hidden;background:#fff}
+.arterre-page-4 .top-subhead{display:grid;grid-template-columns:42px 1fr 110px 95px;gap:8px;align-items:center;padding:5px 18px;background:#F7F7F5;border-bottom:1.5px solid #E5E7EB;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#6B7280}
+.arterre-page-4 .top-subhead .sh-rank{text-align:center}
+.arterre-page-4 .top-subhead .sh-val{text-align:right}
+.arterre-page-4 .top-row{display:grid;grid-template-columns:42px 1fr 110px 95px;gap:8px;align-items:center;padding:4px 18px;border-bottom:1px solid rgba(0,0,0,.04)}
+.arterre-page-4 .top-row:nth-child(odd){background:#fff}
+.arterre-page-4 .top-row:nth-child(even){background:#FAFBF5}
+.arterre-page-4 .top-row:last-child{border-bottom:none}
+.arterre-page-4 .t-rank-a{text-align:center;font-weight:800;color:#9CA3AF;font-size:10.5px;letter-spacing:.2px}
+.arterre-page-4 .top-row.top3 .t-rank-a{color:#C9A23A;font-weight:900}
+.arterre-page-4 .t-titre-a{color:#1A2530;font-weight:500;font-size:11px;line-height:1.3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.arterre-page-4 .t-pv-a{text-align:right;color:#4A6718;font-size:12px;font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap}
+.arterre-page-4 .t-time-a{text-align:right;color:#6B8E23;font-size:10.5px;font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
+
+/* ═══════════════════════════════════════════════════════════════════════ */
+/*  FRÉQUENTATION : 2 cards (DoW olive + HoD taupe) côte à côte              */
+/* ═══════════════════════════════════════════════════════════════════════ */
+.arterre-page-4 .freq-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:6px}
+.arterre-page-4 .freq-card{border-radius:12px;padding:11px 14px 10px;min-height:170px;box-sizing:border-box;box-shadow:0 1px 3px rgba(0,0,0,.06);color:#fff}
+.arterre-page-4 .freq-card.olive{background:linear-gradient(135deg,#8FA845 0%,#6B8E23 100%)}
+.arterre-page-4 .freq-card.taupe{background:linear-gradient(135deg,#B8A888 0%,#8B7355 100%)}
+.arterre-page-4 .freq-head{display:flex;align-items:center;justify-content:space-between;padding-bottom:7px;margin-bottom:8px;border-bottom:1.5px solid rgba(255,255,255,.35)}
+.arterre-page-4 .freq-title{font-size:10.5px;font-weight:800;letter-spacing:.3px;color:#fff}
+.arterre-page-4 .freq-sub{font-size:8.5px;font-weight:600;color:rgba(255,255,255,.85)}
+
+/* DoW bars */
+.arterre-page-4 .dow-rows{display:flex;flex-direction:column;gap:5px;padding:2px 0}
+.arterre-page-4 .dow-row-a{display:grid;grid-template-columns:28px 1fr 55px;align-items:center;gap:8px}
+.arterre-page-4 .dow-lbl-a{font-size:10.5px;font-weight:800;color:#fff;text-align:center}
+.arterre-page-4 .dow-bar-wrap-a{height:14px;background:rgba(255,255,255,.35);border-radius:7px;overflow:hidden;border:1px solid rgba(255,255,255,.3)}
+.arterre-page-4 .dow-bar-a{height:100%;border-radius:7px;background:#fff}
+.arterre-page-4 .dow-val-a{font-size:10px;font-weight:800;color:#fff;text-align:right}
+
+/* HoD SVG */
+.arterre-page-4 .hod-bars-a{width:100%;height:auto;max-height:135px;display:block}
+
+/* Footer */
+.arterre-page-4 .pf-arterre{position:absolute;bottom:12px;left:28px;right:28px;display:flex;justify-content:space-between;align-items:center;font-size:9px;color:#CBD5E1;border-top:1px solid #E5E7EB;padding-top:8px}
+.arterre-page-4 .pf-arterre strong{color:#9CA3AF;font-weight:600}
+.arterre-page-4 .pf-arterre > *{flex:1}
+.arterre-page-4 .pf-arterre > *:nth-child(2){text-align:center}
+.arterre-page-4 .pf-arterre > *:nth-child(3){text-align:right}
+</style>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<!-- ARTERRE PAGE 4 v2                                                             -->
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<div class="page arterre-page-4">
+
+  <!-- HEADER -->
+  <div class="ph-arterre">
+    <div class="mot-arterre">
+      <div class="lf-arterre lf1"></div><div class="lf-arterre lf2"></div><div class="lf-arterre lf3"></div>
+      <div class="lf-arterre lf4"></div><div class="lf-arterre lf5"></div><div class="lf-arterre lf6"></div>
+      <div class="lf-arterre lf7"></div><div class="lf-arterre lf8"></div><div class="lf-arterre lf9"></div>
+      <div class="lf-arterre lf10"></div><div class="lf-arterre lf11"></div><div class="lf-arterre lf12"></div>
+      <div class="lf-arterre lf13"></div>
+    </div>
+    <div class="lb-arterre"><img src="data:image/jpeg;base64,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" alt="Arterre" /></div>
+    <div class="ct-arterre">
+      <div class="tt-arterre">Consultation des contenus</div>
+      <div class="sb-arterre">Arterre.net · <span data-ph="mois_label">Mars 2026</span></div>
+    </div>
+    <div class="tg-arterre">PARTIE 3</div>
+  </div>
+
+  <!-- BODY -->
+  <div class="pb-arterre">
+
+    <div class="sl-arterre">
+      <span>Consultation par Rubriques</span>
+      <span class="pt-arterre">
+        <strong data-ph="mois_label">Mars 2026</strong>
+        <span class="arrow">vs</span>
+        <strong data-ph="mois_prev_label">Février 2026</strong>
+      </span>
+    </div>
+
+    <div class="rubriques-layout">
+
+      <!-- COL GAUCHE : APPORTS + sous -->
+      <div class="apports-box">
+        <div class="rub-card">
+          <div class="rub-head olive-dark">Apports</div>
+          <div class="rub-body">
+            <div class="rub-lbl">Visites</div>
+            <div class="rub-val" data-ph="rub_apports_val">51 943</div>
+            <div class="rub-var up" data-ph="rub_apports_var">↑ +31,5% vs M-1</div>
+          </div>
+        </div>
+        <div class="rub-card sub">
+          <div class="rub-head olive-dark">Cotations</div>
+          <div class="rub-body">
+            <div class="rub-lbl">Visites</div>
+            <div class="rub-val" data-ph="rub_cotations_val">39 243</div>
+            <div class="rub-var up" data-ph="rub_cotations_var">↑ +44,1% vs M-1</div>
+          </div>
+        </div>
+        <div class="rub-card sub">
+          <div class="rub-head olive-dark">Bourse Céréales</div>
+          <div class="rub-body">
+            <div class="rub-lbl">Visites</div>
+            <div class="rub-val" data-ph="rub_bourse_val">42 168</div>
+            <div class="rub-var up" data-ph="rub_bourse_var">↑ +44,1% vs M-1</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- COL DROITE : grille 3×3 (mix palette) -->
+      <div class="rubriques-grid">
+        <!-- Ligne 1 : GOLD / olive / taupe -->
+        <div class="rub-card">
+          <div class="rub-head gold">Actualités</div>
+          <div class="rub-body">
+            <div class="rub-lbl">Visites</div>
+            <div class="rub-val" data-ph="rub_actualites_val">8 998</div>
+            <div class="rub-var up" data-ph="rub_actualites_var">↑ +73,8% vs M-1</div>
+          </div>
+        </div>
+        <div class="rub-card">
+          <div class="rub-head olive">Approvisionnement</div>
+          <div class="rub-body">
+            <div class="rub-lbl">Visites</div>
+            <div class="rub-val" data-ph="rub_approv_val">823</div>
+            <div class="rub-var up" data-ph="rub_approv_var">↑ +18,2% vs M-1</div>
+          </div>
+        </div>
+        <div class="rub-card">
+          <div class="rub-head taupe">Bons de livraison</div>
+          <div class="rub-body">
+            <div class="rub-lbl">Visites</div>
+            <div class="rub-val" data-ph="rub_bons_val">4 992</div>
+            <div class="rub-var down" data-ph="rub_bons_var">↓ -8,4% vs M-1</div>
+          </div>
+        </div>
+        <!-- Ligne 2 : olive / taupe / olive -->
+        <div class="rub-card">
+          <div class="rub-head olive">Mes comptes</div>
+          <div class="rub-body">
+            <div class="rub-lbl">Visites</div>
+            <div class="rub-val" data-ph="rub_comptes_val">493</div>
+            <div class="rub-var up" data-ph="rub_comptes_var">↑ +13,9% vs M-1</div>
+          </div>
+        </div>
+        <div class="rub-card">
+          <div class="rub-head taupe">Conseils agros</div>
+          <div class="rub-body">
+            <div class="rub-lbl">Visites</div>
+            <div class="rub-val" data-ph="rub_conseils_val">2 145</div>
+            <div class="rub-var up" data-ph="rub_conseils_var">↑ +36,7% vs M-1</div>
+          </div>
+        </div>
+        <div class="rub-card">
+          <div class="rub-head olive">Mes engagements</div>
+          <div class="rub-body">
+            <div class="rub-lbl">Visites</div>
+            <div class="rub-val" data-ph="rub_engagements_val">3 465</div>
+            <div class="rub-var up" data-ph="rub_engagements_var">↑ +2,6% vs M-1</div>
+          </div>
+        </div>
+        <!-- Ligne 3 : GOLD / olive / taupe -->
+        <div class="rub-card">
+          <div class="rub-head gold">Météo</div>
+          <div class="rub-body">
+            <div class="rub-lbl">Visites</div>
+            <div class="rub-val" data-ph="rub_meteo_val">7 719</div>
+            <div class="rub-var up" data-ph="rub_meteo_var">↑ +40,7% vs M-1</div>
+          </div>
+        </div>
+        <div class="rub-card">
+          <div class="rub-head olive">Mes outils</div>
+          <div class="rub-body">
+            <div class="rub-lbl">Visites</div>
+            <div class="rub-val" data-ph="rub_outils_val">8 829</div>
+            <div class="rub-var up" data-ph="rub_outils_var">↑ +25,2% vs M-1</div>
+          </div>
+        </div>
+        <div class="rub-card">
+          <div class="rub-head taupe">Suivi d’activité</div>
+          <div class="rub-body">
+            <div class="rub-lbl">Visites</div>
+            <div class="rub-val" data-ph="rub_suivi_val">9 338</div>
+            <div class="rub-var down" data-ph="rub_suivi_var">↓ -3,6% vs M-1</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOP 5 ACTUALITÉS (header gold pour cohérence avec card Actualités) -->
+    <div class="sl-arterre">
+      <span>Focus Actualités</span>
+      <span class="pt-arterre"><strong data-ph="mois_label">Mars 2026</strong></span>
+    </div>
+    <div class="tbl-section">
+      <div class="tbl-hdr">
+        <span class="tbl-title">
+          <span class="tbl-title-dot"></span>
+          Top 10 Actualités
+        </span>
+        <span class="tbl-badge">Pages vues · Temps moyen / page</span>
+      </div>
+      <div class="top-grid" data-block="top10_actus_block"><div class="top-subhead"><span class="sh-rank">#</span><span>Titre de la page</span><span class="sh-val">Pages vues</span><span class="sh-val">Tps moyen / page</span></div><div class="top-row top3"><span class="t-rank-a">#1</span><span class="t-titre-a" title="VIVESCIA INFOS N211 Nouveaux complements de prix en Gestion Deleguee agriculture conventionnelle et biologique au 31 mars 2026">VIVESCIA INFOS N211 Nouveaux complements de prix en Gestion Deleguee agriculture conventionnelle et biologique au 31 mars 2026</span><span class="t-pv-a">8 072</span><span class="t-time-a">0min35</span></div><div class="top-row top3"><span class="t-rank-a">#2</span><span class="t-titre-a" title="Commerce des grains l actualite des marches mars 2026">Commerce des grains l actualite des marches mars 2026</span><span class="t-pv-a">3 774</span><span class="t-time-a">0min29</span></div><div class="top-row top3"><span class="t-rank-a">#3</span><span class="t-titre-a" title="Engrais l actualite des marches mars 2026">Engrais l actualite des marches mars 2026</span><span class="t-pv-a">3 503</span><span class="t-time-a">0min33</span></div><div class="top-row"><span class="t-rank-a">#4</span><span class="t-titre-a" title="Commerce des grains l actualite des marches fin mars 2026">Commerce des grains l actualite des marches fin mars 2026</span><span class="t-pv-a">2 431</span><span class="t-time-a">0min28</span></div><div class="top-row"><span class="t-rank-a">#5</span><span class="t-titre-a" title="Visite d une delegation senegalaise a la station de semences de reims">Visite d une delegation senegalaise a la station de semences de reims</span><span class="t-pv-a">1 614</span><span class="t-time-a">0min25</span></div><div class="top-row"><span class="t-rank-a">#6</span><span class="t-titre-a" title="Communique de presse vivescia et terrena renouvellent leur engagement pour la chaire germea">Communique de presse vivescia et terrena renouvellent leur engagement pour la chaire germea</span><span class="t-pv-a">872</span><span class="t-time-a">0min18</span></div><div class="top-row"><span class="t-rank-a">#7</span><span class="t-titre-a" title="Morte saison elevage jusquau 31 mars 2026">Morte saison elevage jusquau 31 mars 2026</span><span class="t-pv-a">717</span><span class="t-time-a">0min35</span></div><div class="top-row"><span class="t-rank-a">#8</span><span class="t-titre-a" title="MORTE SAISON ELEVAGE jusquau 31 mars 2026">MORTE SAISON ELEVAGE jusquau 31 mars 2026</span><span class="t-pv-a">499</span><span class="t-time-a">0min46</span></div><div class="top-row"><span class="t-rank-a">#9</span><span class="t-titre-a" title="Engrais l actualite des marches fin mars 2026">Engrais l actualite des marches fin mars 2026</span><span class="t-pv-a">602</span><span class="t-time-a">0min47</span></div><div class="top-row"><span class="t-rank-a">#10</span><span class="t-titre-a" title="COMMERCE DES GRAINS L ACTUALITE DES MARCHES MARS 2026">COMMERCE DES GRAINS L ACTUALITE DES MARCHES MARS 2026</span><span class="t-pv-a">423</span><span class="t-time-a">1min21</span></div></div>
+    </div>
+
+    <!-- FRÉQUENTATION : DoW + HoD côte à côte -->
+    <div class="sl-arterre">
+      <span>Fréquentation arterre.net</span>
+      <span class="pt-arterre"><strong data-ph="mois_label">Mars 2026</strong></span>
+    </div>
+    <div class="freq-row">
+      <!-- DoW (olive) -->
+      <div class="freq-card olive">
+        <div class="freq-head">
+          <span class="freq-title">Fréquentation par jour</span>
+          <span class="freq-sub">Lundi → Dimanche</span>
+        </div>
+        <div class="dow-rows" data-block="dow_block"><div class="dow-row-a"><span class="dow-lbl-a">Lun</span><div class="dow-bar-wrap-a"><div class="dow-bar-a" style="width:90.2%"></div></div><span class="dow-val-a">26 927</span></div><div class="dow-row-a"><span class="dow-lbl-a">Mar</span><div class="dow-bar-wrap-a"><div class="dow-bar-a" style="width:100.0%"></div></div><span class="dow-val-a">29 864</span></div><div class="dow-row-a"><span class="dow-lbl-a">Mer</span><div class="dow-bar-wrap-a"><div class="dow-bar-a" style="width:80.7%"></div></div><span class="dow-val-a">24 099</span></div><div class="dow-row-a"><span class="dow-lbl-a">Jeu</span><div class="dow-bar-wrap-a"><div class="dow-bar-a" style="width:68.8%"></div></div><span class="dow-val-a">20 558</span></div><div class="dow-row-a"><span class="dow-lbl-a">Ven</span><div class="dow-bar-wrap-a"><div class="dow-bar-a" style="width:63.4%"></div></div><span class="dow-val-a">18 942</span></div><div class="dow-row-a"><span class="dow-lbl-a">Sam</span><div class="dow-bar-wrap-a"><div class="dow-bar-a" style="width:19.2%"></div></div><span class="dow-val-a">5 723</span></div><div class="dow-row-a"><span class="dow-lbl-a">Dim</span><div class="dow-bar-wrap-a"><div class="dow-bar-a" style="width:19.8%"></div></div><span class="dow-val-a">5 903</span></div></div>
+      </div>
+      <!-- HoD (taupe) -->
+      <div class="freq-card taupe">
+        <div class="freq-head">
+          <span class="freq-title">Fréquentation par heure</span>
+          <span class="freq-sub">0h → 23h</span>
+        </div>
+        <div data-block="hod_svg"><svg class="hod-bars-a" viewBox="0 0 460 140" preserveAspectRatio="xMidYMid meet"><rect x="29.0" y="111.2" width="15.8" height="4.8" fill="#fff" rx="1.5"/><rect x="46.8" y="114.7" width="15.8" height="1.3" fill="#fff" rx="1.5"/><rect x="64.5" y="114.9" width="15.8" height="1.1" fill="#fff" rx="1.5"/><rect x="82.3" y="114.6" width="15.8" height="1.4" fill="#fff" rx="1.5"/><rect x="100.0" y="113.9" width="15.8" height="2.1" fill="#fff" rx="1.5"/><rect x="117.8" y="108.0" width="15.8" height="8.0" fill="#fff" rx="1.5"/><rect x="135.5" y="85.4" width="15.8" height="30.6" fill="#fff" rx="1.5"/><rect x="153.3" y="48.6" width="15.8" height="67.4" fill="#fff" rx="1.5"/><rect x="171.0" y="32.4" width="15.8" height="83.6" fill="#fff" rx="1.5"/><rect x="188.8" y="36.1" width="15.8" height="79.9" fill="#fff" rx="1.5"/><rect x="206.5" y="40.8" width="15.8" height="75.2" fill="#fff" rx="1.5"/><rect x="224.3" y="8.0" width="15.8" height="108.0" fill="#fff" rx="1.5"/><rect x="242.0" y="19.8" width="15.8" height="96.2" fill="#fff" rx="1.5"/><rect x="259.8" y="10.4" width="15.8" height="105.6" fill="#fff" rx="1.5"/><rect x="277.5" y="26.9" width="15.8" height="89.1" fill="#fff" rx="1.5"/><rect x="295.3" y="34.6" width="15.8" height="81.4" fill="#fff" rx="1.5"/><rect x="313.0" y="30.6" width="15.8" height="85.4" fill="#fff" rx="1.5"/><rect x="330.8" y="34.9" width="15.8" height="81.1" fill="#fff" rx="1.5"/><rect x="348.5" y="42.8" width="15.8" height="73.2" fill="#fff" rx="1.5"/><rect x="366.3" y="49.5" width="15.8" height="66.5" fill="#fff" rx="1.5"/><rect x="384.0" y="42.0" width="15.8" height="74.0" fill="#fff" rx="1.5"/><rect x="401.8" y="62.7" width="15.8" height="53.3" fill="#fff" rx="1.5"/><rect x="419.5" y="88.9" width="15.8" height="27.1" fill="#fff" rx="1.5"/><rect x="437.3" y="104.6" width="15.8" height="11.4" fill="#fff" rx="1.5"/><text x="35.9" y="132" fill="rgba(255,255,255,.85)" font-size="9" font-weight="700" text-anchor="middle" font-family="Raleway">0h</text><text x="142.4" y="132" fill="rgba(255,255,255,.85)" font-size="9" font-weight="700" text-anchor="middle" font-family="Raleway">6h</text><text x="248.9" y="132" fill="rgba(255,255,255,.85)" font-size="9" font-weight="700" text-anchor="middle" font-family="Raleway">12h</text><text x="355.4" y="132" fill="rgba(255,255,255,.85)" font-size="9" font-weight="700" text-anchor="middle" font-family="Raleway">18h</text><text x="444.1" y="132" fill="rgba(255,255,255,.85)" font-size="9" font-weight="700" text-anchor="middle" font-family="Raleway">23h</text></svg></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <div class="pf-arterre">
+    <span><strong>Powered by Growth Ex Machina</strong></span>
+    <span>Bilan Mensuel VIVESCIA — <span data-ph="mois_label">Mars 2026</span></span>
+    <span>Page <span data-ph="page_num">{{page_num}}</span> / <span data-ph="total_pages">{{total_pages}}</span></span>
+  </div>
+
+</div>
+
+
+
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<!-- PAGE 5 ARTERRE : Consultation des Applications iOS & Android                                 -->
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<!-- ARTERRE PAGE 5 — Consultation des Applications iOS & Android                -->
+<!-- Top 15 pages vues par app (2 cols) · DoW + HoD apps cumulés                  -->
+<!-- Source Matomo : Actions.getPageTitles idSite=6 (iOS) et idSite=7 (Android)   -->
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+
+<style>
+/* ════════════ PAGE ARTERRE 5 ════════════ */
+
+.page.arterre-page-5{
+  width:210mm;min-height:297mm;margin:0 auto 32px;
+  background:#fff;position:relative;overflow:hidden;
+  box-shadow:0 8px 40px rgba(0,0,0,.22);box-sizing:border-box
+}
+
+/* Header (identique pages précédentes) */
+.arterre-page-5 .ph-arterre{background:#DBD5C5;padding:18px 32px;display:flex;align-items:center;justify-content:space-between;border-bottom:1.5px solid #E5E7EB;position:relative;overflow:hidden;min-height:100px;box-sizing:border-box}
+.arterre-page-5 .mot-arterre{position:absolute;top:0;right:0;width:30%;height:100%;pointer-events:none;opacity:.55;z-index:1}
+.arterre-page-5 .lf-arterre{position:absolute;border-radius:50% 10% 50% 10%}
+.arterre-page-5 .lf-arterre.lf1{width:14px;height:7px;top:18px;right:14px;background:#6B8E23;transform:rotate(30deg)}
+.arterre-page-5 .lf-arterre.lf2{width:12px;height:6px;top:28px;right:36px;background:#8FA845;transform:rotate(-15deg)}
+.arterre-page-5 .lf-arterre.lf3{width:16px;height:8px;top:10px;right:60px;background:#4A6718;transform:rotate(45deg)}
+.arterre-page-5 .lf-arterre.lf4{width:10px;height:5px;top:45px;right:24px;background:#A89678;transform:rotate(-30deg)}
+.arterre-page-5 .lf-arterre.lf5{width:13px;height:6px;top:55px;right:55px;background:#6B8E23;transform:rotate(60deg)}
+.arterre-page-5 .lf-arterre.lf6{width:11px;height:6px;top:38px;right:88px;background:#9B8860;transform:rotate(-45deg)}
+.arterre-page-5 .lf-arterre.lf7{width:15px;height:7px;top:62px;right:92px;background:#4A6718;transform:rotate(20deg)}
+.arterre-page-5 .lf-arterre.lf8{width:9px;height:4px;top:20px;right:120px;background:#F4C842;transform:rotate(-60deg)}
+.arterre-page-5 .lf-arterre.lf9{width:12px;height:6px;top:50px;right:140px;background:#6B8E23;transform:rotate(35deg)}
+.arterre-page-5 .lf-arterre.lf10{width:10px;height:5px;top:72px;right:30px;background:#8FA845;transform:rotate(-20deg)}
+.arterre-page-5 .lf-arterre.lf11{width:14px;height:7px;top:15px;right:165px;background:#4A6718;transform:rotate(50deg)}
+.arterre-page-5 .lf-arterre.lf12{width:11px;height:5px;top:40px;right:195px;background:#A89678;transform:rotate(-40deg)}
+.arterre-page-5 .lf-arterre.lf13{width:13px;height:6px;top:68px;right:175px;background:#6B8E23;transform:rotate(25deg)}
+
+.arterre-page-5 .lb-arterre{position:relative;z-index:2;background:#fff;padding:8px 14px;border-radius:6px;box-shadow:0 1px 3px rgba(0,0,0,.08);display:flex;align-items:center}
+.arterre-page-5 .lb-arterre img{height:40px;width:auto;display:block}
+.arterre-page-5 .ct-arterre{text-align:center;flex:1;position:relative;z-index:2}
+.arterre-page-5 .tt-arterre{font-size:14px;font-weight:800;color:#4A6718;letter-spacing:.3px}
+.arterre-page-5 .sb-arterre{font-size:10.5px;color:#6B7280;font-weight:600;margin-top:3px}
+.arterre-page-5 .tg-arterre{position:relative;z-index:2;font-size:10px;color:#fff;font-weight:700;background:#4A6718;padding:6px 14px;border-radius:4px;letter-spacing:1.5px}
+
+/* Body */
+.arterre-page-5 .pb-arterre{padding:14px 32px 46px;box-sizing:border-box}
+
+/* Section label */
+.arterre-page-5 .sl-arterre{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:#6B7280;margin-bottom:10px;margin-top:10px;display:flex;justify-content:space-between;align-items:center}
+.arterre-page-5 .sl-arterre:first-child{margin-top:0}
+.arterre-page-5 .pt-arterre{font-size:9.5px;color:#4B5563;background:#F5F8EC;padding:4px 10px;border-radius:4px;font-weight:600;text-transform:none;letter-spacing:0;border:1px solid #D4E0B0}
+.arterre-page-5 .pt-arterre strong{color:#4A6718;font-weight:700}
+.arterre-page-5 .pt-arterre .arrow{color:#9CA3AF;margin:0 5px;font-weight:400}
+
+/* ═══ Layout 2 colonnes : iOS | Android ═══ */
+.arterre-page-5 .apps-top-layout{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-bottom:10px
+}
+
+/* Header tableau (taupe medium vs taupe dark pour différenciation iOS/Android) */
+.arterre-page-5 .tbl-hdr{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:8px 14px;border-radius:10px 10px 0 0
+}
+.arterre-page-5 .tbl-hdr.taupe{background:#8B7355}
+.arterre-page-5 .tbl-hdr.taupe-dark{background:#6B5A43}
+.arterre-page-5 .tbl-title{
+  font-size:11.5px;font-weight:800;color:#fff;
+  text-transform:uppercase;letter-spacing:.5px;
+  display:flex;align-items:center;gap:8px
+}
+.arterre-page-5 .tbl-title-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.9)}
+.arterre-page-5 .tbl-badge{
+  font-size:9.5px;color:rgba(255,255,255,.95);
+  background:rgba(0,0,0,.22);
+  padding:3px 10px;border-radius:20px;font-weight:700;letter-spacing:.3px
+}
+
+/* Grid compact (2 colonnes → chaque col plus étroite) */
+.arterre-page-5 .top-grid-compact{
+  border:1.5px solid #E5E7EB;border-top:none;
+  border-radius:0 0 10px 10px;
+  overflow:hidden;
+  background:#fff
+}
+.arterre-page-5 .top-subhead{
+  display:grid;
+  grid-template-columns:26px 1fr 52px 44px;
+  gap:6px;align-items:center;
+  padding:5px 12px;
+  background:#F7F7F5;
+  border-bottom:1.5px solid #E5E7EB;
+  font-size:8.5px;font-weight:700;
+  text-transform:uppercase;letter-spacing:.5px;color:#6B7280
+}
+.arterre-page-5 .top-subhead .sh-rank{text-align:center}
+.arterre-page-5 .top-subhead .sh-val{text-align:right}
+
+.arterre-page-5 .top-row{
+  display:grid;
+  grid-template-columns:26px 1fr 52px 44px;
+  gap:6px;align-items:center;
+  padding:4px 12px;
+  border-bottom:1px solid rgba(0,0,0,.04)
+}
+.arterre-page-5 .top-row:nth-child(odd){background:#fff}
+.arterre-page-5 .top-row:nth-child(even){background:#FAFBF5}
+.arterre-page-5 .top-row:last-child{border-bottom:none}
+.arterre-page-5 .top-row.top3 .t-rank-a{color:#C9A23A;font-weight:900}
+
+.arterre-page-5 .t-rank-a{
+  text-align:center;font-weight:800;
+  color:#9CA3AF;font-size:9.5px;letter-spacing:.2px
+}
+.arterre-page-5 .t-titre-a{
+  color:#1A2530;font-weight:500;
+  font-size:10px;line-height:1.3;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap
+}
+.arterre-page-5 .t-pv-a{
+  text-align:right;color:#4A6718;
+  font-size:10.5px;font-weight:800;
+  font-variant-numeric:tabular-nums;white-space:nowrap
+}
+.arterre-page-5 .t-time-a{
+  text-align:right;color:#8B7355;
+  font-size:9.5px;font-weight:700;
+  font-variant-numeric:tabular-nums;white-space:nowrap
+}
+
+/* ═══ Fréquentation : 2 cards (DoW + HoD apps cumulées) ═══ */
+.arterre-page-5 .freq-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:6px}
+.arterre-page-5 .freq-card{
+  border-radius:12px;padding:11px 14px 10px;
+  min-height:170px;box-sizing:border-box;
+  box-shadow:0 1px 3px rgba(0,0,0,.06);color:#fff
+}
+.arterre-page-5 .freq-card.taupe{background:linear-gradient(135deg,#B8A888 0%,#8B7355 100%)}
+.arterre-page-5 .freq-card.taupe-dark{background:linear-gradient(135deg,#8B7355 0%,#6B5A43 100%)}
+.arterre-page-5 .freq-head{display:flex;align-items:center;justify-content:space-between;padding-bottom:7px;margin-bottom:8px;border-bottom:1.5px solid rgba(255,255,255,.35)}
+.arterre-page-5 .freq-title{font-size:10.5px;font-weight:800;letter-spacing:.3px;color:#fff}
+.arterre-page-5 .freq-sub{font-size:8.5px;font-weight:600;color:rgba(255,255,255,.85)}
+
+/* DoW bars */
+.arterre-page-5 .dow-rows{display:flex;flex-direction:column;gap:5px;padding:2px 0}
+.arterre-page-5 .dow-row-a{display:grid;grid-template-columns:28px 1fr 55px;align-items:center;gap:8px}
+.arterre-page-5 .dow-lbl-a{font-size:10.5px;font-weight:800;color:#fff;text-align:center}
+.arterre-page-5 .dow-bar-wrap-a{height:14px;background:rgba(255,255,255,.35);border-radius:7px;overflow:hidden;border:1px solid rgba(255,255,255,.3)}
+.arterre-page-5 .dow-bar-a{height:100%;border-radius:7px;background:#fff}
+.arterre-page-5 .dow-val-a{font-size:10px;font-weight:800;color:#fff;text-align:right}
+
+/* HoD SVG */
+.arterre-page-5 .hod-bars-a{width:100%;height:auto;max-height:135px;display:block}
+
+/* Footer */
+.arterre-page-5 .pf-arterre{position:absolute;bottom:12px;left:28px;right:28px;display:flex;justify-content:space-between;align-items:center;font-size:9px;color:#CBD5E1;border-top:1px solid #E5E7EB;padding-top:8px}
+.arterre-page-5 .pf-arterre strong{color:#9CA3AF;font-weight:600}
+.arterre-page-5 .pf-arterre > *{flex:1}
+.arterre-page-5 .pf-arterre > *:nth-child(2){text-align:center}
+.arterre-page-5 .pf-arterre > *:nth-child(3){text-align:right}
+</style>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<!-- ARTERRE PAGE 5                                                                -->
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<div class="page arterre-page-5">
+
+  <!-- HEADER -->
+  <div class="ph-arterre">
+    <div class="mot-arterre">
+      <div class="lf-arterre lf1"></div><div class="lf-arterre lf2"></div><div class="lf-arterre lf3"></div>
+      <div class="lf-arterre lf4"></div><div class="lf-arterre lf5"></div><div class="lf-arterre lf6"></div>
+      <div class="lf-arterre lf7"></div><div class="lf-arterre lf8"></div><div class="lf-arterre lf9"></div>
+      <div class="lf-arterre lf10"></div><div class="lf-arterre lf11"></div><div class="lf-arterre lf12"></div>
+      <div class="lf-arterre lf13"></div>
+    </div>
+    <div class="lb-arterre"><img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCAA2AJwDASIAAhEBAxEB/8QAGwABAAMBAQEBAAAAAAAAAAAAAAUGBwgEAgP/xAA+EAABAwQABAMFBAUNAQAAAAABAgMEAAUGEQcSITETQVEIFGFxkSIyUoEVI0Kh0RYXJDM2U3J1gqKxsrPw/8QAGgEBAAMBAQEAAAAAAAAAAAAAAAECAwQFBv/EACgRAAICAgEEAQMFAQAAAAAAAAECAAMEESEFEjFRYRMiQSMykaHB8P/aAAwDAQACEQMRAD8A7LpSoy+XmNakJCwXHlDaW0+nqT5Cs7bUqUu50JdEaxu1RsyTqvWjMrDc8kn46zKLV0hOFC47yeVSwBvmR+Ifv+FfhZMpcn3JENURJ51a5m1fd6b6771l3HDA8lOcx8txKLIfdeLZc92/rGXkAAK16EBPX1B33qMTIqylLIeJGTVZjkBhN5PQbNeJq7212aIbUxtx870lJ3279e1QORLvsy3RIDcNwPuMpXMU39znI6oCu2t7/dXpxPHf0YTKlFK5ShpIT1DY8/zrybOoZVmcMbHq+wfuY718gez/ADz+J2Lj1LR9SxuT4A/2WKlKV7c4YpSlIilKUiKUpSIpSlIilKUiKUpSIqrZJjky43JUlp9otrCRyLJTy6Hw7j+NWmlc+TjV5Kdj+JrTc1LdyyEsFhj2hJfccSt0J1za0lA+H8a9EW7Jl3ARorZUgbK3Feg9B9KiciuapLhiRlHwgdKI/aP8KlcdtxhRit0aec7j8I9PnXyVHVLMvqC4XTxqpOXb38b+TwPyeSOAN9VqnsNtx2x8T1Xe4Q7Ta5NznvBmLGbLjqyN6SB6DufhVNxHivimT35my28zm5TwUW/HZCUq5QSRsKPXQP0qt+1FkBg4nEsLK9O3J7mdA/um9HX5qKfoayO7WW4YBJxDI2yvxZUdE7SumlhfMUfLkU2D8zX3aVgjmeRZaVbQ8CdeUrz22YxcbdGnxV87ElpLzSvVKgCD9DVO4o8SrVgyGo7jC51yfRztxkL5QE9uZauuhsHXQk6rIAk6E3LADZl2kOpYYceXvlbSVK130BuqvgfEDHc0ckNWd2QH46Qpxp9vkVynpzDqQRv41TuGPEu65y/e4c2BCiMR4CnUeDzFRJ6dSTrX5Vk/A2dlMLK3E4pbYs2Q+yG5HvCSUNNFadr6KTrR16/KtBXwdzE3cjXgzrSlZzxg4nsYQWbfDiom3V9HiBC1ENtI3oKVrqdkHQGux6jpvPH+LvEyzlmfe8cZbgvqHIHoLrKVD0Ssnvr13VRWxG5drVU6nRNKgsIyi35ZjLF8gkttr2l1tZG2Vp+8kn4d9+YINZTmPHwRbm/Dxu1MS2WlFIlyFnlcI80pTo69Dvr6CoCMToSWsVRsmbnSqYxncSDwxg5jkHhtGRHQstMJP6xxXZCAT36eZ7Ak9qzywccbvfMxtlpj2WDFiTJrbCi4tbjgQpQB0QUjej6VIRjINijU3alZXxb4s/yUugsNkgtT7rpJdLpJbaKuqU8qdFSiCDrY1sd99Kd/O5xFx6aw9lWOJTDkHaUOxFx1EefIo+Y32INSK2I3INqg6nQtKj8bvMHILHEvNtcLkWU3zoJ6EeRSfQggg/EVIVnNfMVH3591qF4bAUXXjyJCR115/wD3xqQp57rlzcdsih6lbtLDW/Xv+pZG7WBIkHY7MWFiTKSPEHVCO/KfU/GpylR+SSZkOwT5VvjOSpjbCzHZQNlbmvsj66rHpnS8fptP0aB8knyT7P8A2gOBxLW2tYe5pzBxmyCJfOLLypinXLXb3kQ1BrRUW0K/WcuyASVFeuo8utTXGTiPieaYvHt9ugXSPMivpcYU8y2lATopUnaVkga0e37IqV4I8NJqr9cp+bWElpLIS03NbCg44tWyvz2QE/7q1Zzhzg62XWxjFsR4iSCpLA2nY7j0/KvYLqpA9TgVHYE+5WPZpv8A+lcCNsdXzSLU6WtE9fCVtSD/ANk/6ay/NWm717RvuNxT48Zy5x4621HoWwEDl+R6/U1YOBtgy3EeIsiLOss9NtkocjOyPBPhbSSUOb9Dogf46+5+HZM5x/TfU2WSq2C6Nve86HJyDl2rv8KDQYmDtkA1+Zt02JFiWaU3FjMsITGWkJbbCQAEnp08q5+9lL+2l0/y4/8AoiujJjXjxHmAdeI2pG/TY1XM2D2DibgmSOSIGNuu+L/RnVlrxWyjnBKgUn4d6onKkTS3hlM8fFZ+5L48yVRWESZrc2MmKw71QtQS3yJIJA0TrzHerZlquNGT2GRZbnicIxn+UqLYQFpKVBQIJcOjsVLceOHF3u93ayzGUqdmoQlMhhtXK4Sj7riD5kDQ136DVV24XHjfkluasLtpmRUuEByQmP7upYH4l7AA9da32+FaA7A1qZkEEg75ntxKy5Ph/BrNGbxCcgKdb5mAXEknmTyLI5SddNV9+yraLdIjXm6SIjL0pt1tltbiAotp0Sdb7b6b+VWyThV0tPBS6WBL792vEpordPOV87hKfso5uvKAP+T03Xm9nDHb3j1luzN6tz0Fx6QhTaXQNqATomqltqZZU0y8Sue1k8ttvHITZ5GD7w4UDoCR4YH0BP1rTOE1ntlu4fWFcSEw24/BZkOrCBzLcWgKUonuTs1RvaTxfIMilWNVktcicGEPh0tAfZ2Ua39D9K07BYsiDhNihS2lMyGLdHadbV3QpLaQQfkRVWP2AS6j9QmcxXSTe08c7hItcRuZdW7w/wC7MvDaVFKlBHcjsACOo7CrhmzHGPL7L+ibticTwA6l1KmghK0qG+oJcPkSPzqS4ycNciVlpzHEEqdeWpLrrTSwl1p1IH20b7g6B0Ou99Duq9Okca8z8C1SIN0hNJUOdZjGGhR/EtRA2B30PpvVa7B0RqY6K7B3NT4AWW+2DB3bbf4i4jyJzimW1KSr9WUoO+hI+9z1oVQOA2BzGsXi2p+a7NkI2t99xRUVrPU635DsPgKnq52OzudSDSgRSlKrLRSlKRFKUpEUpSkRSlKRFKUpEUpSkRSlKRFKUpEUpSkT/9k=" alt="Arterre" /></div>
+    <div class="ct-arterre">
+      <div class="tt-arterre">Consultation des Applications iOS & Android</div>
+      <div class="sb-arterre">Applications Mobiles Arterre · <span data-ph="mois_label">Mars 2026</span></div>
+    </div>
+    <div class="tg-arterre">PARTIE 3</div>
+  </div>
+
+  <!-- BODY -->
+  <div class="pb-arterre">
+
+    <div class="sl-arterre">
+      <span>Top Pages Vues par Application</span>
+      <span class="pt-arterre">
+        <strong data-ph="mois_label">Mars 2026</strong>
+      </span>
+    </div>
+
+    <!-- TOP PAGES VUES : 2 colonnes iOS / Android -->
+    <div class="apps-top-layout">
+
+      <!-- Col gauche : iOS -->
+      <div>
+        <div class="tbl-hdr taupe">
+          <span class="tbl-title">
+            <span class="tbl-title-dot"></span>
+            Arterre iOS
+          </span>
+          <span class="tbl-badge">Top 15 pages</span>
+        </div>
+        <div class="top-grid-compact" data-block="top_ios_block"><div class="top-subhead"><span class="sh-rank">#</span><span>Titre de la page</span><span class="sh-val">Pages vues</span><span class="sh-val">Tps/page</span></div><div class="top-row top3"><span class="t-rank-a">#1</span><span class="t-titre-a" title=" Screen / home"> Screen / home</span><span class="t-pv-a">8 213</span><span class="t-time-a">0min42</span></div><div class="top-row top3"><span class="t-rank-a">#2</span><span class="t-titre-a" title=" Screen / market"> Screen / market</span><span class="t-pv-a">3 522</span><span class="t-time-a">1min24</span></div><div class="top-row top3"><span class="t-rank-a">#3</span><span class="t-titre-a" title=" Screen / weatherForecast"> Screen / weatherForecast</span><span class="t-pv-a">442</span><span class="t-time-a">0min40</span></div><div class="top-row"><span class="t-rank-a">#4</span><span class="t-titre-a" title=" Screen / news"> Screen / news</span><span class="t-pv-a">405</span><span class="t-time-a">1min57</span></div><div class="top-row"><span class="t-rank-a">#5</span><span class="t-titre-a" title=" Screen / deliveries"> Screen / deliveries</span><span class="t-pv-a">428</span><span class="t-time-a">0min07</span></div><div class="top-row"><span class="t-rank-a">#6</span><span class="t-titre-a" title=" Screen / login"> Screen / login</span><span class="t-pv-a">354</span><span class="t-time-a">0min53</span></div><div class="top-row"><span class="t-rank-a">#7</span><span class="t-titre-a" title=" /start"> /start</span><span class="t-pv-a">303</span><span class="t-time-a">—</span></div><div class="top-row"><span class="t-rank-a">#8</span><span class="t-titre-a" title=" Screen / contracts"> Screen / contracts</span><span class="t-pv-a">394</span><span class="t-time-a">0min42</span></div><div class="top-row"><span class="t-rank-a">#9</span><span class="t-titre-a" title=" Screen / menu"> Screen / menu</span><span class="t-pv-a">355</span><span class="t-time-a">0min06</span></div><div class="top-row"><span class="t-rank-a">#10</span><span class="t-titre-a" title=" Screen / editMarketPreferences"> Screen / editMarketPreferences</span><span class="t-pv-a">240</span><span class="t-time-a">0min09</span></div><div class="top-row"><span class="t-rank-a">#11</span><span class="t-titre-a" title=" Screen / contacts"> Screen / contacts</span><span class="t-pv-a">156</span><span class="t-time-a">0min16</span></div><div class="top-row"><span class="t-rank-a">#12</span><span class="t-titre-a" title=" Start screen title"> Start screen title</span><span class="t-pv-a">138</span><span class="t-time-a">—</span></div><div class="top-row"><span class="t-rank-a">#13</span><span class="t-titre-a" title=" Screen / profile"> Screen / profile</span><span class="t-pv-a">64</span><span class="t-time-a">0min18</span></div><div class="top-row"><span class="t-rank-a">#14</span><span class="t-titre-a" title=" Screen / splashscreen"> Screen / splashscreen</span><span class="t-pv-a">12</span><span class="t-time-a">1min07</span></div></div>
+      </div>
+
+      <!-- Col droite : Android -->
+      <div>
+        <div class="tbl-hdr taupe-dark">
+          <span class="tbl-title">
+            <span class="tbl-title-dot"></span>
+            Arterre Android
+          </span>
+          <span class="tbl-badge">Top 15 pages</span>
+        </div>
+        <div class="top-grid-compact" data-block="top_android_block"><div class="top-subhead"><span class="sh-rank">#</span><span>Titre de la page</span><span class="sh-val">Pages vues</span><span class="sh-val">Tps/page</span></div><div class="top-row top3"><span class="t-rank-a">#1</span><span class="t-titre-a" title=" Screen / home"> Screen / home</span><span class="t-pv-a">7 946</span><span class="t-time-a">0min39</span></div><div class="top-row top3"><span class="t-rank-a">#2</span><span class="t-titre-a" title=" Screen / market"> Screen / market</span><span class="t-pv-a">1 610</span><span class="t-time-a">1min10</span></div><div class="top-row top3"><span class="t-rank-a">#3</span><span class="t-titre-a" title=" Screen / splashscreen"> Screen / splashscreen</span><span class="t-pv-a">2 745</span><span class="t-time-a">0min02</span></div><div class="top-row"><span class="t-rank-a">#4</span><span class="t-titre-a" title=" Screen / login"> Screen / login</span><span class="t-pv-a">450</span><span class="t-time-a">0min45</span></div><div class="top-row"><span class="t-rank-a">#5</span><span class="t-titre-a" title=" Screen / weatherForecast"> Screen / weatherForecast</span><span class="t-pv-a">269</span><span class="t-time-a">0min34</span></div><div class="top-row"><span class="t-rank-a">#6</span><span class="t-titre-a" title=" Screen / news"> Screen / news</span><span class="t-pv-a">239</span><span class="t-time-a">0min50</span></div><div class="top-row"><span class="t-rank-a">#7</span><span class="t-titre-a" title=" Screen / deliveries"> Screen / deliveries</span><span class="t-pv-a">262</span><span class="t-time-a">0min13</span></div><div class="top-row"><span class="t-rank-a">#8</span><span class="t-titre-a" title=" Screen / editMarketPreferences"> Screen / editMarketPreferences</span><span class="t-pv-a">184</span><span class="t-time-a">0min18</span></div><div class="top-row"><span class="t-rank-a">#9</span><span class="t-titre-a" title=" Screen / contracts"> Screen / contracts</span><span class="t-pv-a">230</span><span class="t-time-a">0min32</span></div><div class="top-row"><span class="t-rank-a">#10</span><span class="t-titre-a" title=" Screen / menu"> Screen / menu</span><span class="t-pv-a">190</span><span class="t-time-a">0min09</span></div><div class="top-row"><span class="t-rank-a">#11</span><span class="t-titre-a" title=" Screen / contacts"> Screen / contacts</span><span class="t-pv-a">90</span><span class="t-time-a">0min30</span></div><div class="top-row"><span class="t-rank-a">#12</span><span class="t-titre-a" title=" Screen / profile"> Screen / profile</span><span class="t-pv-a">36</span><span class="t-time-a">0min30</span></div></div>
+      </div>
+    </div>
+
+    <!-- FRÉQUENTATION APPS CUMULÉES -->
+    <div class="sl-arterre">
+      <span>Fréquentation Applications</span>
+      <span class="pt-arterre">iOS + Android cumulés · <strong data-ph="mois_label">Mars 2026</strong></span>
+    </div>
+    <div class="freq-row">
+      <div class="freq-card taupe">
+        <div class="freq-head">
+          <span class="freq-title">Fréquentation par jour</span>
+          <span class="freq-sub">Lundi → Dimanche</span>
+        </div>
+        <div class="dow-rows" data-block="dow_apps_block"><div class="dow-row-a"><span class="dow-lbl-a">Lun</span><div class="dow-bar-wrap-a"><div class="dow-bar-a" style="width:98.1%"></div></div><span class="dow-val-a">2 839</span></div><div class="dow-row-a"><span class="dow-lbl-a">Mar</span><div class="dow-bar-wrap-a"><div class="dow-bar-a" style="width:100.0%"></div></div><span class="dow-val-a">2 893</span></div><div class="dow-row-a"><span class="dow-lbl-a">Mer</span><div class="dow-bar-wrap-a"><div class="dow-bar-a" style="width:79.2%"></div></div><span class="dow-val-a">2 290</span></div><div class="dow-row-a"><span class="dow-lbl-a">Jeu</span><div class="dow-bar-wrap-a"><div class="dow-bar-a" style="width:87.3%"></div></div><span class="dow-val-a">2 525</span></div><div class="dow-row-a"><span class="dow-lbl-a">Ven</span><div class="dow-bar-wrap-a"><div class="dow-bar-a" style="width:81.3%"></div></div><span class="dow-val-a">2 351</span></div><div class="dow-row-a"><span class="dow-lbl-a">Sam</span><div class="dow-bar-wrap-a"><div class="dow-bar-a" style="width:20.0%"></div></div><span class="dow-val-a">580</span></div><div class="dow-row-a"><span class="dow-lbl-a">Dim</span><div class="dow-bar-wrap-a"><div class="dow-bar-a" style="width:18.0%"></div></div><span class="dow-val-a">520</span></div></div>
+      </div>
+      <div class="freq-card taupe-dark">
+        <div class="freq-head">
+          <span class="freq-title">Fréquentation par heure</span>
+          <span class="freq-sub">0h → 23h</span>
+        </div>
+        <div data-block="hod_apps_svg"><svg class="hod-bars-a" viewBox="0 0 460 140" preserveAspectRatio="xMidYMid meet"><rect x="29.0" y="113.3" width="15.8" height="2.7" fill="#fff" rx="1.5"/><rect x="46.8" y="114.7" width="15.8" height="1.3" fill="#fff" rx="1.5"/><rect x="64.5" y="114.3" width="15.8" height="1.7" fill="#fff" rx="1.5"/><rect x="82.3" y="115.2" width="15.8" height="0.8" fill="#fff" rx="1.5"/><rect x="100.0" y="113.9" width="15.8" height="2.1" fill="#fff" rx="1.5"/><rect x="117.8" y="111.7" width="15.8" height="4.3" fill="#fff" rx="1.5"/><rect x="135.5" y="99.0" width="15.8" height="17.0" fill="#fff" rx="1.5"/><rect x="153.3" y="81.4" width="15.8" height="34.6" fill="#fff" rx="1.5"/><rect x="171.0" y="77.8" width="15.8" height="38.2" fill="#fff" rx="1.5"/><rect x="188.8" y="75.0" width="15.8" height="41.0" fill="#fff" rx="1.5"/><rect x="206.5" y="68.7" width="15.8" height="47.3" fill="#fff" rx="1.5"/><rect x="224.3" y="8.0" width="15.8" height="108.0" fill="#fff" rx="1.5"/><rect x="242.0" y="17.8" width="15.8" height="98.2" fill="#fff" rx="1.5"/><rect x="259.8" y="21.1" width="15.8" height="94.9" fill="#fff" rx="1.5"/><rect x="277.5" y="40.8" width="15.8" height="75.2" fill="#fff" rx="1.5"/><rect x="295.3" y="44.0" width="15.8" height="72.0" fill="#fff" rx="1.5"/><rect x="313.0" y="44.6" width="15.8" height="71.4" fill="#fff" rx="1.5"/><rect x="330.8" y="45.7" width="15.8" height="70.3" fill="#fff" rx="1.5"/><rect x="348.5" y="63.7" width="15.8" height="52.3" fill="#fff" rx="1.5"/><rect x="366.3" y="74.7" width="15.8" height="41.3" fill="#fff" rx="1.5"/><rect x="384.0" y="74.0" width="15.8" height="42.0" fill="#fff" rx="1.5"/><rect x="401.8" y="85.8" width="15.8" height="30.2" fill="#fff" rx="1.5"/><rect x="419.5" y="99.9" width="15.8" height="16.1" fill="#fff" rx="1.5"/><rect x="437.3" y="110.0" width="15.8" height="6.0" fill="#fff" rx="1.5"/><text x="35.9" y="132" fill="rgba(255,255,255,.85)" font-size="9" font-weight="700" text-anchor="middle" font-family="Raleway">0h</text><text x="142.4" y="132" fill="rgba(255,255,255,.85)" font-size="9" font-weight="700" text-anchor="middle" font-family="Raleway">6h</text><text x="248.9" y="132" fill="rgba(255,255,255,.85)" font-size="9" font-weight="700" text-anchor="middle" font-family="Raleway">12h</text><text x="355.4" y="132" fill="rgba(255,255,255,.85)" font-size="9" font-weight="700" text-anchor="middle" font-family="Raleway">18h</text><text x="444.1" y="132" fill="rgba(255,255,255,.85)" font-size="9" font-weight="700" text-anchor="middle" font-family="Raleway">23h</text></svg></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <div class="pf-arterre">
+    <span><strong>Powered by Growth Ex Machina</strong></span>
+    <span>Bilan Mensuel VIVESCIA — <span data-ph="mois_label">Mars 2026</span></span>
+    <span>Page <span data-ph="page_num">{{page_num}}</span> / <span data-ph="total_pages">{{total_pages}}</span></span>
+  </div>
+
+</div>
+
+
+
 
 </body>
 </html>
