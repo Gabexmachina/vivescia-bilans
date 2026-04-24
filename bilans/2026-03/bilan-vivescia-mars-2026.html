@@ -18,7 +18,43 @@
       line-height: 1.5;
     }
 
-    /* ── Print / PDF : 1 page A4 par .page ───────────────────────────────── */
+    /* ── Bouton PDF flottant (wrapper v2) ────────────────────────────────── */
+    .pdf-download-btn {
+      position: fixed;
+      top: 24px;
+      right: 24px;
+      z-index: 9999;
+      background: #4A6718;
+      color: #fff;
+      border: none;
+      border-radius: 999px;
+      padding: 12px 20px 12px 16px;
+      font-family: 'Raleway', system-ui, sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.2px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15), 0 2px 4px rgba(0,0,0,0.1);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+    }
+    .pdf-download-btn:hover {
+      background: #3B5213;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.2), 0 3px 6px rgba(0,0,0,0.12);
+      transform: translateY(-1px);
+    }
+    .pdf-download-btn:active {
+      transform: translateY(0);
+    }
+    .pdf-download-btn svg {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+    }
+
+    /* ── Print / PDF : 1 page A4 par .page + masquer le bouton ──────────── */
     @media print {
       body { background: #fff; }
       .prv { background: #fff !important; padding: 0 !important; }
@@ -28,10 +64,41 @@
         page-break-after: always;
       }
       .page:last-child { page-break-after: auto; }
+      .pdf-download-btn { display: none !important; }
+    }
+
+    /* ── Responsive mobile : bouton PDF compact ──────────────────────────── */
+    @media (max-width: 640px) {
+      .pdf-download-btn {
+        top: 12px;
+        right: 12px;
+        padding: 10px 14px 10px 12px;
+        font-size: 13px;
+      }
+      .pdf-download-btn span.btn-label {
+        display: none;
+      }
+      .pdf-download-btn svg {
+        width: 20px;
+        height: 20px;
+      }
     }
   </style>
 </head>
 <body>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     Bouton Télécharger PDF (wrapper v2)
+     Au clic : ouvre le dialogue d'impression du navigateur.
+     L'utilisateur choisit "Enregistrer au format PDF" (destination).
+     Le bouton est masqué automatiquement dans le PDF généré (@media print).
+═══════════════════════════════════════════════════════════════════════════ -->
+<button class="pdf-download-btn" onclick="window.print()" aria-label="Télécharger le bilan en PDF" title="Télécharger en PDF">
+  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+  <span class="btn-label">Télécharger en PDF</span>
+</button>
 
 <!-- ═══════════════════════════════════════════════════════════════════════
      PARTIE 1 — VIVESCIA Corporate (vivescia.com)
@@ -2657,8 +2724,8 @@
 
 
 <!-- ═══════════════════════════════════════════════════════════════════════
-     PARTIE 3 — Arterre (futur)
-     Injection automatique : HTML généré par WKF Arterre (à créer)
+     PARTIE 3 — Arterre (extranet)
+     Injection automatique : HTML généré par WKF Arterre v1 sous-pipeline
 ═══════════════════════════════════════════════════════════════════════════ -->
 <!-- ═══════════════════════════════════════════════════════════════════════════ -->
 <!-- ARTERRE — BILAN MENSUEL TEMPLATE FINAL (Partie 3 du bilan VIVESCIA)         -->
@@ -3329,7 +3396,7 @@
           </div>
           <span class="var-tag var-up" data-ph="evol_web_var_tag">↑ +117,0% vs Mars N-1</span>
         </div>
-        <div data-block="evol_web_svg"><svg class="evol-svg" viewBox="0 0 700 110" preserveAspectRatio="xMidYMid meet"><defs><linearGradient id="grad-282854" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#6B8E23" stop-opacity="0.32"/><stop offset="100%" stop-color="#6B8E23" stop-opacity="0.04"/></linearGradient></defs><line x1="38" y1="90.0" x2="688" y2="90.0" stroke="#F0EDE6" stroke-width="1" stroke-dasharray="2,2"/><text x="32" y="93.0" fill="#9CA3AF" font-size="7.5" font-weight="600" text-anchor="end" font-family="Raleway">22 240</text><line x1="38" y1="51.0" x2="688" y2="51.0" stroke="#F0EDE6" stroke-width="1" stroke-dasharray="2,2"/><text x="32" y="54.0" fill="#9CA3AF" font-size="7.5" font-weight="600" text-anchor="end" font-family="Raleway">93 428</text><line x1="38" y1="12.0" x2="688" y2="12.0" stroke="#F0EDE6" stroke-width="1" stroke-dasharray="2,2"/><text x="32" y="15.0" fill="#9CA3AF" font-size="7.5" font-weight="600" text-anchor="end" font-family="Raleway">164 616</text><path d="M 38.0 90 L 38.0 68.9 L 92.2 78.3 L 146.3 81.0 L 200.5 77.1 L 254.7 21.0 L 308.8 59.8 L 363.0 46.2 L 417.2 44.7 L 471.3 53.1 L 525.5 59.5 L 579.7 48.3 L 633.8 47.2 L 688.0 29.9 L 688.0 90 Z" fill="url(#grad-282854)" stroke="none"/><path d="M 38.0 68.9 L 92.2 78.3 L 146.3 81.0 L 200.5 77.1 L 254.7 21.0 L 308.8 59.8 L 363.0 46.2 L 417.2 44.7 L 471.3 53.1 L 525.5 59.5 L 579.7 48.3 L 633.8 47.2 L 688.0 29.9 " fill="none" stroke="#6B8E23" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="38.0" cy="68.9" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="92.2" cy="78.3" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="146.3" cy="81.0" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="200.5" cy="77.1" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="254.7" cy="21.0" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="308.8" cy="59.8" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="363.0" cy="46.2" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="417.2" cy="44.7" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="471.3" cy="53.1" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="525.5" cy="59.5" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="579.7" cy="48.3" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="633.8" cy="47.2" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="688.0" cy="29.9" r="4.5" fill="#6B8E23" stroke="#fff" stroke-width="2"/><text x="688.0" y="20.9" fill="#6B8E23" font-size="9" font-weight="800" text-anchor="middle" font-family="Raleway">132 016</text><text x="38.0" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Mar 25</text><text x="146.3" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Mai 25</text><text x="254.7" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Juil 25</text><text x="363.0" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Sep 25</text><text x="471.3" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Nov 25</text><text x="579.7" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Jan 26</text><text x="688.0" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Mars 2026</text></svg></div>
+        <div data-block="evol_web_svg"><svg class="evol-svg" viewBox="0 0 700 110" preserveAspectRatio="xMidYMid meet"><defs><linearGradient id="grad-751587" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#6B8E23" stop-opacity="0.32"/><stop offset="100%" stop-color="#6B8E23" stop-opacity="0.04"/></linearGradient></defs><line x1="38" y1="90.0" x2="688" y2="90.0" stroke="#F0EDE6" stroke-width="1" stroke-dasharray="2,2"/><text x="32" y="93.0" fill="#9CA3AF" font-size="7.5" font-weight="600" text-anchor="end" font-family="Raleway">22 240</text><line x1="38" y1="51.0" x2="688" y2="51.0" stroke="#F0EDE6" stroke-width="1" stroke-dasharray="2,2"/><text x="32" y="54.0" fill="#9CA3AF" font-size="7.5" font-weight="600" text-anchor="end" font-family="Raleway">93 428</text><line x1="38" y1="12.0" x2="688" y2="12.0" stroke="#F0EDE6" stroke-width="1" stroke-dasharray="2,2"/><text x="32" y="15.0" fill="#9CA3AF" font-size="7.5" font-weight="600" text-anchor="end" font-family="Raleway">164 616</text><path d="M 38.0 90 L 38.0 68.9 L 92.2 78.3 L 146.3 81.0 L 200.5 77.1 L 254.7 21.0 L 308.8 59.8 L 363.0 46.2 L 417.2 44.7 L 471.3 53.1 L 525.5 59.5 L 579.7 48.3 L 633.8 47.2 L 688.0 29.9 L 688.0 90 Z" fill="url(#grad-751587)" stroke="none"/><path d="M 38.0 68.9 L 92.2 78.3 L 146.3 81.0 L 200.5 77.1 L 254.7 21.0 L 308.8 59.8 L 363.0 46.2 L 417.2 44.7 L 471.3 53.1 L 525.5 59.5 L 579.7 48.3 L 633.8 47.2 L 688.0 29.9 " fill="none" stroke="#6B8E23" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="38.0" cy="68.9" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="92.2" cy="78.3" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="146.3" cy="81.0" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="200.5" cy="77.1" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="254.7" cy="21.0" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="308.8" cy="59.8" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="363.0" cy="46.2" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="417.2" cy="44.7" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="471.3" cy="53.1" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="525.5" cy="59.5" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="579.7" cy="48.3" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="633.8" cy="47.2" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="688.0" cy="29.9" r="4.5" fill="#6B8E23" stroke="#fff" stroke-width="2"/><text x="688.0" y="20.9" fill="#6B8E23" font-size="9" font-weight="800" text-anchor="middle" font-family="Raleway">132 016</text><text x="38.0" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Mar 25</text><text x="146.3" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Mai 25</text><text x="254.7" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Juil 25</text><text x="363.0" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Sep 25</text><text x="471.3" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Nov 25</text><text x="579.7" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Jan 26</text><text x="688.0" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Mars 2026</text></svg></div>
       </div>
     </div>
 
@@ -3404,7 +3471,7 @@
           </div>
           <span class="var-tag var-neutral" data-ph="evol_apps_var_tag">— vs Mars N-1</span>
         </div>
-        <div data-block="evol_apps_svg"><svg class="evol-svg" viewBox="0 0 700 110" preserveAspectRatio="xMidYMid meet"><defs><linearGradient id="grad-624022" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#8B7355" stop-opacity="0.32"/><stop offset="100%" stop-color="#8B7355" stop-opacity="0.04"/></linearGradient></defs><line x1="38" y1="90.0" x2="688" y2="90.0" stroke="#F0EDE6" stroke-width="1" stroke-dasharray="2,2"/><text x="32" y="93.0" fill="#9CA3AF" font-size="7.5" font-weight="600" text-anchor="end" font-family="Raleway">0</text><line x1="38" y1="51.0" x2="688" y2="51.0" stroke="#F0EDE6" stroke-width="1" stroke-dasharray="2,2"/><text x="32" y="54.0" fill="#9CA3AF" font-size="7.5" font-weight="600" text-anchor="end" font-family="Raleway">8 049</text><line x1="38" y1="12.0" x2="688" y2="12.0" stroke="#F0EDE6" stroke-width="1" stroke-dasharray="2,2"/><text x="32" y="15.0" fill="#9CA3AF" font-size="7.5" font-weight="600" text-anchor="end" font-family="Raleway">16 098</text><path d="M 38.0 90 L 38.0 90.0 L 92.2 90.0 L 146.3 90.0 L 200.5 89.9 L 254.7 90.0 L 308.8 90.0 L 363.0 90.0 L 417.2 90.0 L 471.3 78.7 L 525.5 78.1 L 579.7 72.9 L 633.8 64.4 L 688.0 22.2 L 688.0 90 Z" fill="url(#grad-624022)" stroke="none"/><path d="M 38.0 90.0 L 92.2 90.0 L 146.3 90.0 L 200.5 89.9 L 254.7 90.0 L 308.8 90.0 L 363.0 90.0 L 417.2 90.0 L 471.3 78.7 L 525.5 78.1 L 579.7 72.9 L 633.8 64.4 L 688.0 22.2 " fill="none" stroke="#8B7355" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="38.0" cy="90.0" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="92.2" cy="90.0" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="146.3" cy="90.0" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="200.5" cy="89.9" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="254.7" cy="90.0" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="308.8" cy="90.0" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="363.0" cy="90.0" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="417.2" cy="90.0" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="471.3" cy="78.7" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="525.5" cy="78.1" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="579.7" cy="72.9" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="633.8" cy="64.4" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="688.0" cy="22.2" r="4.5" fill="#8B7355" stroke="#fff" stroke-width="2"/><text x="688.0" y="13.2" fill="#8B7355" font-size="9" font-weight="800" text-anchor="middle" font-family="Raleway">13 998</text><text x="38.0" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Mar 25</text><text x="146.3" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Mai 25</text><text x="254.7" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Juil 25</text><text x="363.0" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Sep 25</text><text x="471.3" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Nov 25</text><text x="579.7" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Jan 26</text><text x="688.0" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Mars 2026</text></svg></div>
+        <div data-block="evol_apps_svg"><svg class="evol-svg" viewBox="0 0 700 110" preserveAspectRatio="xMidYMid meet"><defs><linearGradient id="grad-159615" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#8B7355" stop-opacity="0.32"/><stop offset="100%" stop-color="#8B7355" stop-opacity="0.04"/></linearGradient></defs><line x1="38" y1="90.0" x2="688" y2="90.0" stroke="#F0EDE6" stroke-width="1" stroke-dasharray="2,2"/><text x="32" y="93.0" fill="#9CA3AF" font-size="7.5" font-weight="600" text-anchor="end" font-family="Raleway">0</text><line x1="38" y1="51.0" x2="688" y2="51.0" stroke="#F0EDE6" stroke-width="1" stroke-dasharray="2,2"/><text x="32" y="54.0" fill="#9CA3AF" font-size="7.5" font-weight="600" text-anchor="end" font-family="Raleway">8 049</text><line x1="38" y1="12.0" x2="688" y2="12.0" stroke="#F0EDE6" stroke-width="1" stroke-dasharray="2,2"/><text x="32" y="15.0" fill="#9CA3AF" font-size="7.5" font-weight="600" text-anchor="end" font-family="Raleway">16 098</text><path d="M 38.0 90 L 38.0 90.0 L 92.2 90.0 L 146.3 90.0 L 200.5 89.9 L 254.7 90.0 L 308.8 90.0 L 363.0 90.0 L 417.2 90.0 L 471.3 78.7 L 525.5 78.1 L 579.7 72.9 L 633.8 64.4 L 688.0 22.2 L 688.0 90 Z" fill="url(#grad-159615)" stroke="none"/><path d="M 38.0 90.0 L 92.2 90.0 L 146.3 90.0 L 200.5 89.9 L 254.7 90.0 L 308.8 90.0 L 363.0 90.0 L 417.2 90.0 L 471.3 78.7 L 525.5 78.1 L 579.7 72.9 L 633.8 64.4 L 688.0 22.2 " fill="none" stroke="#8B7355" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="38.0" cy="90.0" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="92.2" cy="90.0" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="146.3" cy="90.0" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="200.5" cy="89.9" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="254.7" cy="90.0" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="308.8" cy="90.0" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="363.0" cy="90.0" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="417.2" cy="90.0" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="471.3" cy="78.7" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="525.5" cy="78.1" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="579.7" cy="72.9" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="633.8" cy="64.4" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="688.0" cy="22.2" r="4.5" fill="#8B7355" stroke="#fff" stroke-width="2"/><text x="688.0" y="13.2" fill="#8B7355" font-size="9" font-weight="800" text-anchor="middle" font-family="Raleway">13 998</text><text x="38.0" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Mar 25</text><text x="146.3" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Mai 25</text><text x="254.7" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Juil 25</text><text x="363.0" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Sep 25</text><text x="471.3" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Nov 25</text><text x="579.7" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Jan 26</text><text x="688.0" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Mars 2026</text></svg></div>
       </div>
     </div>
 
