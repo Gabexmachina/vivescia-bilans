@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bilan Mensuel VIVESCIA — {{mois_label}}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* ── Reset minimal global ────────────────────────────────────────────── */
+    * { box-sizing: border-box; }
+    html, body { margin:0; padding:0; }
+    body {
+      font-family: 'Raleway', system-ui, -apple-system, sans-serif;
+      background: #BEBEBE;
+      color: #1A2530;
+      line-height: 1.5;
+    }
+
+    /* ── Print / PDF : 1 page A4 par .page ───────────────────────────────── */
+    @media print {
+      body { background: #fff; }
+      .prv { background: #fff !important; padding: 0 !important; }
+      .page {
+        margin: 0 !important;
+        box-shadow: none !important;
+        page-break-after: always;
+      }
+      .page:last-child { page-break-after: auto; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     PARTIE 1 — VIVESCIA Corporate (vivescia.com)
+═══════════════════════════════════════════════════════════════════════════ -->
+{{partie_1}}
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     PARTIE 2 — MyVIVESCIA (intranet)
+═══════════════════════════════════════════════════════════════════════════ -->
+{{partie_2}}
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     PARTIE 3 — Arterre (extranet + applications mobiles)
+═══════════════════════════════════════════════════════════════════════════ -->
+{{partie_3}}
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     PAGINATION DYNAMIQUE — Bug #4 fix (Session 14)
+     Réécrit le footer "Page X / Y" de chaque .page en se basant
+     sur sa position réelle dans le DOM. Gère 3 cas :
+       - Footer Corporate avec chiffres en dur ("Page 9 / 10")
+       - Footer MyV/Arterre avec placeholders ("Page {{page_num}} / {{total_pages}}")
+       - Footer custom (tout span dont le texte commence par "Page ")
+═══════════════════════════════════════════════════════════════════════════ -->
+<script>
+(function(){
+  function applyPagination(){
+    var pages = document.querySelectorAll('.page');
+    var total = pages.length;
+    if (total === 0) return;
+    pages.forEach(function(page, idx){
+      var pageNum = idx + 1;
+      // Cherche le footer .pf de cette page
+      var pf = page.querySelector('.pf');
+      if (!pf) return;
+      // Parcours les <span> du footer, repère celui qui contient "Page"
+      var spans = pf.querySelectorAll('span');
+      spans.forEach(function(span){
+        var txt = (span.textContent || '').trim();
+        // Match : "Page N / M", "Page {{page_num}} / {{total_pages}}", etc.
+        if (/^Page\b/i.test(txt) && txt.indexOf('/') !== -1) {
+          span.textContent = 'Page ' + pageNum + ' / ' + total;
+        }
+      });
+    });
+  }
+  // Run au DOMContentLoaded ET après load (au cas où les fragments injectés
+  // arrivent en async / les images modifient la hauteur des pages)
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', applyPagination);
+  } else {
+    applyPagination();
+  }
+  window.addEventListener('load', applyPagination);
+})();
+</script>
+
+</body>
+</html>
