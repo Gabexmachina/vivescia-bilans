@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bilan Mensuel VIVESCIA — {{mois_label}}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* ─────────────────────────────────────────────────────────────
+       Reset minimal global
+    ────────────────────────────────────────────────────────────── */
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: 'Raleway', system-ui, -apple-system, sans-serif;
+      background: #BEBEBE;
+      color: #1A2530;
+      line-height: 1.5;
+    }
+
+    /* ─────────────────────────────────────────────────────────────
+       PRINT / PDF — v10 (Session 15)
+       Inchangé depuis v9 :
+       - @page { size: A4; margin: 0 }
+       - .page { width/height STRICTS, overflow:hidden, page-break-after:always }
+       - print-color-adjust: exact
+       - break-inside: avoid pour tables et blocs structurés
+
+       NOUVEAUX correctifs v10 :
+       1. LIGATURES Raleway désactivées en print  (Bug G — "Ofres", "réafrmer", "afuents", "diference")
+          → Chrome PDF print perd le 2e f des ligatures ff/ffi/ffl avec la police Raleway.
+          → font-variant-ligatures: none + font-feature-settings: "liga" 0, "clig" 0, "calt" 0 force
+            chaque caractère à être rendu individuellement.
+
+       2. FOOTER OPAQUE pour bloquer chevauchement contenu débordant  (Bug A1, B1, B2)
+          → Le .pf (position:absolute, bottom:12px) était transparent : tout contenu coulant entre
+            ~270mm et 290mm chevauchait visuellement "Powered by Growth Ex Machina" et "Page X / Y".
+          → background:#fff !important + z-index:100 cache ce résiduel.
+          → ::before crée une zone tampon blanche de 16px AU-DESSUS du footer pour éviter qu'une
+            ligne très basse colle visuellement à la bordure du footer.
+          → Aucun changement au layout interne du footer (display:flex, espacement, etc.).
+
+       Bugs PAS adressés en v10 (Phase 2) :
+       - A2 (Top 11 tronqué)         → split du tableau côté Corporate v3
+       - A3 (13e mot-clé caché)      → réduction font-size ou split côté Corporate v3
+       - K  (Arterre iOS/Android)    → CSS spécifique aux classes des cards Arterre
+       - C  (MyV layout cassé)       → MyV v13 sous-pipeline
+       - D  (placeholders Analyses)  → Code Inject Data des sous-pipelines
+    ────────────────────────────────────────────────────────────── */
+    @page { size: A4; margin: 0; }
+
+    @media print {
+      body {
+        background: #fff !important;
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+      .prv { background: #fff !important; padding: 0 !important; }
+
+      .page {
+        width: 210mm !important;
+        height: 297mm !important;
+        margin: 0 !important;
+        box-shadow: none !important;
+        overflow: hidden !important;
+        page-break-after: always;
+        break-after: page;
+      }
+      .page:last-child {
+        page-break-after: auto;
+        break-after: auto;
+      }
+
+      /* Force l'impression des fonds colorés (KPI cards, badges, donuts...) */
+      * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+
+      /* Évite la coupure des tableaux et blocs structurés en milieu de page */
+      table, .tbl-section, .stra-tbl-wrap, .stra-block, .kpi, .chart-card, .sb {
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+
+      /* Cache les boutons d'export éventuels présents dans certains fragments */
+      .no-print-btn, .no-print { display: none !important; }
+
+      /* ───── v10 FIX 1 : Désactivation ligatures Raleway (Bug G) ───── */
+      body, body *, .page, .page *, .pf, .pf * {
+        font-variant-ligatures: none !important;
+        font-feature-settings: "liga" 0, "clig" 0, "calt" 0 !important;
+        -webkit-font-feature-settings: "liga" 0, "clig" 0, "calt" 0 !important;
+        text-rendering: optimizeSpeed !important;
+      }
+
+      /* ───── v10 FIX 2 : Footer opaque + zone tampon (Bug A1, B1, B2) ───── */
+      .page .pf {
+        background: #fff !important;
+        z-index: 100 !important;
+      }
+      .page .pf::before {
+        content: '';
+        position: absolute;
+        bottom: 100%;
+        left: -32px;
+        right: -32px;
+        height: 16px;
+        background: #fff;
+        z-index: 99;
+        pointer-events: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+{{partie_1}}
+{{partie_2}}
+{{partie_3}}
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     PAGINATION DYNAMIQUE — v8 (INCHANGÉE)
+     Stratégie :
+     - data-ph="page_num" et data-ph="total_pages" -> pris PARTOUT (pour Arterre)
+     - <span> feuilles avec "X / Y" ou "Page X" -> pris SEULEMENT dans .pf 
+       (pour ne pas écraser des badges de section comme ".stra-section-hdr-badge")
+     - Tri par ordre d'apparition dans le DOM
+     - Application multiple + MutationObserver
+═══════════════════════════════════════════════════════════════════════════ -->
+<script>
+(function(){
+  var isApplying = false;
+
+  function applyPagination(){
+    if (isApplying) return;
+    isApplying = true;
+    try {
+      var markers = [];
+
+      // Type A : <span data-ph="page_num"> -> partout
+      document.querySelectorAll('[data-ph="page_num"]').forEach(function(el){
+        markers.push({ type: 'data_ph', element: el });
+      });
+
+      // Type B : <span> feuille dans .pf qui contient un pattern de pagination
+      document.querySelectorAll('.pf span').forEach(function(span){
+        if (span.hasAttribute('data-ph')) return;
+        if (span.querySelector('span')) return;
+        var txt = (span.textContent || '').trim();
+        // "Page X / Y", "Analyse stratégique X / Y", "Page X" (cover sans /)
+        if (/\d+\s*\/\s*\d+\s*$/.test(txt) || /^Page\b/i.test(txt)) {
+          markers.push({ type: 'span_complete', element: span });
+        }
+      });
+
+      // Tri par ordre d'apparition dans le DOM
+      markers.sort(function(a, b){
+        var pos = a.element.compareDocumentPosition(b.element);
+        if (pos & Node.DOCUMENT_POSITION_FOLLOWING) return -1;
+        if (pos & Node.DOCUMENT_POSITION_PRECEDING) return 1;
+        return 0;
+      });
+
+      var total = markers.length;
+      if (total === 0) return;
+
+      markers.forEach(function(m, idx){
+        var pageNum = idx + 1;
+        var newText = (m.type === 'data_ph') 
+          ? String(pageNum)
+          : 'Page ' + pageNum + ' / ' + total;
+        m.element.setAttribute('data-pag-applied', pageNum);
+        m.element.textContent = newText;
+      });
+
+      // total_pages partout (pas restreint à .pf)
+      document.querySelectorAll('[data-ph="total_pages"]').forEach(function(el){
+        el.setAttribute('data-pag-applied', total);
+        el.textContent = String(total);
+      });
+    } finally {
+      isApplying = false;
+    }
+  }
+
+  function scheduleAll(){
+    applyPagination();
+    setTimeout(applyPagination, 200);
+    setTimeout(applyPagination, 800);
+    setTimeout(applyPagination, 2000);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', scheduleAll);
+  } else {
+    scheduleAll();
+  }
+  window.addEventListener('load', scheduleAll);
+
+  var observerActivated = false;
+  function activateObserver(){
+    if (observerActivated) return;
+    observerActivated = true;
+    var observer = new MutationObserver(function(mutations){
+      if (isApplying) return;
+      for (var i = 0; i < mutations.length; i++) {
+        var m = mutations[i];
+        if (m.type === 'characterData' || m.type === 'childList') {
+          var target = m.target;
+          if ((target.parentElement && target.parentElement.hasAttribute && target.parentElement.hasAttribute('data-ph')) ||
+              (target.hasAttribute && target.hasAttribute('data-ph'))) {
+            applyPagination();
+            return;
+          }
+        }
+      }
+    });
+    observer.observe(document.body, { childList: true, subtree: true, characterData: true });
+  }
+  setTimeout(activateObserver, 2500);
+})();
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     v10 FIX 3 : Remplacement des espaces fines insécables (\u202F)  (Bug F)
+     ─────────────────────────────────────────────────────────────────────
+     Pourquoi : les sous-pipelines injectent les nombres avec U+202F (NARROW
+     NO-BREAK SPACE) entre les groupes de milliers ("84\u202f466"). Ce
+     caractère est correctement rendu en browser mais Chrome PDF print le
+     supprime ou le rend zéro-largeur dans certaines configs → "84466".
+     
+     Fix : remplacement DOM de tous les U+202F par U+00A0 (NO-BREAK SPACE
+     classique) qui est universellement bien rendu.
+     
+     Idempotent : peut être appelé plusieurs fois sans dommage.
+     Performance : ~5-10ms sur le DOM complet (~26 pages).
+═══════════════════════════════════════════════════════════════════════════ -->
+<script>
+(function(){
+  function replaceNarrowNoBreakSpace(){
+    var walker = document.createTreeWalker(
+      document.body,
+      NodeFilter.SHOW_TEXT,
+      null,
+      false
+    );
+    var node;
+    var count = 0;
+    while ((node = walker.nextNode())) {
+      if (node.nodeValue && node.nodeValue.indexOf('\u202F') !== -1) {
+        node.nodeValue = node.nodeValue.replace(/\u202F/g, '\u00A0');
+        count++;
+      }
+    }
+    if (window.console && count > 0) {
+      console.log('[wrapper v10] U+202F → U+00A0 replaced in ' + count + ' text nodes');
+    }
+  }
+
+  function scheduleReplace(){
+    replaceNarrowNoBreakSpace();
+    setTimeout(replaceNarrowNoBreakSpace, 500);
+    setTimeout(replaceNarrowNoBreakSpace, 1500);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', scheduleReplace);
+  } else {
+    scheduleReplace();
+  }
+  window.addEventListener('load', scheduleReplace);
+  // Avant impression : un dernier passage pour les contenus injectés tardivement
+  window.addEventListener('beforeprint', replaceNarrowNoBreakSpace);
+})();
+</script>
+
+</body>
+</html>
