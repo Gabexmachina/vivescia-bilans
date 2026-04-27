@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bilan Mensuel VIVESCIA — {{mois_label}}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* ── Reset minimal global ────────────────────────────────────────────── */
+    * { box-sizing: border-box; }
+    html, body { margin:0; padding:0; }
+    body {
+      font-family: 'Raleway', system-ui, -apple-system, sans-serif;
+      background: #BEBEBE;
+      color: #1A2530;
+      line-height: 1.5;
+    }
+
+    /* ── Print / PDF : 1 page A4 par .page ───────────────────────────────── */
+    @media print {
+      body { background: #fff; }
+      .prv { background: #fff !important; padding: 0 !important; }
+      .page {
+        margin: 0 !important;
+        box-shadow: none !important;
+        page-break-after: always;
+      }
+      .page:last-child { page-break-after: auto; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     PARTIE 1 — VIVESCIA Corporate (vivescia.com)
+═══════════════════════════════════════════════════════════════════════════ -->
+{{partie_1}}
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     PARTIE 2 — MyVIVESCIA (intranet)
+═══════════════════════════════════════════════════════════════════════════ -->
+{{partie_2}}
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     PARTIE 3 — Arterre (extranet + applications mobiles)
+═══════════════════════════════════════════════════════════════════════════ -->
+{{partie_3}}
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     PAGINATION DYNAMIQUE — v6 (filtre par contexte parent)
+     - Pour data-ph="page_num" / "total_pages" : on ne prend QUE ceux dont 
+       le parent contient le mot "Page" (= footer global, pas un titre de
+       sous-section comme "Analyse stratégique 1/3")
+     - Pour <span> feuille : on prend ceux qui commencent par "Page" 
+       (avec ou sans "/")
+     - Re-applique plusieurs fois pour battre les scripts internes
+═══════════════════════════════════════════════════════════════════════════ -->
+<script>
+(function(){
+  var isApplying = false;
+
+  // Vérifie si l'élément data-ph est dans un footer global ("Page X / Y")
+  function isGlobalPaginationContext(el) {
+    var parent = el.parentElement;
+    if (!parent) return false;
+    var txt = parent.textContent || '';
+    // Le parent doit contenir le mot "Page" (au sens "Page 1", "Page X / Y")
+    // Exclut explicitement les sous-sections type "Analyse stratégique 1 / 3"
+    return /\bPage\b/i.test(txt);
+  }
+
+  function applyPagination(){
+    if (isApplying) return;
+    isApplying = true;
+    try {
+      var markers = [];
+
+      // Type A : <span data-ph="page_num"> dans un footer global
+      document.querySelectorAll('[data-ph="page_num"]').forEach(function(el){
+        if (isGlobalPaginationContext(el)) {
+          markers.push({ type: 'data_ph', element: el });
+        }
+      });
+
+      // Type B : <span> feuille commençant par "Page" 
+      // (avec ou sans "/" pour gérer la cover "Page 1")
+      document.querySelectorAll('span').forEach(function(span){
+        if (span.hasAttribute('data-ph')) return;
+        if (span.querySelector('span')) return;
+        var txt = (span.textContent || '').trim();
+        // Matche "Page X", "Page X / Y", "Page {{page_num}} / {{total_pages}}"
+        if (/^Page\b/i.test(txt)) {
+          markers.push({ type: 'span_complete', element: span });
+        }
+      });
+
+      // Tri par ordre d'apparition dans le DOM
+      markers.sort(function(a, b){
+        var pos = a.element.compareDocumentPosition(b.element);
+        if (pos & Node.DOCUMENT_POSITION_FOLLOWING) return -1;
+        if (pos & Node.DOCUMENT_POSITION_PRECEDING) return 1;
+        return 0;
+      });
+
+      var total = markers.length;
+      if (total === 0) return;
+
+      markers.forEach(function(m, idx){
+        var pageNum = idx + 1;
+        var newText = (m.type === 'data_ph') 
+          ? String(pageNum)
+          : 'Page ' + pageNum + ' / ' + total;
+        m.element.setAttribute('data-pag-applied', pageNum);
+        m.element.textContent = newText;
+      });
+
+      // <span data-ph="total_pages"> : seulement ceux dans un footer global
+      document.querySelectorAll('[data-ph="total_pages"]').forEach(function(el){
+        if (isGlobalPaginationContext(el)) {
+          el.setAttribute('data-pag-applied', total);
+          el.textContent = String(total);
+        }
+      });
+    } finally {
+      isApplying = false;
+    }
+  }
+
+  function scheduleAll(){
+    applyPagination();
+    setTimeout(applyPagination, 200);
+    setTimeout(applyPagination, 800);
+    setTimeout(applyPagination, 2000);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', scheduleAll);
+  } else {
+    scheduleAll();
+  }
+  window.addEventListener('load', scheduleAll);
+
+  // MutationObserver pour réagir aux modifs externes
+  var observerActivated = false;
+  function activateObserver(){
+    if (observerActivated) return;
+    observerActivated = true;
+    var observer = new MutationObserver(function(mutations){
+      if (isApplying) return;
+      for (var i = 0; i < mutations.length; i++) {
+        var m = mutations[i];
+        if (m.type === 'characterData' || m.type === 'childList') {
+          var target = m.target;
+          if ((target.parentElement && target.parentElement.hasAttribute && target.parentElement.hasAttribute('data-ph')) ||
+              (target.hasAttribute && target.hasAttribute('data-ph'))) {
+            applyPagination();
+            return;
+          }
+        }
+      }
+    });
+    observer.observe(document.body, { childList: true, subtree: true, characterData: true });
+  }
+  setTimeout(activateObserver, 2500);
+})();
+</script>
+
+</body>
+</html>
