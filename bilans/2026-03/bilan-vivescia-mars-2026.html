@@ -21,33 +21,25 @@
     }
 
     /* ─────────────────────────────────────────────────────────────
-       PRINT / PDF — v10 (Session 15)
-       Inchangé depuis v9 :
+       PRINT / PDF — v11 (Session 15)
+
+       v11 vs v10 :
+       NOUVEAU FIX 4 : Compactage cards Détails performances MyV (Pages 18-20 du bilan)
+         → 4 cards .be par page débordent systématiquement → le 4e bloc était masqué
+           par le footer opaque introduit en v10.
+         → Stratégie défensive : réduire line-height + margin uniquement, en print only.
+         → Browser inchangé. Effet : ~5-8mm gagnés par card × 4 = ~25mm libérés par page.
+
+       v10 vs v9 (rappel) :
+       - FIX 1 (G) : ligatures Raleway désactivées en print → "Offres", "réaffirmer", "différence" propres
+       - FIX 2 (A1/B1/B2) : footer opaque + zone tampon → fin du chevauchement visuel
+       - FIX 3 (F) : remplacement \u202F → \u00A0 → espaces fines bien rendues en PDF Chrome
+
+       v9 (inchangé) :
        - @page { size: A4; margin: 0 }
-       - .page { width/height STRICTS, overflow:hidden, page-break-after:always }
+       - .page strict 210x297mm + overflow:hidden + page-break-after:always
        - print-color-adjust: exact
-       - break-inside: avoid pour tables et blocs structurés
-
-       NOUVEAUX correctifs v10 :
-       1. LIGATURES Raleway désactivées en print  (Bug G — "Ofres", "réafrmer", "afuents", "diference")
-          → Chrome PDF print perd le 2e f des ligatures ff/ffi/ffl avec la police Raleway.
-          → font-variant-ligatures: none + font-feature-settings: "liga" 0, "clig" 0, "calt" 0 force
-            chaque caractère à être rendu individuellement.
-
-       2. FOOTER OPAQUE pour bloquer chevauchement contenu débordant  (Bug A1, B1, B2)
-          → Le .pf (position:absolute, bottom:12px) était transparent : tout contenu coulant entre
-            ~270mm et 290mm chevauchait visuellement "Powered by Growth Ex Machina" et "Page X / Y".
-          → background:#fff !important + z-index:100 cache ce résiduel.
-          → ::before crée une zone tampon blanche de 16px AU-DESSUS du footer pour éviter qu'une
-            ligne très basse colle visuellement à la bordure du footer.
-          → Aucun changement au layout interne du footer (display:flex, espacement, etc.).
-
-       Bugs PAS adressés en v10 (Phase 2) :
-       - A2 (Top 11 tronqué)         → split du tableau côté Corporate v3
-       - A3 (13e mot-clé caché)      → réduction font-size ou split côté Corporate v3
-       - K  (Arterre iOS/Android)    → CSS spécifique aux classes des cards Arterre
-       - C  (MyV layout cassé)       → MyV v13 sous-pipeline
-       - D  (placeholders Analyses)  → Code Inject Data des sous-pipelines
+       - break-inside: avoid sur tableaux et blocs structurés
     ────────────────────────────────────────────────────────────── */
     @page { size: A4; margin: 0; }
 
@@ -111,6 +103,56 @@
         background: #fff;
         z-index: 99;
         pointer-events: none;
+      }
+
+      /* ───── v11 FIX 4 : Compactage cards Détails MyV (Bug pages 18-19-20) ───── */
+      /*
+        Architecture des cards .be (sous-pipeline MyV v13) :
+          .be (card entreprise)
+          ├── .be-left  : .be-logo (img + .be-vsl) + .be-kpis (3 × .kpi-row)
+          └── .be-right : .actu-header (.actu-title + .pages-vues-label) + .actu-list (5 × .acr)
+
+        Stratégie : compacter line-height et margin (gains mécaniques sans risque),
+        + très légère réduction font-size sur titres et libellés secondaires.
+        Aucune modification des valeurs principales (.kpi-v, .acv) pour préserver
+        la lisibilité des chiffres clés.
+      */
+
+      /* Card globale : marge réduite entre cards */
+      .be {
+        margin-bottom: 6px !important;
+      }
+
+      /* KPIs colonne gauche : compactage vertical des 3 lignes */
+      .be .be-kpis .kpi-row {
+        line-height: 1.25 !important;
+        margin: 1px 0 !important;
+      }
+      .be .be-kpis .kpi-l {
+        font-size: 9.5px !important;
+      }
+
+      /* Header Top 5 : marge réduite */
+      .be .be-right .actu-header {
+        margin-bottom: 4px !important;
+      }
+      .be .be-right .actu-title {
+        font-size: 10.5px !important;
+      }
+      .be .be-right .pages-vues-label {
+        font-size: 9px !important;
+      }
+
+      /* Liste Top 5 actus : compactage vertical des 5 lignes */
+      .be .actu-list .acr {
+        line-height: 1.3 !important;
+        margin: 1.5px 0 !important;
+        padding-top: 1px !important;
+        padding-bottom: 1px !important;
+      }
+      .be .actu-list .act,
+      .be .actu-list .acn {
+        font-size: 9.5px !important;
       }
     }
   </style>
@@ -4284,7 +4326,7 @@ table tbody tr:last-child td{border-bottom:none}
           </div>
           <span class="var-tag var-up" data-ph="evol_web_var_tag">↑ +117,0% vs Mars N-1</span>
         </div>
-        <div data-block="evol_web_svg"><svg class="evol-svg" viewBox="0 0 700 110" preserveAspectRatio="xMidYMid meet"><defs><linearGradient id="grad-516170" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#6B8E23" stop-opacity="0.32"/><stop offset="100%" stop-color="#6B8E23" stop-opacity="0.04"/></linearGradient></defs><line x1="38" y1="90.0" x2="688" y2="90.0" stroke="#F0EDE6" stroke-width="1" stroke-dasharray="2,2"/><text x="32" y="93.0" fill="#9CA3AF" font-size="7.5" font-weight="600" text-anchor="end" font-family="Raleway">22 240</text><line x1="38" y1="51.0" x2="688" y2="51.0" stroke="#F0EDE6" stroke-width="1" stroke-dasharray="2,2"/><text x="32" y="54.0" fill="#9CA3AF" font-size="7.5" font-weight="600" text-anchor="end" font-family="Raleway">93 428</text><line x1="38" y1="12.0" x2="688" y2="12.0" stroke="#F0EDE6" stroke-width="1" stroke-dasharray="2,2"/><text x="32" y="15.0" fill="#9CA3AF" font-size="7.5" font-weight="600" text-anchor="end" font-family="Raleway">164 616</text><path d="M 38.0 90 L 38.0 68.9 L 92.2 78.3 L 146.3 81.0 L 200.5 77.1 L 254.7 21.0 L 308.8 59.8 L 363.0 46.2 L 417.2 44.7 L 471.3 53.1 L 525.5 59.5 L 579.7 48.3 L 633.8 47.2 L 688.0 29.9 L 688.0 90 Z" fill="url(#grad-516170)" stroke="none"/><path d="M 38.0 68.9 L 92.2 78.3 L 146.3 81.0 L 200.5 77.1 L 254.7 21.0 L 308.8 59.8 L 363.0 46.2 L 417.2 44.7 L 471.3 53.1 L 525.5 59.5 L 579.7 48.3 L 633.8 47.2 L 688.0 29.9 " fill="none" stroke="#6B8E23" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="38.0" cy="68.9" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="92.2" cy="78.3" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="146.3" cy="81.0" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="200.5" cy="77.1" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="254.7" cy="21.0" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="308.8" cy="59.8" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="363.0" cy="46.2" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="417.2" cy="44.7" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="471.3" cy="53.1" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="525.5" cy="59.5" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="579.7" cy="48.3" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="633.8" cy="47.2" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="688.0" cy="29.9" r="4.5" fill="#6B8E23" stroke="#fff" stroke-width="2"/><text x="688.0" y="20.9" fill="#6B8E23" font-size="9" font-weight="800" text-anchor="middle" font-family="Raleway">132 016</text><text x="38.0" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Mar 25</text><text x="146.3" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Mai 25</text><text x="254.7" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Juil 25</text><text x="363.0" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Sep 25</text><text x="471.3" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Nov 25</text><text x="579.7" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Jan 26</text><text x="688.0" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Mars 2026</text></svg></div>
+        <div data-block="evol_web_svg"><svg class="evol-svg" viewBox="0 0 700 110" preserveAspectRatio="xMidYMid meet"><defs><linearGradient id="grad-667121" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#6B8E23" stop-opacity="0.32"/><stop offset="100%" stop-color="#6B8E23" stop-opacity="0.04"/></linearGradient></defs><line x1="38" y1="90.0" x2="688" y2="90.0" stroke="#F0EDE6" stroke-width="1" stroke-dasharray="2,2"/><text x="32" y="93.0" fill="#9CA3AF" font-size="7.5" font-weight="600" text-anchor="end" font-family="Raleway">22 240</text><line x1="38" y1="51.0" x2="688" y2="51.0" stroke="#F0EDE6" stroke-width="1" stroke-dasharray="2,2"/><text x="32" y="54.0" fill="#9CA3AF" font-size="7.5" font-weight="600" text-anchor="end" font-family="Raleway">93 428</text><line x1="38" y1="12.0" x2="688" y2="12.0" stroke="#F0EDE6" stroke-width="1" stroke-dasharray="2,2"/><text x="32" y="15.0" fill="#9CA3AF" font-size="7.5" font-weight="600" text-anchor="end" font-family="Raleway">164 616</text><path d="M 38.0 90 L 38.0 68.9 L 92.2 78.3 L 146.3 81.0 L 200.5 77.1 L 254.7 21.0 L 308.8 59.8 L 363.0 46.2 L 417.2 44.7 L 471.3 53.1 L 525.5 59.5 L 579.7 48.3 L 633.8 47.2 L 688.0 29.9 L 688.0 90 Z" fill="url(#grad-667121)" stroke="none"/><path d="M 38.0 68.9 L 92.2 78.3 L 146.3 81.0 L 200.5 77.1 L 254.7 21.0 L 308.8 59.8 L 363.0 46.2 L 417.2 44.7 L 471.3 53.1 L 525.5 59.5 L 579.7 48.3 L 633.8 47.2 L 688.0 29.9 " fill="none" stroke="#6B8E23" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="38.0" cy="68.9" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="92.2" cy="78.3" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="146.3" cy="81.0" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="200.5" cy="77.1" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="254.7" cy="21.0" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="308.8" cy="59.8" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="363.0" cy="46.2" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="417.2" cy="44.7" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="471.3" cy="53.1" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="525.5" cy="59.5" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="579.7" cy="48.3" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="633.8" cy="47.2" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="688.0" cy="29.9" r="4.5" fill="#6B8E23" stroke="#fff" stroke-width="2"/><text x="688.0" y="20.9" fill="#6B8E23" font-size="9" font-weight="800" text-anchor="middle" font-family="Raleway">132 016</text><text x="38.0" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Mar 25</text><text x="146.3" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Mai 25</text><text x="254.7" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Juil 25</text><text x="363.0" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Sep 25</text><text x="471.3" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Nov 25</text><text x="579.7" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Jan 26</text><text x="688.0" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Mars 2026</text></svg></div>
       </div>
     </div>
 
@@ -4359,7 +4401,7 @@ table tbody tr:last-child td{border-bottom:none}
           </div>
           <span class="var-tag var-neutral" data-ph="evol_apps_var_tag">— vs Mars N-1</span>
         </div>
-        <div data-block="evol_apps_svg"><svg class="evol-svg" viewBox="0 0 700 110" preserveAspectRatio="xMidYMid meet"><defs><linearGradient id="grad-545949" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#8B7355" stop-opacity="0.32"/><stop offset="100%" stop-color="#8B7355" stop-opacity="0.04"/></linearGradient></defs><line x1="38" y1="90.0" x2="688" y2="90.0" stroke="#F0EDE6" stroke-width="1" stroke-dasharray="2,2"/><text x="32" y="93.0" fill="#9CA3AF" font-size="7.5" font-weight="600" text-anchor="end" font-family="Raleway">0</text><line x1="38" y1="51.0" x2="688" y2="51.0" stroke="#F0EDE6" stroke-width="1" stroke-dasharray="2,2"/><text x="32" y="54.0" fill="#9CA3AF" font-size="7.5" font-weight="600" text-anchor="end" font-family="Raleway">8 049</text><line x1="38" y1="12.0" x2="688" y2="12.0" stroke="#F0EDE6" stroke-width="1" stroke-dasharray="2,2"/><text x="32" y="15.0" fill="#9CA3AF" font-size="7.5" font-weight="600" text-anchor="end" font-family="Raleway">16 098</text><path d="M 38.0 90 L 38.0 90.0 L 92.2 90.0 L 146.3 90.0 L 200.5 89.9 L 254.7 90.0 L 308.8 90.0 L 363.0 90.0 L 417.2 90.0 L 471.3 78.7 L 525.5 78.1 L 579.7 72.9 L 633.8 64.4 L 688.0 22.2 L 688.0 90 Z" fill="url(#grad-545949)" stroke="none"/><path d="M 38.0 90.0 L 92.2 90.0 L 146.3 90.0 L 200.5 89.9 L 254.7 90.0 L 308.8 90.0 L 363.0 90.0 L 417.2 90.0 L 471.3 78.7 L 525.5 78.1 L 579.7 72.9 L 633.8 64.4 L 688.0 22.2 " fill="none" stroke="#8B7355" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="38.0" cy="90.0" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="92.2" cy="90.0" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="146.3" cy="90.0" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="200.5" cy="89.9" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="254.7" cy="90.0" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="308.8" cy="90.0" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="363.0" cy="90.0" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="417.2" cy="90.0" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="471.3" cy="78.7" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="525.5" cy="78.1" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="579.7" cy="72.9" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="633.8" cy="64.4" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="688.0" cy="22.2" r="4.5" fill="#8B7355" stroke="#fff" stroke-width="2"/><text x="688.0" y="13.2" fill="#8B7355" font-size="9" font-weight="800" text-anchor="middle" font-family="Raleway">13 998</text><text x="38.0" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Mar 25</text><text x="146.3" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Mai 25</text><text x="254.7" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Juil 25</text><text x="363.0" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Sep 25</text><text x="471.3" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Nov 25</text><text x="579.7" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Jan 26</text><text x="688.0" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Mars 2026</text></svg></div>
+        <div data-block="evol_apps_svg"><svg class="evol-svg" viewBox="0 0 700 110" preserveAspectRatio="xMidYMid meet"><defs><linearGradient id="grad-141073" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#8B7355" stop-opacity="0.32"/><stop offset="100%" stop-color="#8B7355" stop-opacity="0.04"/></linearGradient></defs><line x1="38" y1="90.0" x2="688" y2="90.0" stroke="#F0EDE6" stroke-width="1" stroke-dasharray="2,2"/><text x="32" y="93.0" fill="#9CA3AF" font-size="7.5" font-weight="600" text-anchor="end" font-family="Raleway">0</text><line x1="38" y1="51.0" x2="688" y2="51.0" stroke="#F0EDE6" stroke-width="1" stroke-dasharray="2,2"/><text x="32" y="54.0" fill="#9CA3AF" font-size="7.5" font-weight="600" text-anchor="end" font-family="Raleway">8 049</text><line x1="38" y1="12.0" x2="688" y2="12.0" stroke="#F0EDE6" stroke-width="1" stroke-dasharray="2,2"/><text x="32" y="15.0" fill="#9CA3AF" font-size="7.5" font-weight="600" text-anchor="end" font-family="Raleway">16 098</text><path d="M 38.0 90 L 38.0 90.0 L 92.2 90.0 L 146.3 90.0 L 200.5 89.9 L 254.7 90.0 L 308.8 90.0 L 363.0 90.0 L 417.2 90.0 L 471.3 78.7 L 525.5 78.1 L 579.7 72.9 L 633.8 64.4 L 688.0 22.2 L 688.0 90 Z" fill="url(#grad-141073)" stroke="none"/><path d="M 38.0 90.0 L 92.2 90.0 L 146.3 90.0 L 200.5 89.9 L 254.7 90.0 L 308.8 90.0 L 363.0 90.0 L 417.2 90.0 L 471.3 78.7 L 525.5 78.1 L 579.7 72.9 L 633.8 64.4 L 688.0 22.2 " fill="none" stroke="#8B7355" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="38.0" cy="90.0" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="92.2" cy="90.0" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="146.3" cy="90.0" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="200.5" cy="89.9" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="254.7" cy="90.0" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="308.8" cy="90.0" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="363.0" cy="90.0" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="417.2" cy="90.0" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="471.3" cy="78.7" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="525.5" cy="78.1" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="579.7" cy="72.9" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="633.8" cy="64.4" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="688.0" cy="22.2" r="4.5" fill="#8B7355" stroke="#fff" stroke-width="2"/><text x="688.0" y="13.2" fill="#8B7355" font-size="9" font-weight="800" text-anchor="middle" font-family="Raleway">13 998</text><text x="38.0" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Mar 25</text><text x="146.3" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Mai 25</text><text x="254.7" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Juil 25</text><text x="363.0" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Sep 25</text><text x="471.3" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Nov 25</text><text x="579.7" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Jan 26</text><text x="688.0" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Mars 2026</text></svg></div>
       </div>
     </div>
 
@@ -4911,7 +4953,7 @@ table tbody tr:last-child td{border-bottom:none}
       }
     }
     if (window.console && count > 0) {
-      console.log('[wrapper v10] U+202F → U+00A0 replaced in ' + count + ' text nodes');
+      console.log('[wrapper v11] U+202F → U+00A0 replaced in ' + count + ' text nodes');
     }
   }
 
