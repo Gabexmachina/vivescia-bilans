@@ -21,25 +21,42 @@
     }
 
     /* ─────────────────────────────────────────────────────────────
-       PRINT / PDF — v11 (Session 15)
+       PRINT / PDF — v12 (Session 15)
 
-       v11 vs v10 :
-       NOUVEAU FIX 4 : Compactage cards Détails performances MyV (Pages 18-20 du bilan)
-         → 4 cards .be par page débordent systématiquement → le 4e bloc était masqué
-           par le footer opaque introduit en v10.
-         → Stratégie défensive : réduire line-height + margin uniquement, en print only.
-         → Browser inchangé. Effet : ~5-8mm gagnés par card × 4 = ~25mm libérés par page.
+       v12 vs v11 :
+       FIX 5 — Footer TRANSPARENT (proposition Gabriel)
+         → On retire le background:#fff blanc et la zone tampon ::before.
+         → Le contenu débordant redevient visible (au lieu d'être masqué).
+         → Trade-off accepté : si débordement, chevauchement léger du texte du footer.
+         → Mitigation : on combine avec un compactage plus offensif (point suivant).
 
-       v10 vs v9 (rappel) :
-       - FIX 1 (G) : ligatures Raleway désactivées en print → "Offres", "réaffirmer", "différence" propres
-       - FIX 2 (A1/B1/B2) : footer opaque + zone tampon → fin du chevauchement visuel
-       - FIX 3 (F) : remplacement \u202F → \u00A0 → espaces fines bien rendues en PDF Chrome
+       FIX 6 — Compactage MyV Détails plus offensif
+         → v11 était conservateur. v12 ajoute des réductions font-size pour gagner ~3-4mm
+           supplémentaires par card. Les débordements résiduels deviennent ≤ 2-3mm.
 
-       v9 (inchangé) :
-       - @page { size: A4; margin: 0 }
-       - .page strict 210x297mm + overflow:hidden + page-break-after:always
-       - print-color-adjust: exact
-       - break-inside: avoid sur tableaux et blocs structurés
+       FIX 7 — Compactage mots-clés thématiques Corporate (Bug A3 — page 8)
+         → Cible: tables .kw-tbl, line-height + margin + font-size compactés
+         → Permet aux thématiques de 13 mots-clés (Groupe VIVESCIA) de tenir sans débordement.
+
+       FIX 8 — Page-break forcé avant Top 11 Corporate (Bug A2 — page 6)
+         → JS qui détecte le titre "TOP 11 ACTUALITES VUES" et injecte page-break-before:always
+           sur son conteneur parent. Le Top 11 démarre alors sur une nouvelle page.
+         → Conséquence : bilan passe de 26 à 27 pages. Mais zéro perte de contenu.
+
+       FIX 9 — Labels Arterre iOS/Android lisibles (Bug K — page 22)
+         → JS qui trouve les blocs contenant "ARTERRE IOS" ou "ARTERRE ANDROID"
+           et fonce les libellés (UTILISATEURS, VISITES, DURÉE MOYENNE, PAGES VUES) en print.
+
+       Bugs encore non adressés :
+       - A1 (CAMPAGNES) : nécessite le template HTML Corporate v3 pour ciblage précis
+       - C  (MyV Consultation page 17) : layout structurel sous-pipeline MyV v13
+       - D  (placeholders Analyse4/5/7/10/16/19) : Code Inject Data (Phase 3)
+       - H  (emojis cassés page 8) : remplacer par SVG, traitement séparé
+       - Pagination 25→26 : fix JS pagination wrapper, traitement séparé
+       - L,M (charts MyV/Arterre labels) : sous-pipelines
+
+       v11 (préservé) : FIX 1 (G) FIX 2 (footer→supprimé en v12) FIX 3 (F) FIX 4 (compactage MyV)
+       v9  (préservé) : @page A4, .page strict, print-color-adjust
     ────────────────────────────────────────────────────────────── */
     @page { size: A4; margin: 0; }
 
@@ -88,70 +105,93 @@
         text-rendering: optimizeSpeed !important;
       }
 
-      /* ───── v10 FIX 2 : Footer opaque + zone tampon (Bug A1, B1, B2) ───── */
+      /* ───── v12 FIX 5 : Footer TRANSPARENT (suppression background blanc + ::before) ───── */
+      /*
+         v10/v11 avait : background:#fff !important + ::before { height:16px; background:#fff }
+         qui masquait le contenu débordant. Validé par Gabriel : on enlève cette bande blanche.
+         Le contenu débordant chevauchera visuellement le footer mais restera lisible.
+         Le z-index est conservé pour que le texte du footer reste prioritaire en cas de chevauchement.
+      */
       .page .pf {
-        background: #fff !important;
+        background: transparent !important;
         z-index: 100 !important;
       }
-      .page .pf::before {
-        content: '';
-        position: absolute;
-        bottom: 100%;
-        left: -32px;
-        right: -32px;
-        height: 16px;
-        background: #fff;
-        z-index: 99;
-        pointer-events: none;
-      }
+      /* Pas de ::before tampon en v12 (supprimé). */
 
-      /* ───── v11 FIX 4 : Compactage cards Détails MyV (Bug pages 18-19-20) ───── */
-      /*
-        Architecture des cards .be (sous-pipeline MyV v13) :
-          .be (card entreprise)
-          ├── .be-left  : .be-logo (img + .be-vsl) + .be-kpis (3 × .kpi-row)
-          └── .be-right : .actu-header (.actu-title + .pages-vues-label) + .actu-list (5 × .acr)
-
-        Stratégie : compacter line-height et margin (gains mécaniques sans risque),
-        + très légère réduction font-size sur titres et libellés secondaires.
-        Aucune modification des valeurs principales (.kpi-v, .acv) pour préserver
-        la lisibilité des chiffres clés.
-      */
-
-      /* Card globale : marge réduite entre cards */
+      /* ───── v12 FIX 6 : Compactage MyV Détails plus offensif ───── */
       .be {
-        margin-bottom: 6px !important;
-      }
-
-      /* KPIs colonne gauche : compactage vertical des 3 lignes */
-      .be .be-kpis .kpi-row {
-        line-height: 1.25 !important;
-        margin: 1px 0 !important;
-      }
-      .be .be-kpis .kpi-l {
-        font-size: 9.5px !important;
-      }
-
-      /* Header Top 5 : marge réduite */
-      .be .be-right .actu-header {
         margin-bottom: 4px !important;
       }
-      .be .be-right .actu-title {
-        font-size: 10.5px !important;
+      .be .be-kpis .kpi-row {
+        line-height: 1.2 !important;
+        margin: 0 !important;
       }
-      .be .be-right .pages-vues-label {
+      .be .be-kpis .kpi-l {
         font-size: 9px !important;
       }
-
-      /* Liste Top 5 actus : compactage vertical des 5 lignes */
+      .be .be-kpis .kpi-v {
+        font-size: 12.5px !important;
+      }
+      .be .be-right .actu-header {
+        margin-bottom: 3px !important;
+      }
+      .be .be-right .actu-title {
+        font-size: 10px !important;
+      }
+      .be .be-right .pages-vues-label {
+        font-size: 8.5px !important;
+      }
       .be .actu-list .acr {
-        line-height: 1.3 !important;
-        margin: 1.5px 0 !important;
-        padding-top: 1px !important;
-        padding-bottom: 1px !important;
+        line-height: 1.25 !important;
+        margin: 1px 0 !important;
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
       }
       .be .actu-list .act,
       .be .actu-list .acn {
+        font-size: 9px !important;
+      }
+      .be .actu-list .acv {
+        font-size: 10px !important;
+      }
+
+      /* ───── v12 FIX 7 : Compactage mots-clés thématiques Corporate (Bug A3) ───── */
+      /*
+         Ciblé sur la page SEO Évolution & Top Mots-Clés (page 8 du bilan).
+         La thématique "Groupe VIVESCIA" a 13 mots-clés et la 13e ligne dépassait.
+         Compactage CSS uniquement, classes exactes du Code Inject Corporate v3.6.
+      */
+      .kw-tbl-section {
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+      .kw-tbl-hdr {
+        padding: 6px 10px !important;
+      }
+      .kw-tbl-title {
+        font-size: 10.5px !important;
+      }
+      .kw-tbl-badge {
+        font-size: 9px !important;
+      }
+      .kw-tbl thead th {
+        font-size: 9px !important;
+        padding: 4px 6px !important;
+      }
+      .kw-tbl tbody tr {
+        line-height: 1.15 !important;
+      }
+      .kw-tbl tbody td {
+        padding: 2px 6px !important;
+        font-size: 9.5px !important;
+      }
+      .kw-tbl .t-num {
+        font-size: 9px !important;
+      }
+      .kw-tbl .t-val {
+        font-size: 9.5px !important;
+      }
+      .kw-name {
         font-size: 9.5px !important;
       }
     }
@@ -4326,7 +4366,7 @@ table tbody tr:last-child td{border-bottom:none}
           </div>
           <span class="var-tag var-up" data-ph="evol_web_var_tag">↑ +117,0% vs Mars N-1</span>
         </div>
-        <div data-block="evol_web_svg"><svg class="evol-svg" viewBox="0 0 700 110" preserveAspectRatio="xMidYMid meet"><defs><linearGradient id="grad-667121" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#6B8E23" stop-opacity="0.32"/><stop offset="100%" stop-color="#6B8E23" stop-opacity="0.04"/></linearGradient></defs><line x1="38" y1="90.0" x2="688" y2="90.0" stroke="#F0EDE6" stroke-width="1" stroke-dasharray="2,2"/><text x="32" y="93.0" fill="#9CA3AF" font-size="7.5" font-weight="600" text-anchor="end" font-family="Raleway">22 240</text><line x1="38" y1="51.0" x2="688" y2="51.0" stroke="#F0EDE6" stroke-width="1" stroke-dasharray="2,2"/><text x="32" y="54.0" fill="#9CA3AF" font-size="7.5" font-weight="600" text-anchor="end" font-family="Raleway">93 428</text><line x1="38" y1="12.0" x2="688" y2="12.0" stroke="#F0EDE6" stroke-width="1" stroke-dasharray="2,2"/><text x="32" y="15.0" fill="#9CA3AF" font-size="7.5" font-weight="600" text-anchor="end" font-family="Raleway">164 616</text><path d="M 38.0 90 L 38.0 68.9 L 92.2 78.3 L 146.3 81.0 L 200.5 77.1 L 254.7 21.0 L 308.8 59.8 L 363.0 46.2 L 417.2 44.7 L 471.3 53.1 L 525.5 59.5 L 579.7 48.3 L 633.8 47.2 L 688.0 29.9 L 688.0 90 Z" fill="url(#grad-667121)" stroke="none"/><path d="M 38.0 68.9 L 92.2 78.3 L 146.3 81.0 L 200.5 77.1 L 254.7 21.0 L 308.8 59.8 L 363.0 46.2 L 417.2 44.7 L 471.3 53.1 L 525.5 59.5 L 579.7 48.3 L 633.8 47.2 L 688.0 29.9 " fill="none" stroke="#6B8E23" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="38.0" cy="68.9" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="92.2" cy="78.3" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="146.3" cy="81.0" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="200.5" cy="77.1" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="254.7" cy="21.0" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="308.8" cy="59.8" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="363.0" cy="46.2" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="417.2" cy="44.7" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="471.3" cy="53.1" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="525.5" cy="59.5" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="579.7" cy="48.3" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="633.8" cy="47.2" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="688.0" cy="29.9" r="4.5" fill="#6B8E23" stroke="#fff" stroke-width="2"/><text x="688.0" y="20.9" fill="#6B8E23" font-size="9" font-weight="800" text-anchor="middle" font-family="Raleway">132 016</text><text x="38.0" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Mar 25</text><text x="146.3" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Mai 25</text><text x="254.7" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Juil 25</text><text x="363.0" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Sep 25</text><text x="471.3" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Nov 25</text><text x="579.7" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Jan 26</text><text x="688.0" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Mars 2026</text></svg></div>
+        <div data-block="evol_web_svg"><svg class="evol-svg" viewBox="0 0 700 110" preserveAspectRatio="xMidYMid meet"><defs><linearGradient id="grad-407643" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#6B8E23" stop-opacity="0.32"/><stop offset="100%" stop-color="#6B8E23" stop-opacity="0.04"/></linearGradient></defs><line x1="38" y1="90.0" x2="688" y2="90.0" stroke="#F0EDE6" stroke-width="1" stroke-dasharray="2,2"/><text x="32" y="93.0" fill="#9CA3AF" font-size="7.5" font-weight="600" text-anchor="end" font-family="Raleway">22 240</text><line x1="38" y1="51.0" x2="688" y2="51.0" stroke="#F0EDE6" stroke-width="1" stroke-dasharray="2,2"/><text x="32" y="54.0" fill="#9CA3AF" font-size="7.5" font-weight="600" text-anchor="end" font-family="Raleway">93 428</text><line x1="38" y1="12.0" x2="688" y2="12.0" stroke="#F0EDE6" stroke-width="1" stroke-dasharray="2,2"/><text x="32" y="15.0" fill="#9CA3AF" font-size="7.5" font-weight="600" text-anchor="end" font-family="Raleway">164 616</text><path d="M 38.0 90 L 38.0 68.9 L 92.2 78.3 L 146.3 81.0 L 200.5 77.1 L 254.7 21.0 L 308.8 59.8 L 363.0 46.2 L 417.2 44.7 L 471.3 53.1 L 525.5 59.5 L 579.7 48.3 L 633.8 47.2 L 688.0 29.9 L 688.0 90 Z" fill="url(#grad-407643)" stroke="none"/><path d="M 38.0 68.9 L 92.2 78.3 L 146.3 81.0 L 200.5 77.1 L 254.7 21.0 L 308.8 59.8 L 363.0 46.2 L 417.2 44.7 L 471.3 53.1 L 525.5 59.5 L 579.7 48.3 L 633.8 47.2 L 688.0 29.9 " fill="none" stroke="#6B8E23" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="38.0" cy="68.9" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="92.2" cy="78.3" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="146.3" cy="81.0" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="200.5" cy="77.1" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="254.7" cy="21.0" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="308.8" cy="59.8" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="363.0" cy="46.2" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="417.2" cy="44.7" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="471.3" cy="53.1" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="525.5" cy="59.5" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="579.7" cy="48.3" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="633.8" cy="47.2" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="688.0" cy="29.9" r="4.5" fill="#6B8E23" stroke="#fff" stroke-width="2"/><text x="688.0" y="20.9" fill="#6B8E23" font-size="9" font-weight="800" text-anchor="middle" font-family="Raleway">132 016</text><text x="38.0" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Mar 25</text><text x="146.3" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Mai 25</text><text x="254.7" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Juil 25</text><text x="363.0" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Sep 25</text><text x="471.3" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Nov 25</text><text x="579.7" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Jan 26</text><text x="688.0" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Mars 2026</text></svg></div>
       </div>
     </div>
 
@@ -4401,7 +4441,7 @@ table tbody tr:last-child td{border-bottom:none}
           </div>
           <span class="var-tag var-neutral" data-ph="evol_apps_var_tag">— vs Mars N-1</span>
         </div>
-        <div data-block="evol_apps_svg"><svg class="evol-svg" viewBox="0 0 700 110" preserveAspectRatio="xMidYMid meet"><defs><linearGradient id="grad-141073" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#8B7355" stop-opacity="0.32"/><stop offset="100%" stop-color="#8B7355" stop-opacity="0.04"/></linearGradient></defs><line x1="38" y1="90.0" x2="688" y2="90.0" stroke="#F0EDE6" stroke-width="1" stroke-dasharray="2,2"/><text x="32" y="93.0" fill="#9CA3AF" font-size="7.5" font-weight="600" text-anchor="end" font-family="Raleway">0</text><line x1="38" y1="51.0" x2="688" y2="51.0" stroke="#F0EDE6" stroke-width="1" stroke-dasharray="2,2"/><text x="32" y="54.0" fill="#9CA3AF" font-size="7.5" font-weight="600" text-anchor="end" font-family="Raleway">8 049</text><line x1="38" y1="12.0" x2="688" y2="12.0" stroke="#F0EDE6" stroke-width="1" stroke-dasharray="2,2"/><text x="32" y="15.0" fill="#9CA3AF" font-size="7.5" font-weight="600" text-anchor="end" font-family="Raleway">16 098</text><path d="M 38.0 90 L 38.0 90.0 L 92.2 90.0 L 146.3 90.0 L 200.5 89.9 L 254.7 90.0 L 308.8 90.0 L 363.0 90.0 L 417.2 90.0 L 471.3 78.7 L 525.5 78.1 L 579.7 72.9 L 633.8 64.4 L 688.0 22.2 L 688.0 90 Z" fill="url(#grad-141073)" stroke="none"/><path d="M 38.0 90.0 L 92.2 90.0 L 146.3 90.0 L 200.5 89.9 L 254.7 90.0 L 308.8 90.0 L 363.0 90.0 L 417.2 90.0 L 471.3 78.7 L 525.5 78.1 L 579.7 72.9 L 633.8 64.4 L 688.0 22.2 " fill="none" stroke="#8B7355" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="38.0" cy="90.0" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="92.2" cy="90.0" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="146.3" cy="90.0" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="200.5" cy="89.9" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="254.7" cy="90.0" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="308.8" cy="90.0" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="363.0" cy="90.0" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="417.2" cy="90.0" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="471.3" cy="78.7" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="525.5" cy="78.1" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="579.7" cy="72.9" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="633.8" cy="64.4" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="688.0" cy="22.2" r="4.5" fill="#8B7355" stroke="#fff" stroke-width="2"/><text x="688.0" y="13.2" fill="#8B7355" font-size="9" font-weight="800" text-anchor="middle" font-family="Raleway">13 998</text><text x="38.0" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Mar 25</text><text x="146.3" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Mai 25</text><text x="254.7" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Juil 25</text><text x="363.0" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Sep 25</text><text x="471.3" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Nov 25</text><text x="579.7" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Jan 26</text><text x="688.0" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Mars 2026</text></svg></div>
+        <div data-block="evol_apps_svg"><svg class="evol-svg" viewBox="0 0 700 110" preserveAspectRatio="xMidYMid meet"><defs><linearGradient id="grad-377641" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#8B7355" stop-opacity="0.32"/><stop offset="100%" stop-color="#8B7355" stop-opacity="0.04"/></linearGradient></defs><line x1="38" y1="90.0" x2="688" y2="90.0" stroke="#F0EDE6" stroke-width="1" stroke-dasharray="2,2"/><text x="32" y="93.0" fill="#9CA3AF" font-size="7.5" font-weight="600" text-anchor="end" font-family="Raleway">0</text><line x1="38" y1="51.0" x2="688" y2="51.0" stroke="#F0EDE6" stroke-width="1" stroke-dasharray="2,2"/><text x="32" y="54.0" fill="#9CA3AF" font-size="7.5" font-weight="600" text-anchor="end" font-family="Raleway">8 049</text><line x1="38" y1="12.0" x2="688" y2="12.0" stroke="#F0EDE6" stroke-width="1" stroke-dasharray="2,2"/><text x="32" y="15.0" fill="#9CA3AF" font-size="7.5" font-weight="600" text-anchor="end" font-family="Raleway">16 098</text><path d="M 38.0 90 L 38.0 90.0 L 92.2 90.0 L 146.3 90.0 L 200.5 89.9 L 254.7 90.0 L 308.8 90.0 L 363.0 90.0 L 417.2 90.0 L 471.3 78.7 L 525.5 78.1 L 579.7 72.9 L 633.8 64.4 L 688.0 22.2 L 688.0 90 Z" fill="url(#grad-377641)" stroke="none"/><path d="M 38.0 90.0 L 92.2 90.0 L 146.3 90.0 L 200.5 89.9 L 254.7 90.0 L 308.8 90.0 L 363.0 90.0 L 417.2 90.0 L 471.3 78.7 L 525.5 78.1 L 579.7 72.9 L 633.8 64.4 L 688.0 22.2 " fill="none" stroke="#8B7355" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="38.0" cy="90.0" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="92.2" cy="90.0" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="146.3" cy="90.0" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="200.5" cy="89.9" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="254.7" cy="90.0" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="308.8" cy="90.0" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="363.0" cy="90.0" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="417.2" cy="90.0" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="471.3" cy="78.7" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="525.5" cy="78.1" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="579.7" cy="72.9" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="633.8" cy="64.4" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="688.0" cy="22.2" r="4.5" fill="#8B7355" stroke="#fff" stroke-width="2"/><text x="688.0" y="13.2" fill="#8B7355" font-size="9" font-weight="800" text-anchor="middle" font-family="Raleway">13 998</text><text x="38.0" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Mar 25</text><text x="146.3" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Mai 25</text><text x="254.7" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Juil 25</text><text x="363.0" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Sep 25</text><text x="471.3" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Nov 25</text><text x="579.7" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Jan 26</text><text x="688.0" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Mars 2026</text></svg></div>
       </div>
     </div>
 
@@ -4820,12 +4860,6 @@ table tbody tr:last-child td{border-bottom:none}
 
 <!-- ═══════════════════════════════════════════════════════════════════════
      PAGINATION DYNAMIQUE — v8 (INCHANGÉE)
-     Stratégie :
-     - data-ph="page_num" et data-ph="total_pages" -> pris PARTOUT (pour Arterre)
-     - <span> feuilles avec "X / Y" ou "Page X" -> pris SEULEMENT dans .pf 
-       (pour ne pas écraser des badges de section comme ".stra-section-hdr-badge")
-     - Tri par ordre d'apparition dans le DOM
-     - Application multiple + MutationObserver
 ═══════════════════════════════════════════════════════════════════════════ -->
 <script>
 (function(){
@@ -4836,34 +4870,25 @@ table tbody tr:last-child td{border-bottom:none}
     isApplying = true;
     try {
       var markers = [];
-
-      // Type A : <span data-ph="page_num"> -> partout
       document.querySelectorAll('[data-ph="page_num"]').forEach(function(el){
         markers.push({ type: 'data_ph', element: el });
       });
-
-      // Type B : <span> feuille dans .pf qui contient un pattern de pagination
       document.querySelectorAll('.pf span').forEach(function(span){
         if (span.hasAttribute('data-ph')) return;
         if (span.querySelector('span')) return;
         var txt = (span.textContent || '').trim();
-        // "Page X / Y", "Analyse stratégique X / Y", "Page X" (cover sans /)
         if (/\d+\s*\/\s*\d+\s*$/.test(txt) || /^Page\b/i.test(txt)) {
           markers.push({ type: 'span_complete', element: span });
         }
       });
-
-      // Tri par ordre d'apparition dans le DOM
       markers.sort(function(a, b){
         var pos = a.element.compareDocumentPosition(b.element);
         if (pos & Node.DOCUMENT_POSITION_FOLLOWING) return -1;
         if (pos & Node.DOCUMENT_POSITION_PRECEDING) return 1;
         return 0;
       });
-
       var total = markers.length;
       if (total === 0) return;
-
       markers.forEach(function(m, idx){
         var pageNum = idx + 1;
         var newText = (m.type === 'data_ph') 
@@ -4872,8 +4897,6 @@ table tbody tr:last-child td{border-bottom:none}
         m.element.setAttribute('data-pag-applied', pageNum);
         m.element.textContent = newText;
       });
-
-      // total_pages partout (pas restreint à .pf)
       document.querySelectorAll('[data-ph="total_pages"]').forEach(function(el){
         el.setAttribute('data-pag-applied', total);
         el.textContent = String(total);
@@ -4923,17 +4946,6 @@ table tbody tr:last-child td{border-bottom:none}
 
 <!-- ═══════════════════════════════════════════════════════════════════════
      v10 FIX 3 : Remplacement des espaces fines insécables (\u202F)  (Bug F)
-     ─────────────────────────────────────────────────────────────────────
-     Pourquoi : les sous-pipelines injectent les nombres avec U+202F (NARROW
-     NO-BREAK SPACE) entre les groupes de milliers ("84\u202f466"). Ce
-     caractère est correctement rendu en browser mais Chrome PDF print le
-     supprime ou le rend zéro-largeur dans certaines configs → "84466".
-     
-     Fix : remplacement DOM de tous les U+202F par U+00A0 (NO-BREAK SPACE
-     classique) qui est universellement bien rendu.
-     
-     Idempotent : peut être appelé plusieurs fois sans dommage.
-     Performance : ~5-10ms sur le DOM complet (~26 pages).
 ═══════════════════════════════════════════════════════════════════════════ -->
 <script>
 (function(){
@@ -4953,24 +4965,191 @@ table tbody tr:last-child td{border-bottom:none}
       }
     }
     if (window.console && count > 0) {
-      console.log('[wrapper v11] U+202F → U+00A0 replaced in ' + count + ' text nodes');
+      console.log('[wrapper v12] U+202F → U+00A0 replaced in ' + count + ' text nodes');
     }
   }
-
   function scheduleReplace(){
     replaceNarrowNoBreakSpace();
     setTimeout(replaceNarrowNoBreakSpace, 500);
     setTimeout(replaceNarrowNoBreakSpace, 1500);
   }
-
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', scheduleReplace);
   } else {
     scheduleReplace();
   }
   window.addEventListener('load', scheduleReplace);
-  // Avant impression : un dernier passage pour les contenus injectés tardivement
   window.addEventListener('beforeprint', replaceNarrowNoBreakSpace);
+})();
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     v12 FIX 8 : Page-break forcé avant Top 11 actu Corporate  (Bug A2 — page 6)
+     ─────────────────────────────────────────────────────────────────────
+     Détecte le titre "TOP 11 ACTUALITES VUES" via texte (robuste, ne dépend pas
+     de classes CSS), trouve son conteneur parent (la section), et lui injecte
+     un style page-break-before:always.
+     Effet : Top 11 démarre sur sa propre page → aucune ligne perdue.
+     Bilan passe de 26 à 27 pages.
+═══════════════════════════════════════════════════════════════════════════ -->
+<script>
+(function(){
+  function forcePageBreakTop11(){
+    // Cherche tous les éléments contenant le texte exact (ou similaire) "TOP 11 ACTUALITES"
+    // Insensible à la casse, tolérant aux espaces.
+    var allElements = document.querySelectorAll('h1, h2, h3, h4, .tbl-title, [class*="title"], [class*="hdr"]');
+    var matched = null;
+    var pattern = /TOP\s*11\s*ACTUALIT/i;
+    for (var i = 0; i < allElements.length; i++) {
+      var el = allElements[i];
+      var txt = (el.textContent || '').trim();
+      if (pattern.test(txt) && txt.length < 200) {
+        matched = el;
+        break;
+      }
+    }
+    if (!matched) {
+      // Fallback : recherche large dans tous les éléments
+      var all = document.querySelectorAll('div, section, article, header');
+      for (var j = 0; j < all.length; j++) {
+        var t = (all[j].textContent || '').trim();
+        // Match seulement si l'élément a le texte mais que ses enfants directs ne l'ont pas tous
+        // → c'est un titre, pas un conteneur qui englobe tout
+        if (pattern.test(t) && t.length < 80) {
+          matched = all[j];
+          break;
+        }
+      }
+    }
+    if (!matched) {
+      if (window.console) console.warn('[wrapper v12] Top 11 title not found — page-break not applied');
+      return;
+    }
+    // Remonte aux ancêtres jusqu'à trouver un conteneur "section" raisonnable.
+    // On cherche le parent direct qui contient le tableau Top 11.
+    var container = matched;
+    // Remonte de 2-3 niveaux pour englober le titre + la table
+    for (var k = 0; k < 4; k++) {
+      if (container.parentElement) {
+        var parent = container.parentElement;
+        // Si le parent contient un <table> ou si c'est un .page/.pf, on s'arrête
+        var hasTable = parent.querySelector('table');
+        if (hasTable && parent.textContent.length > matched.textContent.length * 2) {
+          container = parent;
+          break;
+        }
+        container = parent;
+      }
+    }
+    container.style.pageBreakBefore = 'always';
+    container.style.breakBefore = 'page';
+    if (window.console) console.log('[wrapper v12] Top 11 page-break applied');
+  }
+
+  function scheduleTop11Break(){
+    forcePageBreakTop11();
+    setTimeout(forcePageBreakTop11, 1000);
+    setTimeout(forcePageBreakTop11, 2500);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', scheduleTop11Break);
+  } else {
+    scheduleTop11Break();
+  }
+  window.addEventListener('load', scheduleTop11Break);
+  window.addEventListener('beforeprint', forcePageBreakTop11);
+})();
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     v12 FIX 9 : Lisibilité KPI Arterre iOS / Android  (Bug K — page 22)
+     ─────────────────────────────────────────────────────────────────────
+     Sur la page Arterre Synthèse Globales, les blocs Apps mobiles ont un
+     fond sépia clair avec des libellés (UTILISATEURS, VISITES, DURÉE MOYENNE,
+     PAGES VUES) en gris pâle → quasi-illisibles à l'impression.
+     
+     Stratégie : trouver les blocs contenant le texte "ARTERRE IOS" ou
+     "ARTERRE ANDROID", et forcer une couleur foncée sur les libellés enfants
+     en print uniquement.
+═══════════════════════════════════════════════════════════════════════════ -->
+<script>
+(function(){
+  var styleApplied = false;
+
+  function fixArterreLabelsContrast(){
+    if (styleApplied) return;
+    
+    // Trouve tous les éléments contenant "ARTERRE IOS" ou "ARTERRE ANDROID" (texte direct seulement)
+    var pattern = /^\s*(ARTERRE\s+(IOS|ANDROID))\s*$/i;
+    var titleNodes = [];
+    var walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
+    var node;
+    while ((node = walker.nextNode())) {
+      var txt = (node.nodeValue || '').trim();
+      if (pattern.test(txt)) {
+        titleNodes.push(node.parentElement);
+      }
+    }
+    
+    if (titleNodes.length === 0) {
+      if (window.console) console.warn('[wrapper v12] Arterre IOS/Android blocks not found');
+      return;
+    }
+    
+    // Pour chaque titre, remonte au conteneur card et marque-le
+    var marked = 0;
+    titleNodes.forEach(function(titleEl){
+      var card = titleEl;
+      // Remonte jusqu'à trouver un conteneur de card raisonnable
+      for (var i = 0; i < 6; i++) {
+        if (card.parentElement) {
+          card = card.parentElement;
+          // Si on trouve un élément qui contient le titre + des KPI, on s'arrête
+          if (card.textContent && /UTILISATEURS|VISITES|DUR.E\s+MOYENNE|PAGES\s+VUES/i.test(card.textContent)) {
+            // Si le conteneur a aussi les KPI, on est au bon niveau
+            card.setAttribute('data-arterre-app-card', 'true');
+            marked++;
+            break;
+          }
+        }
+      }
+    });
+    
+    if (marked === 0) {
+      if (window.console) console.warn('[wrapper v12] Arterre app cards not identified');
+      return;
+    }
+    
+    // Injecte un style print qui fonce les libellés à l'intérieur de ces cards
+    var styleEl = document.createElement('style');
+    styleEl.setAttribute('data-wrapper-v12', 'arterre-contrast');
+    styleEl.textContent = '@media print {' +
+      '[data-arterre-app-card="true"] * { color: #1A1A1A !important; opacity: 1 !important; }' +
+      '[data-arterre-app-card="true"] .kpi-l, ' +
+      '[data-arterre-app-card="true"] [class*="label"], ' +
+      '[data-arterre-app-card="true"] [class*="lbl"] { ' +
+      '  color: #1A1A1A !important; opacity: 1 !important; font-weight: 600 !important; ' +
+      '}' +
+      '}';
+    document.head.appendChild(styleEl);
+    styleApplied = true;
+    if (window.console) console.log('[wrapper v12] Arterre contrast fix applied to ' + marked + ' card(s)');
+  }
+  
+  function scheduleArterreContrast(){
+    fixArterreLabelsContrast();
+    setTimeout(fixArterreLabelsContrast, 1000);
+    setTimeout(fixArterreLabelsContrast, 2500);
+  }
+  
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', scheduleArterreContrast);
+  } else {
+    scheduleArterreContrast();
+  }
+  window.addEventListener('load', scheduleArterreContrast);
+  window.addEventListener('beforeprint', fixArterreLabelsContrast);
 })();
 </script>
 
