@@ -21,38 +21,42 @@
     }
 
     /* ─────────────────────────────────────────────────────────────
-       PRINT / PDF — v13 (Session 15)
+       PRINT / PDF — v12 (Session 15)
 
-       v13 vs v12 :
-       FIX 9 RÉVISÉ — Arterre contraste sans casser le titre
-         → v12 utilisait [data-arterre-app-card="true"] * qui forçait TOUTES les couleurs
-           dans la card, y compris le titre "ARTERRE IOS"/"ARTERRE ANDROID" qui est
-           en blanc sur fond marron foncé sur la page 26 → titre devenait invisible.
-         → v13 : ciblage chirurgical par TEXTE EXACT des 4 libellés
-           (UTILISATEURS / VISITES / DURÉE MOYENNE / PAGES VUES) uniquement.
-           Le titre du bloc, les valeurs, les variations restent intacts.
+       v12 vs v11 :
+       FIX 5 — Footer TRANSPARENT (proposition Gabriel)
+         → On retire le background:#fff blanc et la zone tampon ::before.
+         → Le contenu débordant redevient visible (au lieu d'être masqué).
+         → Trade-off accepté : si débordement, chevauchement léger du texte du footer.
+         → Mitigation : on combine avec un compactage plus offensif (point suivant).
 
-       FIX 10 NOUVEAU — Alignement vertical KPI MyV Détails
-         → Bug pré-existant rendu visible par v12 (footer transparent expose le bas).
-         → Cause : .kpi-row utilise un flex sans largeurs fixes. Les libellés ont des
-           longueurs textuelles différentes ("Utilisateurs" 12c, "Visites" 7c,
-           "Pages par visite" 16c) → les valeurs et variations qui suivent se
-           positionnent à des distances horizontales différentes selon la ligne.
-         → Fix : grid 3 colonnes fixes sur .kpi-row → alignement parfait.
+       FIX 6 — Compactage MyV Détails plus offensif
+         → v11 était conservateur. v12 ajoute des réductions font-size pour gagner ~3-4mm
+           supplémentaires par card. Les débordements résiduels deviennent ≤ 2-3mm.
 
-       v12 (préservé hors Fix 9) : FIX 5 footer transparent + FIX 6 compactage MyV
-         + FIX 7 compactage kw-tbl + FIX 8 JS page-break Top 11
-       v11 préservé : FIX 4 compactage MyV cards .be
-       v10 préservé : FIX 1 (G ligatures) + FIX 3 (F espaces \u202F)
-       v9  préservé : @page A4, .page strict, print-color-adjust
+       FIX 7 — Compactage mots-clés thématiques Corporate (Bug A3 — page 8)
+         → Cible: tables .kw-tbl, line-height + margin + font-size compactés
+         → Permet aux thématiques de 13 mots-clés (Groupe VIVESCIA) de tenir sans débordement.
 
-       Bugs encore non adressés (Phase 3+) :
-       - A1 (CAMPAGNES) : template HTML Corporate v3 nécessaire
-       - C  (MyV Consultation page 17) : sous-pipeline MyV v13
-       - D  (placeholders Analyse4/5/7/10/16/19) : Code Inject Data
-       - H  (emojis cassés page 8) : remplacer par SVG
-       - Pagination 25→26
+       FIX 8 — Page-break forcé avant Top 11 Corporate (Bug A2 — page 6)
+         → JS qui détecte le titre "TOP 11 ACTUALITES VUES" et injecte page-break-before:always
+           sur son conteneur parent. Le Top 11 démarre alors sur une nouvelle page.
+         → Conséquence : bilan passe de 26 à 27 pages. Mais zéro perte de contenu.
+
+       FIX 9 — Labels Arterre iOS/Android lisibles (Bug K — page 22)
+         → JS qui trouve les blocs contenant "ARTERRE IOS" ou "ARTERRE ANDROID"
+           et fonce les libellés (UTILISATEURS, VISITES, DURÉE MOYENNE, PAGES VUES) en print.
+
+       Bugs encore non adressés :
+       - A1 (CAMPAGNES) : nécessite le template HTML Corporate v3 pour ciblage précis
+       - C  (MyV Consultation page 17) : layout structurel sous-pipeline MyV v13
+       - D  (placeholders Analyse4/5/7/10/16/19) : Code Inject Data (Phase 3)
+       - H  (emojis cassés page 8) : remplacer par SVG, traitement séparé
+       - Pagination 25→26 : fix JS pagination wrapper, traitement séparé
        - L,M (charts MyV/Arterre labels) : sous-pipelines
+
+       v11 (préservé) : FIX 1 (G) FIX 2 (footer→supprimé en v12) FIX 3 (F) FIX 4 (compactage MyV)
+       v9  (préservé) : @page A4, .page strict, print-color-adjust
     ────────────────────────────────────────────────────────────── */
     @page { size: A4; margin: 0; }
 
@@ -121,21 +125,6 @@
       .be .be-kpis .kpi-row {
         line-height: 1.2 !important;
         margin: 0 !important;
-        /* ─── v13 FIX 10 : Alignement vertical des valeurs et variations ─── */
-        /* Grid 3 colonnes fixes : libellé | valeur | variation
-           Cible la structure attendue :
-             <div class="kpi-row">
-               <span class="kpi-l">Utilisateurs</span>
-               <span class="kpi-v">47</span>
-               <span class="pl3 ...">+11,9% ↑</span>
-             </div>
-           110px réservés au libellé (suffisant pour "Pages par visite")
-            70px réservés à la valeur (jusqu'à "100 000")
-            1fr  pour la variation (alignée à gauche dans sa cellule) */
-        display: grid !important;
-        grid-template-columns: 110px 70px 1fr !important;
-        align-items: baseline !important;
-        column-gap: 4px !important;
       }
       .be .be-kpis .kpi-l {
         font-size: 9px !important;
@@ -4377,7 +4366,7 @@ table tbody tr:last-child td{border-bottom:none}
           </div>
           <span class="var-tag var-up" data-ph="evol_web_var_tag">↑ +117,0% vs Mars N-1</span>
         </div>
-        <div data-block="evol_web_svg"><svg class="evol-svg" viewBox="0 0 700 110" preserveAspectRatio="xMidYMid meet"><defs><linearGradient id="grad-312839" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#6B8E23" stop-opacity="0.32"/><stop offset="100%" stop-color="#6B8E23" stop-opacity="0.04"/></linearGradient></defs><line x1="38" y1="90.0" x2="688" y2="90.0" stroke="#F0EDE6" stroke-width="1" stroke-dasharray="2,2"/><text x="32" y="93.0" fill="#9CA3AF" font-size="7.5" font-weight="600" text-anchor="end" font-family="Raleway">22 240</text><line x1="38" y1="51.0" x2="688" y2="51.0" stroke="#F0EDE6" stroke-width="1" stroke-dasharray="2,2"/><text x="32" y="54.0" fill="#9CA3AF" font-size="7.5" font-weight="600" text-anchor="end" font-family="Raleway">93 428</text><line x1="38" y1="12.0" x2="688" y2="12.0" stroke="#F0EDE6" stroke-width="1" stroke-dasharray="2,2"/><text x="32" y="15.0" fill="#9CA3AF" font-size="7.5" font-weight="600" text-anchor="end" font-family="Raleway">164 616</text><path d="M 38.0 90 L 38.0 68.9 L 92.2 78.3 L 146.3 81.0 L 200.5 77.1 L 254.7 21.0 L 308.8 59.8 L 363.0 46.2 L 417.2 44.7 L 471.3 53.1 L 525.5 59.5 L 579.7 48.3 L 633.8 47.2 L 688.0 29.9 L 688.0 90 Z" fill="url(#grad-312839)" stroke="none"/><path d="M 38.0 68.9 L 92.2 78.3 L 146.3 81.0 L 200.5 77.1 L 254.7 21.0 L 308.8 59.8 L 363.0 46.2 L 417.2 44.7 L 471.3 53.1 L 525.5 59.5 L 579.7 48.3 L 633.8 47.2 L 688.0 29.9 " fill="none" stroke="#6B8E23" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="38.0" cy="68.9" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="92.2" cy="78.3" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="146.3" cy="81.0" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="200.5" cy="77.1" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="254.7" cy="21.0" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="308.8" cy="59.8" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="363.0" cy="46.2" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="417.2" cy="44.7" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="471.3" cy="53.1" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="525.5" cy="59.5" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="579.7" cy="48.3" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="633.8" cy="47.2" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="688.0" cy="29.9" r="4.5" fill="#6B8E23" stroke="#fff" stroke-width="2"/><text x="688.0" y="20.9" fill="#6B8E23" font-size="9" font-weight="800" text-anchor="middle" font-family="Raleway">132 016</text><text x="38.0" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Mar 25</text><text x="146.3" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Mai 25</text><text x="254.7" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Juil 25</text><text x="363.0" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Sep 25</text><text x="471.3" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Nov 25</text><text x="579.7" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Jan 26</text><text x="688.0" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Mars 2026</text></svg></div>
+        <div data-block="evol_web_svg"><svg class="evol-svg" viewBox="0 0 700 110" preserveAspectRatio="xMidYMid meet"><defs><linearGradient id="grad-764798" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#6B8E23" stop-opacity="0.32"/><stop offset="100%" stop-color="#6B8E23" stop-opacity="0.04"/></linearGradient></defs><line x1="38" y1="90.0" x2="688" y2="90.0" stroke="#F0EDE6" stroke-width="1" stroke-dasharray="2,2"/><text x="32" y="93.0" fill="#9CA3AF" font-size="7.5" font-weight="600" text-anchor="end" font-family="Raleway">22 240</text><line x1="38" y1="51.0" x2="688" y2="51.0" stroke="#F0EDE6" stroke-width="1" stroke-dasharray="2,2"/><text x="32" y="54.0" fill="#9CA3AF" font-size="7.5" font-weight="600" text-anchor="end" font-family="Raleway">93 428</text><line x1="38" y1="12.0" x2="688" y2="12.0" stroke="#F0EDE6" stroke-width="1" stroke-dasharray="2,2"/><text x="32" y="15.0" fill="#9CA3AF" font-size="7.5" font-weight="600" text-anchor="end" font-family="Raleway">164 616</text><path d="M 38.0 90 L 38.0 68.9 L 92.2 78.3 L 146.3 81.0 L 200.5 77.1 L 254.7 21.0 L 308.8 59.8 L 363.0 46.2 L 417.2 44.7 L 471.3 53.1 L 525.5 59.5 L 579.7 48.3 L 633.8 47.2 L 688.0 29.9 L 688.0 90 Z" fill="url(#grad-764798)" stroke="none"/><path d="M 38.0 68.9 L 92.2 78.3 L 146.3 81.0 L 200.5 77.1 L 254.7 21.0 L 308.8 59.8 L 363.0 46.2 L 417.2 44.7 L 471.3 53.1 L 525.5 59.5 L 579.7 48.3 L 633.8 47.2 L 688.0 29.9 " fill="none" stroke="#6B8E23" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="38.0" cy="68.9" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="92.2" cy="78.3" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="146.3" cy="81.0" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="200.5" cy="77.1" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="254.7" cy="21.0" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="308.8" cy="59.8" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="363.0" cy="46.2" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="417.2" cy="44.7" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="471.3" cy="53.1" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="525.5" cy="59.5" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="579.7" cy="48.3" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="633.8" cy="47.2" r="3" fill="#6B8E23" stroke="#fff" stroke-width="1.5"/><circle cx="688.0" cy="29.9" r="4.5" fill="#6B8E23" stroke="#fff" stroke-width="2"/><text x="688.0" y="20.9" fill="#6B8E23" font-size="9" font-weight="800" text-anchor="middle" font-family="Raleway">132 016</text><text x="38.0" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Mar 25</text><text x="146.3" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Mai 25</text><text x="254.7" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Juil 25</text><text x="363.0" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Sep 25</text><text x="471.3" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Nov 25</text><text x="579.7" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Jan 26</text><text x="688.0" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Mars 2026</text></svg></div>
       </div>
     </div>
 
@@ -4452,7 +4441,7 @@ table tbody tr:last-child td{border-bottom:none}
           </div>
           <span class="var-tag var-neutral" data-ph="evol_apps_var_tag">— vs Mars N-1</span>
         </div>
-        <div data-block="evol_apps_svg"><svg class="evol-svg" viewBox="0 0 700 110" preserveAspectRatio="xMidYMid meet"><defs><linearGradient id="grad-367178" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#8B7355" stop-opacity="0.32"/><stop offset="100%" stop-color="#8B7355" stop-opacity="0.04"/></linearGradient></defs><line x1="38" y1="90.0" x2="688" y2="90.0" stroke="#F0EDE6" stroke-width="1" stroke-dasharray="2,2"/><text x="32" y="93.0" fill="#9CA3AF" font-size="7.5" font-weight="600" text-anchor="end" font-family="Raleway">0</text><line x1="38" y1="51.0" x2="688" y2="51.0" stroke="#F0EDE6" stroke-width="1" stroke-dasharray="2,2"/><text x="32" y="54.0" fill="#9CA3AF" font-size="7.5" font-weight="600" text-anchor="end" font-family="Raleway">8 049</text><line x1="38" y1="12.0" x2="688" y2="12.0" stroke="#F0EDE6" stroke-width="1" stroke-dasharray="2,2"/><text x="32" y="15.0" fill="#9CA3AF" font-size="7.5" font-weight="600" text-anchor="end" font-family="Raleway">16 098</text><path d="M 38.0 90 L 38.0 90.0 L 92.2 90.0 L 146.3 90.0 L 200.5 89.9 L 254.7 90.0 L 308.8 90.0 L 363.0 90.0 L 417.2 90.0 L 471.3 78.7 L 525.5 78.1 L 579.7 72.9 L 633.8 64.4 L 688.0 22.2 L 688.0 90 Z" fill="url(#grad-367178)" stroke="none"/><path d="M 38.0 90.0 L 92.2 90.0 L 146.3 90.0 L 200.5 89.9 L 254.7 90.0 L 308.8 90.0 L 363.0 90.0 L 417.2 90.0 L 471.3 78.7 L 525.5 78.1 L 579.7 72.9 L 633.8 64.4 L 688.0 22.2 " fill="none" stroke="#8B7355" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="38.0" cy="90.0" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="92.2" cy="90.0" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="146.3" cy="90.0" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="200.5" cy="89.9" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="254.7" cy="90.0" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="308.8" cy="90.0" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="363.0" cy="90.0" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="417.2" cy="90.0" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="471.3" cy="78.7" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="525.5" cy="78.1" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="579.7" cy="72.9" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="633.8" cy="64.4" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="688.0" cy="22.2" r="4.5" fill="#8B7355" stroke="#fff" stroke-width="2"/><text x="688.0" y="13.2" fill="#8B7355" font-size="9" font-weight="800" text-anchor="middle" font-family="Raleway">13 998</text><text x="38.0" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Mar 25</text><text x="146.3" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Mai 25</text><text x="254.7" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Juil 25</text><text x="363.0" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Sep 25</text><text x="471.3" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Nov 25</text><text x="579.7" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Jan 26</text><text x="688.0" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Mars 2026</text></svg></div>
+        <div data-block="evol_apps_svg"><svg class="evol-svg" viewBox="0 0 700 110" preserveAspectRatio="xMidYMid meet"><defs><linearGradient id="grad-161933" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#8B7355" stop-opacity="0.32"/><stop offset="100%" stop-color="#8B7355" stop-opacity="0.04"/></linearGradient></defs><line x1="38" y1="90.0" x2="688" y2="90.0" stroke="#F0EDE6" stroke-width="1" stroke-dasharray="2,2"/><text x="32" y="93.0" fill="#9CA3AF" font-size="7.5" font-weight="600" text-anchor="end" font-family="Raleway">0</text><line x1="38" y1="51.0" x2="688" y2="51.0" stroke="#F0EDE6" stroke-width="1" stroke-dasharray="2,2"/><text x="32" y="54.0" fill="#9CA3AF" font-size="7.5" font-weight="600" text-anchor="end" font-family="Raleway">8 049</text><line x1="38" y1="12.0" x2="688" y2="12.0" stroke="#F0EDE6" stroke-width="1" stroke-dasharray="2,2"/><text x="32" y="15.0" fill="#9CA3AF" font-size="7.5" font-weight="600" text-anchor="end" font-family="Raleway">16 098</text><path d="M 38.0 90 L 38.0 90.0 L 92.2 90.0 L 146.3 90.0 L 200.5 89.9 L 254.7 90.0 L 308.8 90.0 L 363.0 90.0 L 417.2 90.0 L 471.3 78.7 L 525.5 78.1 L 579.7 72.9 L 633.8 64.4 L 688.0 22.2 L 688.0 90 Z" fill="url(#grad-161933)" stroke="none"/><path d="M 38.0 90.0 L 92.2 90.0 L 146.3 90.0 L 200.5 89.9 L 254.7 90.0 L 308.8 90.0 L 363.0 90.0 L 417.2 90.0 L 471.3 78.7 L 525.5 78.1 L 579.7 72.9 L 633.8 64.4 L 688.0 22.2 " fill="none" stroke="#8B7355" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="38.0" cy="90.0" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="92.2" cy="90.0" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="146.3" cy="90.0" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="200.5" cy="89.9" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="254.7" cy="90.0" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="308.8" cy="90.0" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="363.0" cy="90.0" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="417.2" cy="90.0" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="471.3" cy="78.7" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="525.5" cy="78.1" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="579.7" cy="72.9" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="633.8" cy="64.4" r="3" fill="#8B7355" stroke="#fff" stroke-width="1.5"/><circle cx="688.0" cy="22.2" r="4.5" fill="#8B7355" stroke="#fff" stroke-width="2"/><text x="688.0" y="13.2" fill="#8B7355" font-size="9" font-weight="800" text-anchor="middle" font-family="Raleway">13 998</text><text x="38.0" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Mar 25</text><text x="146.3" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Mai 25</text><text x="254.7" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Juil 25</text><text x="363.0" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Sep 25</text><text x="471.3" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Nov 25</text><text x="579.7" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Jan 26</text><text x="688.0" y="105" fill="#9CA3AF" font-size="8" font-weight="600" text-anchor="middle" font-family="Raleway">Mars 2026</text></svg></div>
       </div>
     </div>
 
@@ -5074,16 +5063,15 @@ table tbody tr:last-child td{border-bottom:none}
 </script>
 
 <!-- ═══════════════════════════════════════════════════════════════════════
-     v13 FIX 9 RÉVISÉ : Lisibilité KPI Arterre iOS / Android  (Bug K — page 22)
+     v12 FIX 9 : Lisibilité KPI Arterre iOS / Android  (Bug K — page 22)
      ─────────────────────────────────────────────────────────────────────
-     v12 utilisait un sélecteur [data-arterre-app-card="true"] * qui forçait
-     TOUTES les couleurs des cards Arterre, y compris le titre "ARTERRE IOS"
-     en blanc sur fond marron foncé page 26 → titre devenait invisible.
+     Sur la page Arterre Synthèse Globales, les blocs Apps mobiles ont un
+     fond sépia clair avec des libellés (UTILISATEURS, VISITES, DURÉE MOYENNE,
+     PAGES VUES) en gris pâle → quasi-illisibles à l'impression.
      
-     v13 : ciblage CHIRURGICAL par texte exact des 4 libellés
-     (UTILISATEURS / VISITES / DURÉE MOYENNE / PAGES VUES). On marque
-     uniquement ces 8 éléments précis (4 libellés × 2 cards iOS+Android),
-     sans toucher au titre, aux valeurs, aux variations.
+     Stratégie : trouver les blocs contenant le texte "ARTERRE IOS" ou
+     "ARTERRE ANDROID", et forcer une couleur foncée sur les libellés enfants
+     en print uniquement.
 ═══════════════════════════════════════════════════════════════════════════ -->
 <script>
 (function(){
@@ -5092,79 +5080,61 @@ table tbody tr:last-child td{border-bottom:none}
   function fixArterreLabelsContrast(){
     if (styleApplied) return;
     
-    // Étape 1 : trouve les blocs Apps mobiles via leur titre "ARTERRE IOS" / "ARTERRE ANDROID"
-    var titlePattern = /^\s*(ARTERRE\s+(IOS|ANDROID))\s*$/i;
+    // Trouve tous les éléments contenant "ARTERRE IOS" ou "ARTERRE ANDROID" (texte direct seulement)
+    var pattern = /^\s*(ARTERRE\s+(IOS|ANDROID))\s*$/i;
     var titleNodes = [];
     var walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
     var node;
     while ((node = walker.nextNode())) {
       var txt = (node.nodeValue || '').trim();
-      if (titlePattern.test(txt)) {
+      if (pattern.test(txt)) {
         titleNodes.push(node.parentElement);
       }
     }
     
     if (titleNodes.length === 0) {
-      if (window.console) console.warn('[wrapper v13] Arterre IOS/Android titles not found');
+      if (window.console) console.warn('[wrapper v12] Arterre IOS/Android blocks not found');
       return;
     }
     
-    // Étape 2 : pour chaque titre, remonte à la card englobante (qui contient les KPI)
-    var arterreCards = [];
+    // Pour chaque titre, remonte au conteneur card et marque-le
+    var marked = 0;
     titleNodes.forEach(function(titleEl){
       var card = titleEl;
+      // Remonte jusqu'à trouver un conteneur de card raisonnable
       for (var i = 0; i < 6; i++) {
         if (card.parentElement) {
           card = card.parentElement;
-          // Card identifiée si elle contient les 4 libellés KPI
-          if (card.textContent && /UTILISATEURS/i.test(card.textContent) && /VISITES/i.test(card.textContent)) {
-            arterreCards.push(card);
+          // Si on trouve un élément qui contient le titre + des KPI, on s'arrête
+          if (card.textContent && /UTILISATEURS|VISITES|DUR.E\s+MOYENNE|PAGES\s+VUES/i.test(card.textContent)) {
+            // Si le conteneur a aussi les KPI, on est au bon niveau
+            card.setAttribute('data-arterre-app-card', 'true');
+            marked++;
             break;
           }
         }
       }
     });
     
-    if (arterreCards.length === 0) {
-      if (window.console) console.warn('[wrapper v13] Arterre app cards not identified');
+    if (marked === 0) {
+      if (window.console) console.warn('[wrapper v12] Arterre app cards not identified');
       return;
     }
     
-    // Étape 3 : DANS ces cards uniquement, trouve les libellés KPI par TEXTE EXACT
-    // et marque-les avec un attribut. Le titre "ARTERRE IOS" et les valeurs ne sont PAS marqués.
-    var labelPattern = /^\s*(UTILISATEURS|VISITES|DUR[ÉE]E\s+MOYENNE|PAGES\s+VUES)\s*$/i;
-    var markedLabels = 0;
-    
-    arterreCards.forEach(function(card){
-      var w = document.createTreeWalker(card, NodeFilter.SHOW_TEXT, null, false);
-      var n;
-      while ((n = w.nextNode())) {
-        var txt = (n.nodeValue || '').trim();
-        if (labelPattern.test(txt) && n.parentElement) {
-          n.parentElement.setAttribute('data-arterre-kpi-label', 'true');
-          markedLabels++;
-        }
-      }
-    });
-    
-    if (markedLabels === 0) {
-      if (window.console) console.warn('[wrapper v13] No Arterre KPI labels matched');
-      return;
-    }
-    
-    // Étape 4 : injecte un style print qui ne touche QUE les libellés marqués
+    // Injecte un style print qui fonce les libellés à l'intérieur de ces cards
     var styleEl = document.createElement('style');
-    styleEl.setAttribute('data-wrapper-v13', 'arterre-contrast');
+    styleEl.setAttribute('data-wrapper-v12', 'arterre-contrast');
     styleEl.textContent = '@media print {' +
-      '  [data-arterre-kpi-label="true"] {' +
-      '    color: #1A1A1A !important;' +
-      '    opacity: 1 !important;' +
-      '    font-weight: 600 !important;' +
-      '  }' +
+      '[data-arterre-app-card="true"] * { color: #1A1A1A !important; opacity: 1 !important; }' +
+      '[data-arterre-app-card="true"] .kpi-l, ' +
+      '[data-arterre-app-card="true"] [class*="label"], ' +
+      '[data-arterre-app-card="true"] [class*="lbl"] { ' +
+      '  color: #1A1A1A !important; opacity: 1 !important; font-weight: 600 !important; ' +
+      '}' +
       '}';
     document.head.appendChild(styleEl);
     styleApplied = true;
-    if (window.console) console.log('[wrapper v13] Arterre contrast fix applied to ' + markedLabels + ' KPI label(s) across ' + arterreCards.length + ' card(s)');
+    if (window.console) console.log('[wrapper v12] Arterre contrast fix applied to ' + marked + ' card(s)');
   }
   
   function scheduleArterreContrast(){
