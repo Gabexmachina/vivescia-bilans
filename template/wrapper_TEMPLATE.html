@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bilan Mensuel VIVESCIA — {{mois_label}}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* ─────────────────────────────────────────────────────────────
+       Reset minimal global
+    ────────────────────────────────────────────────────────────── */
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: 'Raleway', system-ui, -apple-system, sans-serif;
+      background: #BEBEBE;
+      color: #1A2530;
+      line-height: 1.5;
+    }
+
+    /* ─────────────────────────────────────────────────────────────
+       PRINT / PDF — v12 (Session 15)
+
+       v12 vs v11 :
+       FIX 5 — Footer TRANSPARENT (proposition Gabriel)
+         → On retire le background:#fff blanc et la zone tampon ::before.
+         → Le contenu débordant redevient visible (au lieu d'être masqué).
+         → Trade-off accepté : si débordement, chevauchement léger du texte du footer.
+         → Mitigation : on combine avec un compactage plus offensif (point suivant).
+
+       FIX 6 — Compactage MyV Détails plus offensif
+         → v11 était conservateur. v12 ajoute des réductions font-size pour gagner ~3-4mm
+           supplémentaires par card. Les débordements résiduels deviennent ≤ 2-3mm.
+
+       FIX 7 — Compactage mots-clés thématiques Corporate (Bug A3 — page 8)
+         → Cible: tables .kw-tbl, line-height + margin + font-size compactés
+         → Permet aux thématiques de 13 mots-clés (Groupe VIVESCIA) de tenir sans débordement.
+
+       FIX 8 — Page-break forcé avant Top 11 Corporate (Bug A2 — page 6)
+         → JS qui détecte le titre "TOP 11 ACTUALITES VUES" et injecte page-break-before:always
+           sur son conteneur parent. Le Top 11 démarre alors sur une nouvelle page.
+         → Conséquence : bilan passe de 26 à 27 pages. Mais zéro perte de contenu.
+
+       FIX 9 — Labels Arterre iOS/Android lisibles (Bug K — page 22)
+         → JS qui trouve les blocs contenant "ARTERRE IOS" ou "ARTERRE ANDROID"
+           et fonce les libellés (UTILISATEURS, VISITES, DURÉE MOYENNE, PAGES VUES) en print.
+
+       Bugs encore non adressés :
+       - A1 (CAMPAGNES) : nécessite le template HTML Corporate v3 pour ciblage précis
+       - C  (MyV Consultation page 17) : layout structurel sous-pipeline MyV v13
+       - D  (placeholders Analyse4/5/7/10/16/19) : Code Inject Data (Phase 3)
+       - H  (emojis cassés page 8) : remplacer par SVG, traitement séparé
+       - Pagination 25→26 : fix JS pagination wrapper, traitement séparé
+       - L,M (charts MyV/Arterre labels) : sous-pipelines
+
+       v11 (préservé) : FIX 1 (G) FIX 2 (footer→supprimé en v12) FIX 3 (F) FIX 4 (compactage MyV)
+       v9  (préservé) : @page A4, .page strict, print-color-adjust
+    ────────────────────────────────────────────────────────────── */
+    @page { size: A4; margin: 0; }
+
+    @media print {
+      body {
+        background: #fff !important;
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+      .prv { background: #fff !important; padding: 0 !important; }
+
+      .page {
+        width: 210mm !important;
+        height: 297mm !important;
+        margin: 0 !important;
+        box-shadow: none !important;
+        overflow: hidden !important;
+        page-break-after: always;
+        break-after: page;
+      }
+      .page:last-child {
+        page-break-after: auto;
+        break-after: auto;
+      }
+
+      /* Force l'impression des fonds colorés (KPI cards, badges, donuts...) */
+      * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+
+      /* Évite la coupure des tableaux et blocs structurés en milieu de page */
+      table, .tbl-section, .stra-tbl-wrap, .stra-block, .kpi, .chart-card, .sb {
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+
+      /* Cache les boutons d'export éventuels présents dans certains fragments */
+      .no-print-btn, .no-print { display: none !important; }
+
+      /* ───── v10 FIX 1 : Désactivation ligatures Raleway (Bug G) ───── */
+      body, body *, .page, .page *, .pf, .pf * {
+        font-variant-ligatures: none !important;
+        font-feature-settings: "liga" 0, "clig" 0, "calt" 0 !important;
+        -webkit-font-feature-settings: "liga" 0, "clig" 0, "calt" 0 !important;
+        text-rendering: optimizeSpeed !important;
+      }
+
+      /* ───── v12 FIX 5 : Footer TRANSPARENT (suppression background blanc + ::before) ───── */
+      /*
+         v10/v11 avait : background:#fff !important + ::before { height:16px; background:#fff }
+         qui masquait le contenu débordant. Validé par Gabriel : on enlève cette bande blanche.
+         Le contenu débordant chevauchera visuellement le footer mais restera lisible.
+         Le z-index est conservé pour que le texte du footer reste prioritaire en cas de chevauchement.
+      */
+      .page .pf {
+        background: transparent !important;
+        z-index: 100 !important;
+      }
+      /* Pas de ::before tampon en v12 (supprimé). */
+
+      /* ───── v12 FIX 6 : Compactage MyV Détails plus offensif ───── */
+      .be {
+        margin-bottom: 4px !important;
+      }
+      .be .be-kpis .kpi-row {
+        line-height: 1.2 !important;
+        margin: 0 !important;
+      }
+      .be .be-kpis .kpi-l {
+        font-size: 9px !important;
+      }
+      .be .be-kpis .kpi-v {
+        font-size: 12.5px !important;
+      }
+      .be .be-right .actu-header {
+        margin-bottom: 3px !important;
+      }
+      .be .be-right .actu-title {
+        font-size: 10px !important;
+      }
+      .be .be-right .pages-vues-label {
+        font-size: 8.5px !important;
+      }
+      .be .actu-list .acr {
+        line-height: 1.25 !important;
+        margin: 1px 0 !important;
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+      }
+      .be .actu-list .act,
+      .be .actu-list .acn {
+        font-size: 9px !important;
+      }
+      .be .actu-list .acv {
+        font-size: 10px !important;
+      }
+
+      /* ───── v12 FIX 7 : Compactage mots-clés thématiques Corporate (Bug A3) ───── */
+      /*
+         Ciblé sur la page SEO Évolution & Top Mots-Clés (page 8 du bilan).
+         La thématique "Groupe VIVESCIA" a 13 mots-clés et la 13e ligne dépassait.
+         Compactage CSS uniquement, classes exactes du Code Inject Corporate v3.6.
+      */
+      .kw-tbl-section {
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+      .kw-tbl-hdr {
+        padding: 6px 10px !important;
+      }
+      .kw-tbl-title {
+        font-size: 10.5px !important;
+      }
+      .kw-tbl-badge {
+        font-size: 9px !important;
+      }
+      .kw-tbl thead th {
+        font-size: 9px !important;
+        padding: 4px 6px !important;
+      }
+      .kw-tbl tbody tr {
+        line-height: 1.15 !important;
+      }
+      .kw-tbl tbody td {
+        padding: 2px 6px !important;
+        font-size: 9.5px !important;
+      }
+      .kw-tbl .t-num {
+        font-size: 9px !important;
+      }
+      .kw-tbl .t-val {
+        font-size: 9.5px !important;
+      }
+      .kw-name {
+        font-size: 9.5px !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+{{partie_1}}
+{{partie_2}}
+{{partie_3}}
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     PAGINATION DYNAMIQUE — v8 (INCHANGÉE)
+═══════════════════════════════════════════════════════════════════════════ -->
+<script>
+(function(){
+  var isApplying = false;
+
+  function applyPagination(){
+    if (isApplying) return;
+    isApplying = true;
+    try {
+      var markers = [];
+      document.querySelectorAll('[data-ph="page_num"]').forEach(function(el){
+        markers.push({ type: 'data_ph', element: el });
+      });
+      document.querySelectorAll('.pf span').forEach(function(span){
+        if (span.hasAttribute('data-ph')) return;
+        if (span.querySelector('span')) return;
+        var txt = (span.textContent || '').trim();
+        if (/\d+\s*\/\s*\d+\s*$/.test(txt) || /^Page\b/i.test(txt)) {
+          markers.push({ type: 'span_complete', element: span });
+        }
+      });
+      markers.sort(function(a, b){
+        var pos = a.element.compareDocumentPosition(b.element);
+        if (pos & Node.DOCUMENT_POSITION_FOLLOWING) return -1;
+        if (pos & Node.DOCUMENT_POSITION_PRECEDING) return 1;
+        return 0;
+      });
+      var total = markers.length;
+      if (total === 0) return;
+      markers.forEach(function(m, idx){
+        var pageNum = idx + 1;
+        var newText = (m.type === 'data_ph') 
+          ? String(pageNum)
+          : 'Page ' + pageNum + ' / ' + total;
+        m.element.setAttribute('data-pag-applied', pageNum);
+        m.element.textContent = newText;
+      });
+      document.querySelectorAll('[data-ph="total_pages"]').forEach(function(el){
+        el.setAttribute('data-pag-applied', total);
+        el.textContent = String(total);
+      });
+    } finally {
+      isApplying = false;
+    }
+  }
+
+  function scheduleAll(){
+    applyPagination();
+    setTimeout(applyPagination, 200);
+    setTimeout(applyPagination, 800);
+    setTimeout(applyPagination, 2000);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', scheduleAll);
+  } else {
+    scheduleAll();
+  }
+  window.addEventListener('load', scheduleAll);
+
+  var observerActivated = false;
+  function activateObserver(){
+    if (observerActivated) return;
+    observerActivated = true;
+    var observer = new MutationObserver(function(mutations){
+      if (isApplying) return;
+      for (var i = 0; i < mutations.length; i++) {
+        var m = mutations[i];
+        if (m.type === 'characterData' || m.type === 'childList') {
+          var target = m.target;
+          if ((target.parentElement && target.parentElement.hasAttribute && target.parentElement.hasAttribute('data-ph')) ||
+              (target.hasAttribute && target.hasAttribute('data-ph'))) {
+            applyPagination();
+            return;
+          }
+        }
+      }
+    });
+    observer.observe(document.body, { childList: true, subtree: true, characterData: true });
+  }
+  setTimeout(activateObserver, 2500);
+})();
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     v10 FIX 3 : Remplacement des espaces fines insécables (\u202F)  (Bug F)
+═══════════════════════════════════════════════════════════════════════════ -->
+<script>
+(function(){
+  function replaceNarrowNoBreakSpace(){
+    var walker = document.createTreeWalker(
+      document.body,
+      NodeFilter.SHOW_TEXT,
+      null,
+      false
+    );
+    var node;
+    var count = 0;
+    while ((node = walker.nextNode())) {
+      if (node.nodeValue && node.nodeValue.indexOf('\u202F') !== -1) {
+        node.nodeValue = node.nodeValue.replace(/\u202F/g, '\u00A0');
+        count++;
+      }
+    }
+    if (window.console && count > 0) {
+      console.log('[wrapper v12] U+202F → U+00A0 replaced in ' + count + ' text nodes');
+    }
+  }
+  function scheduleReplace(){
+    replaceNarrowNoBreakSpace();
+    setTimeout(replaceNarrowNoBreakSpace, 500);
+    setTimeout(replaceNarrowNoBreakSpace, 1500);
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', scheduleReplace);
+  } else {
+    scheduleReplace();
+  }
+  window.addEventListener('load', scheduleReplace);
+  window.addEventListener('beforeprint', replaceNarrowNoBreakSpace);
+})();
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     v12 FIX 8 : Page-break forcé avant Top 11 actu Corporate  (Bug A2 — page 6)
+     ─────────────────────────────────────────────────────────────────────
+     Détecte le titre "TOP 11 ACTUALITES VUES" via texte (robuste, ne dépend pas
+     de classes CSS), trouve son conteneur parent (la section), et lui injecte
+     un style page-break-before:always.
+     Effet : Top 11 démarre sur sa propre page → aucune ligne perdue.
+     Bilan passe de 26 à 27 pages.
+═══════════════════════════════════════════════════════════════════════════ -->
+<script>
+(function(){
+  function forcePageBreakTop11(){
+    // Cherche tous les éléments contenant le texte exact (ou similaire) "TOP 11 ACTUALITES"
+    // Insensible à la casse, tolérant aux espaces.
+    var allElements = document.querySelectorAll('h1, h2, h3, h4, .tbl-title, [class*="title"], [class*="hdr"]');
+    var matched = null;
+    var pattern = /TOP\s*11\s*ACTUALIT/i;
+    for (var i = 0; i < allElements.length; i++) {
+      var el = allElements[i];
+      var txt = (el.textContent || '').trim();
+      if (pattern.test(txt) && txt.length < 200) {
+        matched = el;
+        break;
+      }
+    }
+    if (!matched) {
+      // Fallback : recherche large dans tous les éléments
+      var all = document.querySelectorAll('div, section, article, header');
+      for (var j = 0; j < all.length; j++) {
+        var t = (all[j].textContent || '').trim();
+        // Match seulement si l'élément a le texte mais que ses enfants directs ne l'ont pas tous
+        // → c'est un titre, pas un conteneur qui englobe tout
+        if (pattern.test(t) && t.length < 80) {
+          matched = all[j];
+          break;
+        }
+      }
+    }
+    if (!matched) {
+      if (window.console) console.warn('[wrapper v12] Top 11 title not found — page-break not applied');
+      return;
+    }
+    // Remonte aux ancêtres jusqu'à trouver un conteneur "section" raisonnable.
+    // On cherche le parent direct qui contient le tableau Top 11.
+    var container = matched;
+    // Remonte de 2-3 niveaux pour englober le titre + la table
+    for (var k = 0; k < 4; k++) {
+      if (container.parentElement) {
+        var parent = container.parentElement;
+        // Si le parent contient un <table> ou si c'est un .page/.pf, on s'arrête
+        var hasTable = parent.querySelector('table');
+        if (hasTable && parent.textContent.length > matched.textContent.length * 2) {
+          container = parent;
+          break;
+        }
+        container = parent;
+      }
+    }
+    container.style.pageBreakBefore = 'always';
+    container.style.breakBefore = 'page';
+    if (window.console) console.log('[wrapper v12] Top 11 page-break applied');
+  }
+
+  function scheduleTop11Break(){
+    forcePageBreakTop11();
+    setTimeout(forcePageBreakTop11, 1000);
+    setTimeout(forcePageBreakTop11, 2500);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', scheduleTop11Break);
+  } else {
+    scheduleTop11Break();
+  }
+  window.addEventListener('load', scheduleTop11Break);
+  window.addEventListener('beforeprint', forcePageBreakTop11);
+})();
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     v12 FIX 9 : Lisibilité KPI Arterre iOS / Android  (Bug K — page 22)
+     ─────────────────────────────────────────────────────────────────────
+     Sur la page Arterre Synthèse Globales, les blocs Apps mobiles ont un
+     fond sépia clair avec des libellés (UTILISATEURS, VISITES, DURÉE MOYENNE,
+     PAGES VUES) en gris pâle → quasi-illisibles à l'impression.
+     
+     Stratégie : trouver les blocs contenant le texte "ARTERRE IOS" ou
+     "ARTERRE ANDROID", et forcer une couleur foncée sur les libellés enfants
+     en print uniquement.
+═══════════════════════════════════════════════════════════════════════════ -->
+<script>
+(function(){
+  var styleApplied = false;
+
+  function fixArterreLabelsContrast(){
+    if (styleApplied) return;
+    
+    // Trouve tous les éléments contenant "ARTERRE IOS" ou "ARTERRE ANDROID" (texte direct seulement)
+    var pattern = /^\s*(ARTERRE\s+(IOS|ANDROID))\s*$/i;
+    var titleNodes = [];
+    var walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
+    var node;
+    while ((node = walker.nextNode())) {
+      var txt = (node.nodeValue || '').trim();
+      if (pattern.test(txt)) {
+        titleNodes.push(node.parentElement);
+      }
+    }
+    
+    if (titleNodes.length === 0) {
+      if (window.console) console.warn('[wrapper v12] Arterre IOS/Android blocks not found');
+      return;
+    }
+    
+    // Pour chaque titre, remonte au conteneur card et marque-le
+    var marked = 0;
+    titleNodes.forEach(function(titleEl){
+      var card = titleEl;
+      // Remonte jusqu'à trouver un conteneur de card raisonnable
+      for (var i = 0; i < 6; i++) {
+        if (card.parentElement) {
+          card = card.parentElement;
+          // Si on trouve un élément qui contient le titre + des KPI, on s'arrête
+          if (card.textContent && /UTILISATEURS|VISITES|DUR.E\s+MOYENNE|PAGES\s+VUES/i.test(card.textContent)) {
+            // Si le conteneur a aussi les KPI, on est au bon niveau
+            card.setAttribute('data-arterre-app-card', 'true');
+            marked++;
+            break;
+          }
+        }
+      }
+    });
+    
+    if (marked === 0) {
+      if (window.console) console.warn('[wrapper v12] Arterre app cards not identified');
+      return;
+    }
+    
+    // Injecte un style print qui fonce les libellés à l'intérieur de ces cards
+    var styleEl = document.createElement('style');
+    styleEl.setAttribute('data-wrapper-v12', 'arterre-contrast');
+    styleEl.textContent = '@media print {' +
+      '[data-arterre-app-card="true"] * { color: #1A1A1A !important; opacity: 1 !important; }' +
+      '[data-arterre-app-card="true"] .kpi-l, ' +
+      '[data-arterre-app-card="true"] [class*="label"], ' +
+      '[data-arterre-app-card="true"] [class*="lbl"] { ' +
+      '  color: #1A1A1A !important; opacity: 1 !important; font-weight: 600 !important; ' +
+      '}' +
+      '}';
+    document.head.appendChild(styleEl);
+    styleApplied = true;
+    if (window.console) console.log('[wrapper v12] Arterre contrast fix applied to ' + marked + ' card(s)');
+  }
+  
+  function scheduleArterreContrast(){
+    fixArterreLabelsContrast();
+    setTimeout(fixArterreLabelsContrast, 1000);
+    setTimeout(fixArterreLabelsContrast, 2500);
+  }
+  
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', scheduleArterreContrast);
+  } else {
+    scheduleArterreContrast();
+  }
+  window.addEventListener('load', scheduleArterreContrast);
+  window.addEventListener('beforeprint', fixArterreLabelsContrast);
+})();
+</script>
+
+</body>
+</html>
