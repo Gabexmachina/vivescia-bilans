@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bilan Mensuel VIVESCIA — {{mois_label}}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* ─────────────────────────────────────────────────────────────
+       Reset minimal global
+    ────────────────────────────────────────────────────────────── */
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: 'Raleway', system-ui, -apple-system, sans-serif;
+      background: #BEBEBE;
+      color: #1A2530;
+      line-height: 1.5;
+    }
+
+    /* ─────────────────────────────────────────────────────────────
+       PRINT / PDF — v9 (Session 15)
+       Trois corrections par rapport à v8 :
+       1. @page { size: A4; margin: 0 }    → aligne la zone imprimable Chrome sur 210x297mm exact
+       2. .page { width/height STRICTS }   → bloque le débordement (height au lieu de min-height)
+       3. .page { overflow: hidden }       → tronque tout débordement résiduel au lieu d'inonder la page suivante
+       Effet : suppression des pages blanches insérées entre chaque page de contenu.
+    ────────────────────────────────────────────────────────────── */
+    @page { size: A4; margin: 0; }
+
+    @media print {
+      body {
+        background: #fff !important;
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+      .prv { background: #fff !important; padding: 0 !important; }
+
+      .page {
+        width: 210mm !important;
+        height: 297mm !important;          /* strict, pas min-height */
+        margin: 0 !important;
+        box-shadow: none !important;
+        overflow: hidden !important;        /* tronque les débordements résiduels */
+        page-break-after: always;
+        break-after: page;                  /* équivalent moderne, double sécurité */
+      }
+      .page:last-child {
+        page-break-after: auto;
+        break-after: auto;
+      }
+
+      /* Force l'impression des fonds colorés (KPI cards, badges, donuts...) */
+      * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+
+      /* Évite la coupure des tableaux et blocs structurés en milieu de page */
+      table, .tbl-section, .stra-tbl-wrap, .stra-block, .kpi, .chart-card, .sb {
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+
+      /* Cache les boutons d'export éventuels présents dans certains fragments */
+      .no-print-btn, .no-print { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+{{partie_1}}
+{{partie_2}}
+{{partie_3}}
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     PAGINATION DYNAMIQUE — v8 (INCHANGÉE)
+     Stratégie :
+     - data-ph="page_num" et data-ph="total_pages" -> pris PARTOUT (pour Arterre)
+     - <span> feuilles avec "X / Y" ou "Page X" -> pris SEULEMENT dans .pf 
+       (pour ne pas écraser des badges de section comme ".stra-section-hdr-badge")
+     - Tri par ordre d'apparition dans le DOM
+     - Application multiple + MutationObserver
+═══════════════════════════════════════════════════════════════════════════ -->
+<script>
+(function(){
+  var isApplying = false;
+
+  function applyPagination(){
+    if (isApplying) return;
+    isApplying = true;
+    try {
+      var markers = [];
+
+      // Type A : <span data-ph="page_num"> -> partout
+      document.querySelectorAll('[data-ph="page_num"]').forEach(function(el){
+        markers.push({ type: 'data_ph', element: el });
+      });
+
+      // Type B : <span> feuille dans .pf qui contient un pattern de pagination
+      document.querySelectorAll('.pf span').forEach(function(span){
+        if (span.hasAttribute('data-ph')) return;
+        if (span.querySelector('span')) return;
+        var txt = (span.textContent || '').trim();
+        // "Page X / Y", "Analyse stratégique X / Y", "Page X" (cover sans /)
+        if (/\d+\s*\/\s*\d+\s*$/.test(txt) || /^Page\b/i.test(txt)) {
+          markers.push({ type: 'span_complete', element: span });
+        }
+      });
+
+      // Tri par ordre d'apparition dans le DOM
+      markers.sort(function(a, b){
+        var pos = a.element.compareDocumentPosition(b.element);
+        if (pos & Node.DOCUMENT_POSITION_FOLLOWING) return -1;
+        if (pos & Node.DOCUMENT_POSITION_PRECEDING) return 1;
+        return 0;
+      });
+
+      var total = markers.length;
+      if (total === 0) return;
+
+      markers.forEach(function(m, idx){
+        var pageNum = idx + 1;
+        var newText = (m.type === 'data_ph') 
+          ? String(pageNum)
+          : 'Page ' + pageNum + ' / ' + total;
+        m.element.setAttribute('data-pag-applied', pageNum);
+        m.element.textContent = newText;
+      });
+
+      // total_pages partout (pas restreint à .pf)
+      document.querySelectorAll('[data-ph="total_pages"]').forEach(function(el){
+        el.setAttribute('data-pag-applied', total);
+        el.textContent = String(total);
+      });
+    } finally {
+      isApplying = false;
+    }
+  }
+
+  function scheduleAll(){
+    applyPagination();
+    setTimeout(applyPagination, 200);
+    setTimeout(applyPagination, 800);
+    setTimeout(applyPagination, 2000);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', scheduleAll);
+  } else {
+    scheduleAll();
+  }
+  window.addEventListener('load', scheduleAll);
+
+  var observerActivated = false;
+  function activateObserver(){
+    if (observerActivated) return;
+    observerActivated = true;
+    var observer = new MutationObserver(function(mutations){
+      if (isApplying) return;
+      for (var i = 0; i < mutations.length; i++) {
+        var m = mutations[i];
+        if (m.type === 'characterData' || m.type === 'childList') {
+          var target = m.target;
+          if ((target.parentElement && target.parentElement.hasAttribute && target.parentElement.hasAttribute('data-ph')) ||
+              (target.hasAttribute && target.hasAttribute('data-ph'))) {
+            applyPagination();
+            return;
+          }
+        }
+      }
+    });
+    observer.observe(document.body, { childList: true, subtree: true, characterData: true });
+  }
+  setTimeout(activateObserver, 2500);
+})();
+</script>
+
+</body>
+</html>
