@@ -1,0 +1,40 @@
+{
+  "bilans": [
+    {
+      "mois": "Avril 2026",
+      "mois_slug": "avril-2026",
+      "annee": "2026",
+      "periode": "2026-04",
+      "url": "bilans/2026-04/bilan-vivescia-avril-2026.html",
+      "generated_at": "2026-05-01T20:00:00Z",
+      "status": "Publié",
+      "kpis": {
+        "visites": 19204,
+        "visites_var": -8.2,
+        "pages_vues": 35371,
+        "trafic_seo": 7800,
+        "authority_score": 33,
+        "kw_top3": 92,
+        "kw_total": 476
+      }
+    },
+    {
+      "mois": "Mars 2026",
+      "mois_slug": "mars-2026",
+      "annee": "2026",
+      "periode": "2026-03",
+      "url": "bilans/2026-03/bilan-vivescia-mars-2026.html",
+      "generated_at": "2026-04-14T08:00:00Z",
+      "status": "Publié",
+      "kpis": {
+        "visites": 20919,
+        "visites_var": 14.5,
+        "pages_vues": 37111,
+        "trafic_seo": 9534,
+        "authority_score": 33,
+        "kw_top3": 92,
+        "kw_total": 476
+      }
+    }
+  ]
+}
