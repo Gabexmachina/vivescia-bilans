@@ -1,6 +1,24 @@
 {
   "bilans": [
     {
+      "mois": "Mai 2026",
+      "mois_slug": "mai-2026",
+      "annee": "2026",
+      "periode": "2026-05",
+      "url": "bilans/2026-05/bilan-vivescia-mai-2026.html",
+      "generated_at": "2026-06-30T18:00:00Z",
+      "status": "Publié",
+      "kpis": {
+        "visites": 15603,
+        "visites_var": -18.8,
+        "pages_vues": 27330,
+        "trafic_seo": 6556,
+        "authority_score": 32,
+        "kw_top3": 84,
+        "kw_total": 262
+      }
+    },
+    {
       "mois": "Avril 2026",
       "mois_slug": "avril-2026",
       "annee": "2026",
@@ -14,8 +32,8 @@
         "pages_vues": 35371,
         "trafic_seo": 7800,
         "authority_score": 33,
-        "kw_top3": 92,
-        "kw_total": 476
+        "kw_top3": 87,
+        "kw_total": 491
       }
     },
     {
