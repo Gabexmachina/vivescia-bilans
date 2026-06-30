@@ -393,7 +393,7 @@ body {
   border-top: 1px solid var(--border);
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
 }
 
 .card-date {
@@ -661,7 +661,6 @@ function makeCard(b, delay) {
       </div>
     </div>
     <div class="card-footer">
-      <span class="card-date">Généré le ${fmtDate(b.generated_at)}</span>
       <span class="card-cta">
         Voir le bilan
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
