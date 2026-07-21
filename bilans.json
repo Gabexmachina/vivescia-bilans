@@ -1,6 +1,24 @@
 {
   "bilans": [
     {
+      "mois": "Juin 2026",
+      "mois_slug": "juin-2026",
+      "annee": "2026",
+      "periode": "2026-06",
+      "url": "bilans/2026-06/bilan-vivescia-juin-2026.html",
+      "generated_at": "2026-07-22T00:30:00Z",
+      "status": "Publié",
+      "kpis": {
+        "visites": 15804,
+        "visites_var": 1.3,
+        "pages_vues": 28679,
+        "trafic_seo": 7209,
+        "authority_score": 33,
+        "kw_top3": 77,
+        "kw_total": 232
+      }
+    },
+    {
       "mois": "Mai 2026",
       "mois_slug": "mai-2026",
       "annee": "2026",
