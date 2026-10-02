@@ -1,6 +1,24 @@
 {
   "bilans": [
     {
+      "mois": "Septembre 2026",
+      "mois_slug": "septembre-2026",
+      "annee": "2026",
+      "periode": "2026-09",
+      "url": "bilans/2026-09/bilan-vivescia-septembre-2026.html",
+      "generated_at": "2026-10-02T09:10:00Z",
+      "status": "Publié",
+      "kpis": {
+        "visites": 19865,
+        "visites_var": 37.9,
+        "pages_vues": 35856,
+        "trafic_seo": 7812,
+        "authority_score": 34,
+        "kw_top3": 72,
+        "kw_total": 290
+      }
+    },
+    {
       "mois": "Août 2026",
       "mois_slug": "aout-2026",
       "annee": "2026",
